@@ -1,12 +1,14 @@
 package com.lynx.fqb.select;
 
-import com.lynx.fqb.api.select.Orders;
+import com.lynx.fqb.api.CriteriaBuilderHolder;
+import com.lynx.fqb.api.CriteriaQueryHolder;
+import com.lynx.fqb.api.RootHolder;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class OrderBy<R, F> implements Orders<R, F> {
+public abstract class Clause<R, F> implements CriteriaBuilderHolder, CriteriaQueryHolder<R>, RootHolder<F> {
 
     private final CriteriaBuilder cb;
 
@@ -14,10 +16,15 @@ public class OrderBy<R, F> implements Orders<R, F> {
 
     private final Root<F> root;
 
-    public OrderBy(CriteriaBuilder cb, CriteriaQuery<R> cq, Root<F> root) {
+    public Clause(CriteriaBuilder cb, CriteriaQuery<R> cq, Root<F> root) {
         this.cb = cb;
         this.cq = cq;
         this.root = root;
+    }
+
+    @Override
+    public Root<F> getRoot() {
+        return root;
     }
 
     @Override
@@ -29,10 +36,4 @@ public class OrderBy<R, F> implements Orders<R, F> {
     public CriteriaBuilder getCriteriaBuilder() {
         return cb;
     }
-
-    @Override
-    public Root<F> getRoot() {
-        return root;
-    }
-
 }

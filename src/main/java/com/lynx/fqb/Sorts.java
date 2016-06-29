@@ -7,7 +7,7 @@ import java.util.function.Function;
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
-public class Sorts {
+public abstract class Sorts {
 
     public static <F, A> SortApplier<F> by(SingularAttribute<? super F, A> attr) {
         return (cb, path) -> {

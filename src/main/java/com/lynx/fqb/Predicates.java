@@ -7,7 +7,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.metamodel.SingularAttribute;
 
-public class Predicates {
+public abstract class Predicates {
 
     public static <F, A> BiFunction<CriteriaBuilder, Path<F>, Predicate> equal(SingularAttribute<? super F, A> attr,
             Object value) {

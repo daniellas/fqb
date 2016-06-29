@@ -1,6 +1,6 @@
 package com.lynx.fqb.select;
 
-import com.lynx.fqb.api.Selections;
+import com.lynx.fqb.api.select.Selections;
 
 import javax.persistence.criteria.CriteriaBuilder;
 

@@ -1,4 +1,4 @@
-package com.lynx.fqb.functions;
+package com.lynx.fqb.api.func;
 
 import java.util.Objects;
 import java.util.function.Function;

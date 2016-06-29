@@ -1,4 +1,6 @@
-package com.lynx.fqb.api;
+package com.lynx.fqb.api.select;
+
+import com.lynx.fqb.api.CriteriaQueryHolder;
 
 import java.util.List;
 
