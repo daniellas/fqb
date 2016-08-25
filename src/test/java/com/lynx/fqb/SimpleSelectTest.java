@@ -1,14 +1,4 @@
-package com.lynx.fqb.test;
-
-import com.lynx.fqb.Paths;
-import com.lynx.fqb.Sorts;
-import com.lynx.fqb.api.PathSelector;
-import com.lynx.fqb.api.SortApplier;
-import com.lynx.fqb.entity.Child;
-import com.lynx.fqb.entity.Child_;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
-import com.lynx.fqb.select.SelectQuery;
+package com.lynx.fqb;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -27,6 +17,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.lynx.fqb.Paths;
+import com.lynx.fqb.Sorts;
+import com.lynx.fqb.entity.Child;
+import com.lynx.fqb.entity.Child_;
+import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.select.SelectQuery;
 
 public class SimpleSelectTest {
 

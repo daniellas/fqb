@@ -4,7 +4,7 @@ import com.lynx.fqb.OptionalApplier;
 import com.lynx.fqb.api.CriteriaBuilderHolder;
 import com.lynx.fqb.api.CriteriaQueryHolder;
 import com.lynx.fqb.api.RootHolder;
-import com.lynx.fqb.select.Result;
+import com.lynx.fqb.select.structure.Result;
 
 import java.util.Collection;
 import java.util.Optional;

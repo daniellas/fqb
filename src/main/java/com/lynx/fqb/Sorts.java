@@ -1,11 +1,11 @@
 package com.lynx.fqb;
 
-import com.lynx.fqb.api.SortApplier;
-
 import java.util.function.Function;
 
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
+
+import com.lynx.fqb.api.SortApplier;
 
 public abstract class Sorts {
 

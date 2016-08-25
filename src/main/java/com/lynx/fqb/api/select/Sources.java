@@ -2,7 +2,7 @@ package com.lynx.fqb.api.select;
 
 import com.lynx.fqb.api.CriteriaBuilderHolder;
 import com.lynx.fqb.api.CriteriaQueryHolder;
-import com.lynx.fqb.select.Source;
+import com.lynx.fqb.select.structure.Source;
 
 import java.util.function.Supplier;
 

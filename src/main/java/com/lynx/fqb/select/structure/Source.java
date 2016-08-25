@@ -1,10 +1,11 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.select.structure;
 
 import com.lynx.fqb.api.select.Groupings;
 import com.lynx.fqb.api.select.Havings;
 import com.lynx.fqb.api.select.Orders;
 import com.lynx.fqb.api.select.Restrictions;
 import com.lynx.fqb.api.select.Results;
+import com.lynx.fqb.select.Clause;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

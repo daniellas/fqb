@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.select.structure;
 
 import com.lynx.fqb.api.select.Selections;
 
