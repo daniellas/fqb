@@ -1,4 +1,4 @@
-package com.lynx.fqb.func;
+package com.lynx.fqb.func.api;
 
 import java.util.Optional;
 
@@ -23,9 +23,9 @@ public interface CriteriaBuilderOperations {
                 .orElse(query);
     }
 
-    default <FROM> TypedQuery<FROM> applyMax(TypedQuery<FROM> query, Integer max) {
-        return Optional.ofNullable(max)
-                .map(v -> query.setMaxResults(max))
+    default <FROM> TypedQuery<FROM> applyMax(TypedQuery<FROM> query, Integer count) {
+        return Optional.ofNullable(count)
+                .map(v -> query.setMaxResults(count))
                 .orElse(query);
     }
 

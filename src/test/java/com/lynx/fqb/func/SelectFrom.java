@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
+import com.lynx.fqb.func.api.CriteriaBuilderOperations;
+import com.lynx.fqb.func.api.Results;
+
 public class SelectFrom<FROM> extends Select implements CriteriaBuilderOperations, Results<FROM> {
 
     protected final Class<FROM> fromCls;
@@ -20,12 +23,12 @@ public class SelectFrom<FROM> extends Select implements CriteriaBuilderOperation
     }
 
     @Override
-    public List<FROM> apply(Integer first, Integer max) {
+    public List<FROM> apply(Integer first, Integer count) {
         return Optional.of(em.getCriteriaBuilder().createQuery(fromCls))
                 .map(q -> applyFrom(q, fromCls))
                 .map(q -> createTypedQuery(em, q))
                 .map(tq -> applyFirst(tq, first))
-                .map(tq -> applyMax(tq, max))
+                .map(tq -> applyMax(tq, count))
                 .map(tq -> tq.getResultList())
                 .orElse(null);
     }

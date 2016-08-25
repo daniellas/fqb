@@ -2,6 +2,7 @@ package com.lynx.fqb;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.junit.After;
@@ -30,11 +31,18 @@ public class TestBase {
         if (!initialized) {
             initialized = true;
 
+            EntityTransaction tx = em.getTransaction();
+
+            tx.begin();
             Parent parent = new Parent();
 
             parent.addChild(new Child());
-
             em.persist(parent);
+
+            parent = new Parent();
+            parent.addChild(new Child());
+            em.persist(parent);
+            tx.commit();
         }
     }
 
