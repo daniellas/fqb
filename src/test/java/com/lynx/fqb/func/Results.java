@@ -1,13 +1,18 @@
 package com.lynx.fqb.func;
 
-import java.util.Collection;
+import java.util.List;
 
 @FunctionalInterface
 public interface Results<RESULT> {
 
-    Collection<RESULT> apply(Class<RESULT> resultCls);
+    List<RESULT> apply(Integer first, Integer max);
 
-    default Collection<RESULT> list(Class<RESULT> cls) {
-        return apply(cls);
+    default List<RESULT> list() {
+        return apply(null, null);
     }
+
+    default List<RESULT> list(Integer first, Integer max) {
+        return apply(first, max);
+    }
+
 }

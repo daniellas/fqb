@@ -2,14 +2,19 @@ package com.lynx.fqb.func;
 
 import javax.persistence.EntityManager;
 
-public class Select<RESULT, FROM> implements Sources<RESULT, FROM>, Selections<RESULT, FROM> {
+public class Select {
+
+    protected final EntityManager em;
 
     public Select(EntityManager em) {
-
+        this.em = em;
     }
 
-    public static <RESULT, FROM> Select<RESULT, FROM> using(EntityManager em, Class<RESULT> resultCl, Class<FROM> fromCls) {
-        return new Select<>(em);
+    public static Select using(EntityManager em) {
+        return new Select(em);
     }
 
+    public <FROM> SelectFrom<FROM> from(Class<FROM> fromCls) {
+        return new SelectFrom<>(em, fromCls);
+    }
 }

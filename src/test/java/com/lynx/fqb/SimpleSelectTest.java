@@ -1,16 +1,11 @@
 package com.lynx.fqb;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
 import org.junit.After;
@@ -18,8 +13,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.lynx.fqb.Paths;
-import com.lynx.fqb.Sorts;
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.Parent;
@@ -87,9 +80,6 @@ public class SimpleSelectTest {
 
     @Test
     public void childSelectShouldReturnResultList() {
-        Function<Path<Parent>, Path<Long>> thenGet = Paths.get(Child_.parent).thenGet(Parent_.id);
-        BiFunction<CriteriaBuilder, Path<Parent>, Order> reversed = Sorts.by(thenGet).reversed();
-
         new SelectQuery<Child, Child>(cb)
                 .select(Child.class)
                 .from(Child.class)
