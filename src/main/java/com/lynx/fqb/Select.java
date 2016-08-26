@@ -2,9 +2,7 @@ package com.lynx.fqb;
 
 import javax.persistence.EntityManager;
 
-import com.lynx.fqb.api.Sources;
-
-public class Select implements Sources {
+public class Select implements Sources, EntityManagerSupplier {
 
     protected final EntityManager em;
 
@@ -17,7 +15,13 @@ public class Select implements Sources {
     }
 
     @Override
+    public Select get() {
+        return this;
+    }
+
+    @Override
     public EntityManager getEntityManager() {
         return em;
     }
+
 }
