@@ -68,10 +68,16 @@ There is one important thing to mention. FQB gives you ability to easily constru
 
 
 ```java
+// Add static imports to have faster access to helper methods
+import static com.lynx.fqb.path.Paths.*;
+import static com.lynx.fqb.sort.Sorts.*;
+
 // Entity manager must be provided eg. by dependency injection
 private EntityManager em;
+
 // Retrieve all entities
 Select.using(em).from(Entity.class).list();
+
 // Retrieve first 10 results
 Select.using(em).from(Entity.class).list(Page.of(0,10));
 ```  
