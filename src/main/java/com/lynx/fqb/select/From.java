@@ -1,4 +1,4 @@
-package com.lynx.fqb;
+package com.lynx.fqb.select;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 
+import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class From<F> implements QueryApplier, Orders<F>, ListResults<F>, SingleResults<F> {
+public class From<F> implements CriteriaQueryApplier, Orders<F>, ListResults<F>, SingleResults<F> {
 
     protected final Supplier<Class<F>> fromCls;
 

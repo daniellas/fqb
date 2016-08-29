@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
-import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.paging.PageRequest;
 

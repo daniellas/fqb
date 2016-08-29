@@ -1,4 +1,4 @@
-package com.lynx.fqb;
+package com.lynx.fqb.select;
 
 import java.util.List;
 import java.util.function.Function;

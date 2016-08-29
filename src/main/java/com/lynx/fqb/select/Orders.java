@@ -1,4 +1,4 @@
-package com.lynx.fqb;
+package com.lynx.fqb.select;
 
 import java.util.Collection;
 import java.util.function.BiFunction;
@@ -7,6 +7,9 @@ import java.util.stream.Stream;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
+
+import com.lynx.fqb.EntityManagerSupplier;
+import com.lynx.fqb.FromSupplier;
 
 public interface Orders<F> extends ListResults<F>, SingleResults<F>, FromSupplier<F>, EntityManagerSupplier {
 

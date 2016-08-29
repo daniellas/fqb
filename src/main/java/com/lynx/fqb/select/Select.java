@@ -1,6 +1,8 @@
-package com.lynx.fqb;
+package com.lynx.fqb.select;
 
 import javax.persistence.EntityManager;
+
+import com.lynx.fqb.EntityManagerSupplier;
 
 public class Select implements Sources, EntityManagerSupplier {
 

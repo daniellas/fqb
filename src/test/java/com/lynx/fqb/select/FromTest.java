@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.lynx.fqb.MockTestBase;
-import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Parent;
 
 public class FromTest extends MockTestBase {

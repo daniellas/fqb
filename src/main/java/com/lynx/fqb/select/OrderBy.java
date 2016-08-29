@@ -1,4 +1,4 @@
-package com.lynx.fqb;
+package com.lynx.fqb.select;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -9,9 +9,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 
+import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class OrderBy<F> implements QueryApplier, ListResults<F>, SingleResults<F> {
+public class OrderBy<F> implements CriteriaQueryApplier, ListResults<F>, SingleResults<F> {
 
     final From<F> from;
 
