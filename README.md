@@ -20,7 +20,8 @@ There is one important thing to mention. FQB gives you ability to easily constru
 ### JPA metamodel is required. If you use maven, add below plugins configurations to your pom.xml
 
 ```xml
-    <build>
+<build>
+    <plugins>
         <plugin>
             <groupId>org.bsc.maven</groupId>
             <artifactId>maven-processor-plugin</artifactId>
