@@ -80,4 +80,10 @@ Select.using(em).from(Entity.class).list();
 
 // Retrieve first 10 results
 Select.using(em).from(Entity.class).list(Page.of(0,10));
+
+// Sort ascending
+Select.using(em).from(Entity.class).orderBy(by(Entity_.id)).list();
+// Sort descending
+Select.using(em).from(Entity.class).orderBy(by(Entity_.id).reversed()).list();
+
 ```  
