@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
 public class PathNode<A, B> implements PathSelector<A, B> {
@@ -22,7 +21,7 @@ public class PathNode<A, B> implements PathSelector<A, B> {
     }
 
     @Override
-    public Path<?> apply(Root<?> root) {
+    public Path<?> apply(Path<?> root) {
         return doApply(root, attributePath.get(0), 0);
     }
 
