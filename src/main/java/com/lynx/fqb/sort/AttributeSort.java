@@ -5,7 +5,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
-public class AttributeSort<F, A> implements SortApplier<F> {
+public class AttributeSort<F, A> implements SortApplier {
 
     private final SingularAttribute<? super F, A> attribute;
 
@@ -14,8 +14,8 @@ public class AttributeSort<F, A> implements SortApplier<F> {
     }
 
     @Override
-    public Order apply(CriteriaBuilder cb, Path<F> path) {
-        return cb.asc(path.get(attribute));
+    public Order apply(CriteriaBuilder cb, Path<?> path) {
+        return cb.asc(path.get(attribute.getName()));
     }
 
 }

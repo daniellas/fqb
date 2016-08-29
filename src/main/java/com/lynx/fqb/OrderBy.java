@@ -15,9 +15,9 @@ public class OrderBy<F> implements QueryApplier, ListResults<F>, SingleResults<F
 
     final From<F> from;
 
-    final Stream<BiFunction<CriteriaBuilder, Path<F>, Order>> orders;
+    final Stream<BiFunction<CriteriaBuilder, Path<?>, Order>> orders;
 
-    public OrderBy(From<F> from, Stream<BiFunction<CriteriaBuilder, Path<F>, Order>> orders) {
+    public OrderBy(From<F> from, Stream<BiFunction<CriteriaBuilder, Path<?>, Order>> orders) {
         this.from = from;
         this.orders = orders;
     }
