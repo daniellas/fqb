@@ -38,7 +38,7 @@ public class OrderedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSortByPathSelector() {
-        Select.using(em).from(Parent.class).orderBy(Sorts.by(Paths.get(Parent_.id))).list();
+//        Select.using(em).from(Parent.class).orderBy(Sorts.by(Paths.from(Parent.class).get(Parent_.id))).list();
     }
 
     @Test

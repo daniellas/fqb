@@ -34,7 +34,7 @@ public class FromTest extends MockTestBase {
     }
 
     @Test
-    public void shouldSuccessWithFromClassSpuuplier() {
+    public void shouldSuccessWithFromClassSupplier() {
         Select.using(em).from(() -> Parent.class).list();
     }
 

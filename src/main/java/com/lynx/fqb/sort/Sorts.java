@@ -1,7 +1,5 @@
 package com.lynx.fqb.sort;
 
-import java.util.function.Function;
-
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -13,9 +11,9 @@ public abstract class Sorts {
         };
     }
 
-    public static <F, A> SortApplier<F> by(Function<Path<F>, Path<A>> pathSelector) {
+    public static <F, A> SortApplier<F> by(Path<?> path) {
         return (cb, p) -> {
-            return cb.asc(pathSelector.apply(p));
+            return cb.asc(path);
         };
     }
 

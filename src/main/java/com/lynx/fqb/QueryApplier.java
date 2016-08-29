@@ -16,7 +16,7 @@ import com.lynx.fqb.paging.Pageable;
  * @author daniel.las
  *
  */
-public interface CriteriaBuilderOperations {
+public interface QueryApplier {
 
     /**
      * Set query root to given fromCls of type F

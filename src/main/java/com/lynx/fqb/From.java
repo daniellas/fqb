@@ -10,13 +10,13 @@ import javax.persistence.criteria.Path;
 
 import com.lynx.fqb.paging.Pageable;
 
-public class From<F> implements CriteriaBuilderOperations, Orders<F>, ListResults<F>, SingleResults<F> {
+public class From<F> implements QueryApplier, Orders<F>, ListResults<F>, SingleResults<F> {
 
     protected final Supplier<Class<F>> fromCls;
 
-    final Select select;
+    private final Select select;
 
-    Path<F> fromPath;
+    private Path<F> root;
 
     public From(Select select, Class<F> fromCls) {
         this.select = select;
@@ -32,7 +32,7 @@ public class From<F> implements CriteriaBuilderOperations, Orders<F>, ListResult
         return Optional.ofNullable(select.getEntityManager())
                 .map(m -> m.getCriteriaBuilder().createQuery(fromCls.get()))
                 .map(q -> {
-                    fromPath = applyFrom(q, fromCls.get());
+                    root = applyFrom(q, fromCls.get());
 
                     return q;
                 });
@@ -56,6 +56,10 @@ public class From<F> implements CriteriaBuilderOperations, Orders<F>, ListResult
     @Override
     public EntityManager getEntityManager() {
         return select.getEntityManager();
+    }
+
+    public Path<F> getRoot() {
+        return root;
     }
 
 }

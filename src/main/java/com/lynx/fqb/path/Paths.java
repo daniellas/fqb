@@ -4,9 +4,8 @@ import javax.persistence.metamodel.SingularAttribute;
 
 public abstract class Paths {
 
-    public static <F, A> PathSelector<F, A> get(SingularAttribute<? super F, A> attr) {
-        return (p) -> {
-            return p.get(attr);
-        };
+    public static <A, B> PathSelector<A, B> get(SingularAttribute<? super A, B> attr) {
+        return new PathNode<>(null, attr);
     }
+
 }

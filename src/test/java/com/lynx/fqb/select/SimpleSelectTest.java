@@ -16,8 +16,8 @@ public class SimpleSelectTest extends MockTestBase {
 
         Mockito.verify(em).getCriteriaBuilder();
         Mockito.verify(cb).createQuery(Parent.class);
-        Mockito.verify(criteriaQuery).from(Parent.class);
-        Mockito.verify(typedQuery).getResultList();
+        Mockito.verify(parentCriteriaQuery).from(Parent.class);
+        Mockito.verify(parentTypedQuery).getResultList();
     }
 
     @Test
@@ -26,10 +26,10 @@ public class SimpleSelectTest extends MockTestBase {
 
         Mockito.verify(em).getCriteriaBuilder();
         Mockito.verify(cb).createQuery(Parent.class);
-        Mockito.verify(criteriaQuery).from(Parent.class);
-        Mockito.verify(typedQuery).setFirstResult(0);
-        Mockito.verify(typedQuery).setMaxResults(1);
-        Mockito.verify(typedQuery).getResultList();
+        Mockito.verify(parentCriteriaQuery).from(Parent.class);
+        Mockito.verify(parentTypedQuery).setFirstResult(0);
+        Mockito.verify(parentTypedQuery).setMaxResults(1);
+        Mockito.verify(parentTypedQuery).getResultList();
     }
 
     @Test
@@ -38,8 +38,8 @@ public class SimpleSelectTest extends MockTestBase {
 
         Mockito.verify(em).getCriteriaBuilder();
         Mockito.verify(cb).createQuery(Parent.class);
-        Mockito.verify(criteriaQuery).from(Parent.class);
-        Mockito.verify(typedQuery).getSingleResult();
+        Mockito.verify(parentCriteriaQuery).from(Parent.class);
+        Mockito.verify(parentTypedQuery).getSingleResult();
     }
 
 }

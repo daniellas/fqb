@@ -11,7 +11,7 @@ import javax.persistence.criteria.Path;
 
 import com.lynx.fqb.paging.Pageable;
 
-public class OrderBy<F> implements CriteriaBuilderOperations, ListResults<F>, SingleResults<F> {
+public class OrderBy<F> implements QueryApplier, ListResults<F>, SingleResults<F> {
 
     final From<F> from;
 
@@ -28,7 +28,7 @@ public class OrderBy<F> implements CriteriaBuilderOperations, ListResults<F>, Si
                 from.doApply()
                         .map(
                                 q -> q.orderBy(orders
-                                        .map(o -> o.apply(from.getEntityManager().getCriteriaBuilder(), from.fromPath))
+                                        .map(o -> o.apply(from.getEntityManager().getCriteriaBuilder(), from.getRoot()))
                                         .collect(Collectors.toList()))),
                 page);
     }
