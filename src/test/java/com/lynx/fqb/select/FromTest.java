@@ -17,12 +17,12 @@ public class FromTest extends MockTestBase {
     @Mock
     private TypedQuery<Parent> typedQuery;
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void listShouldFailOnNullEntityManager() {
         Select.using(null).from(Parent.class).list();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void getShouldFailOnNullEntityManager() {
         Select.using(null).from(Parent.class).get();
     }

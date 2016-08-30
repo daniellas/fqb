@@ -7,7 +7,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 public class AttributeSort<F, A> implements SortApplier {
 
-    private final SingularAttribute<? super F, A> attribute;
+    final SingularAttribute<? super F, A> attribute;
 
     public AttributeSort(SingularAttribute<? super F, A> attribute) {
         this.attribute = attribute;

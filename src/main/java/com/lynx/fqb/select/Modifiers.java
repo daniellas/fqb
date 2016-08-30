@@ -1,7 +1,7 @@
 package com.lynx.fqb.select;
 
-public interface Modifiers extends SelectSupplier {
+public interface Modifiers extends QueryContextSupplier {
     default Distinct distinct() {
-        return new Distinct(getSelect());
+        return new Distinct(getQueryContext());
     }
 }

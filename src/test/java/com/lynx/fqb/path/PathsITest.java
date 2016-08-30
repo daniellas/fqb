@@ -12,7 +12,7 @@ import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
 
-public class PathITest extends IntegrationTestBase {
+public class PathsITest extends IntegrationTestBase {
 
     @Test
     public void shouldApplyPath() {

@@ -4,7 +4,11 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import com.lynx.fqb.path.PathSelector;
 
-public abstract class Sorts {
+public class Sorts {
+
+    private Sorts() {
+
+    }
 
     public static <F, A> SortApplier by(SingularAttribute<? super F, A> attribute) {
         return new AttributeSort<>(attribute);

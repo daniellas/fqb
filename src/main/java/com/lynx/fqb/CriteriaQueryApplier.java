@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
 
 import com.lynx.fqb.paging.Pageable;
 
@@ -17,19 +16,6 @@ import com.lynx.fqb.paging.Pageable;
  *
  */
 public interface CriteriaQueryApplier {
-
-    /**
-     * Set query root to given fromCls of type F
-     * 
-     * @param query
-     *            {@link CriteriaQuery}
-     * @param fromCls
-     *            root {@link Class}
-     * @return provided,modified {@link CriteriaQuery}
-     */
-    default <F> Path<F> applyFrom(CriteriaQuery<F> query, Class<F> fromCls) {
-        return query.from(fromCls);
-    }
 
     /**
      * Creates typed query
@@ -58,22 +44,18 @@ public interface CriteriaQueryApplier {
                 .orElse(query);
     }
 
-    default <F> CriteriaQuery<F> applyDistinct(CriteriaQuery<F> query, boolean distinct) {
-        return query.distinct(distinct);
-    }
-
-    default <F> List<F> applyListResult(EntityManager em, Optional<CriteriaQuery<F>> criteriaQuery, Pageable page) {
-        return criteriaQuery
+    default <F> List<F> applyListResult(EntityManager em, CriteriaQuery<F> criteriaQuery, Pageable page) {
+        return Optional.of(criteriaQuery)
                 .map(q -> createTypedQuery(em, q))
                 .map(tq -> applyPaging(tq, page))
                 .map(tq -> tq.getResultList())
-                .orElseThrow(() -> new IllegalStateException("Apply list result failed"));
+                .get();
     }
 
-    default <F> F applySingleResult(EntityManager em, Optional<CriteriaQuery<F>> criteriaQuery) {
-        return criteriaQuery.map(q -> createTypedQuery(em, q))
+    default <F> F applySingleResult(EntityManager em, CriteriaQuery<F> criteriaQuery) {
+        return Optional.of(criteriaQuery).map(q -> createTypedQuery(em, q))
                 .map(tq -> tq.getSingleResult())
-                .orElseThrow(() -> new IllegalStateException("Apply single result failed"));
+                .get();
     }
 
 }

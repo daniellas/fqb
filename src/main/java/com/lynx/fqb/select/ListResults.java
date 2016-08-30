@@ -7,22 +7,14 @@ import com.lynx.fqb.paging.Pageable;
 @FunctionalInterface
 public interface ListResults<R> {
 
-    List<R> apply(Pageable page, boolean distinct);
+    List<R> apply(Pageable page);
 
     default List<R> list() {
-        return apply(null, false);
-    }
-
-    default List<R> listDistinct() {
-        return apply(null, true);
+        return apply(null);
     }
 
     default List<R> list(Pageable page) {
-        return apply(page, false);
-    }
-
-    default List<R> listDistinct(Pageable page) {
-        return apply(page, true);
+        return apply(page);
     }
 
 }
