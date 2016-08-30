@@ -8,12 +8,13 @@ import org.junit.runners.Parameterized.Parameters;
 import com.lynx.fqb.EqualityHashTestBase;
 import com.lynx.fqb.EqualityPair;
 import com.lynx.fqb.paging.PageRequest;
+import com.lynx.fqb.paging.Pageable;
 
-public class PageRequestEqualityTest extends EqualityHashTestBase<PageRequest> {
+public class PageRequestEqualityTest extends EqualityHashTestBase<Pageable> {
 
     @Parameters
-    public static Collection<EqualityPair<PageRequest>> parameters() {
-        PageRequest me = PageRequest.of(0, 1);
+    public static Collection<EqualityPair<Pageable>> parameters() {
+        Pageable me = PageRequest.of(0, 1);
 
         return Arrays.asList(
                 // Same

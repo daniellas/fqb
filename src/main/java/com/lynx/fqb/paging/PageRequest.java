@@ -31,7 +31,16 @@ public class PageRequest implements Pageable {
         return pageNumber * pageSize;
     }
 
-    public static PageRequest of(int pageNumber, int pageSize) {
+    /**
+     * Constructs {@link Pageable} implementation
+     * 
+     * @param pageNumber
+     *            page number
+     * @param pageSize
+     *            page size
+     * @return new {@link Pageable}
+     */
+    public static Pageable of(int pageNumber, int pageSize) {
         return new PageRequest(pageNumber, pageSize);
     }
 
