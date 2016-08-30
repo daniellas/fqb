@@ -81,9 +81,15 @@ Select.using(em).from(Entity.class).list();
 // Retrieve first 10 results
 Select.using(em).from(Entity.class).list(Page.of(0,10));
 
+// Retrieve distinct results
+Select.using(em).distinct().from(Entity.class).list();
+
 // Sort ascending
 Select.using(em).from(Entity.class).orderBy(by(Entity_.id)).list();
 // Sort descending
 Select.using(em).from(Entity.class).orderBy(by(Entity_.id).reversed()).list();
+
+// Retrieve single result
+Select.using(em).from(Entity.class).get();
 
 ```  
