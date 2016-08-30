@@ -1,6 +1,4 @@
-package com.lynx.fqb;
-
-import com.lynx.fqb.select.From;
+package com.lynx.fqb.select;
 
 @FunctionalInterface
 public interface FromSupplier<F> {

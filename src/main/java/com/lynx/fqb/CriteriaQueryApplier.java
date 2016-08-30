@@ -58,8 +58,13 @@ public interface CriteriaQueryApplier {
                 .orElse(query);
     }
 
+    default <F> CriteriaQuery<F> applyDistinct(CriteriaQuery<F> query, boolean distinct) {
+        return query.distinct(distinct);
+    }
+
     default <F> List<F> applyListResult(EntityManager em, Optional<CriteriaQuery<F>> criteriaQuery, Pageable page) {
-        return criteriaQuery.map(q -> createTypedQuery(em, q))
+        return criteriaQuery
+                .map(q -> createTypedQuery(em, q))
                 .map(tq -> applyPaging(tq, page))
                 .map(tq -> tq.getResultList())
                 .orElseThrow(() -> new IllegalStateException("Apply list result failed"));

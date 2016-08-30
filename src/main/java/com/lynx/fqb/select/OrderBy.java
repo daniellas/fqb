@@ -24,9 +24,10 @@ public class OrderBy<F> implements CriteriaQueryApplier, ListResults<F>, SingleR
     }
 
     @Override
-    public List<F> apply(Pageable page) {
+    public List<F> apply(Pageable page, boolean distinct) {
         return applyListResult(from.getEntityManager(),
                 from.doApply()
+                        .map(q -> applyDistinct(q, distinct))
                         .map(
                                 q -> q.orderBy(orders
                                         .map(o -> o.apply(from.getEntityManager().getCriteriaBuilder(), from.getRoot()))

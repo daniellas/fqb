@@ -2,13 +2,11 @@ package com.lynx.fqb.select;
 
 import javax.persistence.EntityManager;
 
-import com.lynx.fqb.EntityManagerSupplier;
+public class Select implements QueryContext, Modifiers, Sources {
 
-public class Select implements Sources, EntityManagerSupplier {
+    final EntityManager em;
 
-    protected final EntityManager em;
-
-    public Select(EntityManager em) {
+    private Select(EntityManager em) {
         this.em = em;
     }
 
@@ -17,7 +15,7 @@ public class Select implements Sources, EntityManagerSupplier {
     }
 
     @Override
-    public Select get() {
+    public Select getSelect() {
         return this;
     }
 

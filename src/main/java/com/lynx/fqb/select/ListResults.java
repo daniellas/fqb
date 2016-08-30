@@ -1,19 +1,28 @@
 package com.lynx.fqb.select;
 
 import java.util.List;
-import java.util.function.Function;
 
 import com.lynx.fqb.paging.Pageable;
 
 @FunctionalInterface
-public interface ListResults<R> extends Function<Pageable, List<R>> {
+public interface ListResults<R> {
+
+    List<R> apply(Pageable page, boolean distinct);
 
     default List<R> list() {
-        return apply(null);
+        return apply(null, false);
+    }
+
+    default List<R> listDistinct() {
+        return apply(null, true);
     }
 
     default List<R> list(Pageable page) {
-        return apply(page);
+        return apply(page, false);
+    }
+
+    default List<R> listDistinct(Pageable page) {
+        return apply(page, true);
     }
 
 }

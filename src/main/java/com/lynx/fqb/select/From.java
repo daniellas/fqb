@@ -40,8 +40,9 @@ public class From<F> implements CriteriaQueryApplier, Orders<F>, ListResults<F>,
     }
 
     @Override
-    public List<F> apply(Pageable page) {
-        return applyListResult(select.getEntityManager(), doApply(), page);
+    public List<F> apply(Pageable page, boolean distinct) {
+        return applyListResult(select.getEntityManager(), doApply()
+                .map(q -> applyDistinct(q, distinct)), page);
     }
 
     @Override

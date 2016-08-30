@@ -10,11 +10,12 @@ import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.path.Paths;
 
 public class PathITest extends IntegrationTestBase {
 
     @Test
-    public void pathsTest() {
+    public void shouldApplyPath() {
         CriteriaQuery<Child> query = cb.createQuery(Child.class);
         Root<Child> from = query.from(Child.class);
         Path<?> path = Paths.get(Child_.parent).get(Parent_.name).apply(from);
