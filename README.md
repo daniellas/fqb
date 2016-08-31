@@ -42,13 +42,23 @@ Select.using(em).distinct().from(Entity.class).list();
 ```
 ### Sorting
 ```java
-// Sort ascending, by() is Sorts class static method
-Select.using(em).from(Entity.class).orderBy(by(Entity_.id)).list();
+// Sort ascending, attribute() is Sorts class static method
+Select.using(em).from(Entity.class).orderBy(attribute(Entity_.id)).list();
 // Sort descending
-Select.using(em).from(Entity.class).orderBy(by(Entity_.id).reversed()).list();
+Select.using(em).from(Entity.class).orderBy(attribute(Entity_.id).reversed()).list();
 
-// Sort using nested attributes, get() is Paths class static method
-Select.using(em).from(Entity.class).orderBy(by(get(Entity_.parent).get(Parent_.id)).list();
+// Sort using nested attributes, path() is Sorts class static method get() is Paths class static method
+Select.using(em).from(Entity.class).orderBy(path(get(Entity_.parent).get(Parent_.id)).list();
+
+// You can also combine multiple sort parameters using Sorts class sorts() and by() static methods, composing them with then() method  
+Select.using(em).from(Parent.class).orderBy(sorts(by(Entity_.id)).then(by(Entity_.name))).list();
+
+// You can use above with Supplier like this in case of more sophisticated orders resolution required, eg. based on some variables or parameters values 
+Select.using(em).from(Entity.class).orderBy(() -> {
+    return Optional.ofNullable(value)
+            .map(v -> sorts(by(Entity_.id)).then(by(Entity_.name)))
+            .orElse(sorts(by(Entity_.id)));
+
 ```
 ### Single result
 ```java

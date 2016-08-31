@@ -19,7 +19,7 @@ public class Sorts {
         return new AttributeSort<>(attribute);
     }
 
-    public static <F, A> MultipleSortApplier byAttribute(SingularAttribute<? super F, A> attribute) {
+    public static <F, A> MultipleSortApplier attribute(SingularAttribute<? super F, A> attribute) {
         return new MultipleSort(null, by(attribute));
     }
 
@@ -27,7 +27,7 @@ public class Sorts {
         return new PathSelectorSort<F, A, B>(pathSelector);
     }
 
-    public static <A, B> MultipleSortApplier byPath(PathSelector<A, B> pathSelector) {
+    public static <A, B> MultipleSortApplier path(PathSelector<A, B> pathSelector) {
         return new MultipleSort(null, by(pathSelector));
     }
 

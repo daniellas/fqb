@@ -2,6 +2,7 @@ package com.lynx.fqb.select;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
@@ -11,6 +12,10 @@ public interface Orders<F> extends QueryContextSupplier, ListResults<F>, SingleR
 
     default <A> OrderBy<F> orderBy(BiFunction<CriteriaBuilder, Path<?>, List<Order>> order) {
         return new OrderBy<>(getQueryContext(), order);
+    }
+
+    default <A> OrderBy<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Path<?>, List<Order>>> order) {
+        return new OrderBy<>(getQueryContext(), order.get());
     }
 
 }

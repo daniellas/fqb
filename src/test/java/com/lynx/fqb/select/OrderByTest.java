@@ -29,6 +29,13 @@ public class OrderByTest extends MockTestBase {
     }
 
     @Test
+    public void shouldCreateTypedQueryOnSupplier() {
+        Select.using(em).from(Parent.class).orderBy(() -> Sorts.sorts(Sorts.by(Parent_.id))).get();
+
+        Mockito.verify(em).createQuery(parentCriteriaQuery);
+    }
+
+    @Test
     public void shouldCallGetSingleResult() {
         Select.using(em).from(Parent.class).orderBy(Sorts.sorts(Sorts.by(Parent_.id))).get();
 

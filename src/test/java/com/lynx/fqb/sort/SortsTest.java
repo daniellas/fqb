@@ -47,12 +47,12 @@ public class SortsTest extends MockTestBase {
 
     @Test
     public void byAttributeShouldCreateMultipleSort() {
-        Assert.assertEquals(1, Sorts.byAttribute(attribute).get().size());
+        Assert.assertEquals(1, Sorts.attribute(attribute).get().size());
     }
 
     @Test
     public void byPathShouldCreateMultipleSort() {
-        Assert.assertEquals(1, Sorts.byPath(Paths.get(attribute)).get().size());
+        Assert.assertEquals(1, Sorts.path(Paths.get(attribute)).get().size());
     }
 
 }

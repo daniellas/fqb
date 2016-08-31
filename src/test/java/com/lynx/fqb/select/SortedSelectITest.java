@@ -5,6 +5,7 @@ import static com.lynx.fqb.sort.Sorts.by;
 import static com.lynx.fqb.sort.Sorts.sorts;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,16 +18,25 @@ import com.lynx.fqb.entity.Parent_;
 
 public class SortedSelectITest extends IntegrationTestBase {
 
+    private Object value = null;
+
     @Test
     public void shouldSortBySort() {
         Select.using(em).from(Parent.class).orderBy(sorts(by(Parent_.id).reversed())).list();
     }
 
     @Test
-    public void shouldSortBySortsStream() {
-        Select.using(em).from(Parent.class)
-                .orderBy(sorts(by(Parent_.id)).then(by(Parent_.name)))
-                .list();
+    public void shouldSortByMultipleSort() {
+        Select.using(em).from(Parent.class).orderBy(sorts(by(Parent_.id)).then(by(Parent_.name))).list();
+    }
+
+    @Test
+    public void shouldSortByMultipleSortSupplier() {
+        Select.using(em).from(Parent.class).orderBy(() -> {
+            return Optional.ofNullable(value)
+                    .map(v -> sorts(by(Parent_.id)).then(by(Parent_.name)))
+                    .orElse(sorts(by(Parent_.id)));
+        }).list();
     }
 
     @Test
