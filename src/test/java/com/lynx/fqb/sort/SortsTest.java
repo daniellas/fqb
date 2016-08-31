@@ -45,4 +45,14 @@ public class SortsTest extends MockTestBase {
         Assert.assertEquals(pathSelector, ((PathSelectorSort) sort).pathSelector);
     }
 
+    @Test
+    public void byAttributeShouldCreateMultipleSort() {
+        Assert.assertEquals(1, Sorts.byAttribute(attribute).get().size());
+    }
+
+    @Test
+    public void byPathShouldCreateMultipleSort() {
+        Assert.assertEquals(1, Sorts.byPath(Paths.get(attribute)).get().size());
+    }
+
 }

@@ -3,6 +3,7 @@ package com.lynx.fqb.select;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,9 +18,9 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
 
     private final QueryContext ctx;
 
-    private final BiFunction<CriteriaBuilder, Path<?>, List<Order>> orders;
+    private final Supplier<BiFunction<CriteriaBuilder, Path<?>, List<Order>>> orders;
 
-    public OrderBy(QueryContext ctx, BiFunction<CriteriaBuilder, Path<?>, List<Order>> orders) {
+    public OrderBy(QueryContext ctx, Supplier<BiFunction<CriteriaBuilder, Path<?>, List<Order>>> orders) {
         this.ctx = ctx;
         this.orders = orders;
     }
@@ -48,7 +49,7 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
     @Override
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
         return ctx.doApply(fromCls)
-                .map(q -> q.orderBy(orders.apply(ctx.getEntityManager().getCriteriaBuilder(), getRoot())));
+                .map(q -> q.orderBy(orders.get().apply(ctx.getEntityManager().getCriteriaBuilder(), getRoot())));
     }
 
     @Override
