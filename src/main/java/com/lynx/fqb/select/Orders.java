@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 
-public interface Orders<F> extends QueryContextSupplier, ListResults<F>, SingleResults<F> {
+public interface Orders<F> extends QueryContextSupplier {
 
     default <A> OrderBy<F> orderBy(BiFunction<CriteriaBuilder, Path<?>, List<Order>> order) {
         return orderBy(() -> order);

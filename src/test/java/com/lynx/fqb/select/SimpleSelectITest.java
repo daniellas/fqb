@@ -31,4 +31,9 @@ public class SimpleSelectITest extends IntegrationTestBase {
         Assert.assertNotNull(Select.using(em).from(Parent.class).get());
     }
 
+    @Test
+    public void shouldReturnAllOnFromSuplier() {
+        Assert.assertEquals(2, Select.using(em).from(() -> Parent.class).list().size());
+    }
+
 }

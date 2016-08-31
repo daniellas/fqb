@@ -1,45 +1,61 @@
 package com.lynx.fqb.select;
 
-import org.junit.Assert;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.sort.SortApplier;
 import com.lynx.fqb.sort.Sorts;
 
-public class OrderByTest extends MockTestBase {
+public class OrderByTest extends QueryContextTestBase<Parent> {
 
-    @Test
-    public void shouldReturnFromCls() {
-        Assert.assertEquals(Parent.class, Select.using(em).from(Parent.class).orderBy(Sorts.sorts(Sorts.by(Parent_.id))).getFromCls());
+    @Mock
+    private Order order;
+
+    @Mock
+    SortApplier sort;
+
+    @SuppressWarnings("unchecked")
+    @Before
+    public void init() {
+        super.init();
+        Mockito.when(parentCriteriaQuery.orderBy(Mockito.anyList())).thenReturn(parentCriteriaQuery);
+        Mockito.when(sort.apply(Mockito.any(CriteriaBuilder.class), Mockito.any(Path.class))).thenReturn(order);
     }
 
-    @Test
-    public void shouldReturnEntityManager() {
-        Assert.assertEquals(em, Select.using(em).from(Parent.class).orderBy(Sorts.sorts(Sorts.by(Parent_.id))).getEntityManager());
+    @Override
+    protected QueryContext getQueryContext() {
+        return Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort));
     }
 
-    @Test
-    public void shouldCreateTypedQuery() {
-        Select.using(em).from(Parent.class).orderBy(Sorts.sorts(Sorts.by(Parent_.id))).get();
+    @Override
+    protected Class<Parent> getFromCls() {
+        return Parent.class;
+    }
 
-        Mockito.verify(em).createQuery(parentCriteriaQuery);
+    @Override
+    protected List<Parent> getListResults() {
+        return Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort)).list();
+    }
+
+    @Override
+    protected Parent getSingleResults() {
+        return Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort)).get();
     }
 
     @Test
     public void shouldCreateTypedQueryOnSupplier() {
-        Select.using(em).from(Parent.class).orderBy(() -> Sorts.sorts(Sorts.by(Parent_.id))).get();
+        Select.using(em).from(Parent.class).orderBy(() -> Sorts.sorts(sort)).get();
 
         Mockito.verify(em).createQuery(parentCriteriaQuery);
-    }
-
-    @Test
-    public void shouldCallGetSingleResult() {
-        Select.using(em).from(Parent.class).orderBy(Sorts.sorts(Sorts.by(Parent_.id))).get();
-
-        Mockito.verify(parentTypedQuery).getSingleResult();
     }
 
 }

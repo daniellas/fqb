@@ -30,7 +30,7 @@ public class Select implements QueryContext, Modifiers, Sources {
 
     @Override
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return Optional.of(em.getCriteriaBuilder().createQuery(fromCls));
+        return Optional.of(getCriteriaBuilder().createQuery(fromCls));
     }
 
     @Override

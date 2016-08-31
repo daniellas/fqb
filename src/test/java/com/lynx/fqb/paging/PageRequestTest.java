@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.paging;
 
 import org.junit.Assert;
 import org.junit.Test;

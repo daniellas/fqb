@@ -2,34 +2,20 @@ package com.lynx.fqb.select;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResults<F>, SingleResults<F> {
+public class Where<F> implements QueryContext, CriteriaQueryApplier, Orders<F>, ListResults<F>, SingleResults<F> {
 
     private final QueryContext ctx;
 
-    private final BiFunction<CriteriaBuilder, Path<?>, List<Order>> orders;
-
-    public OrderBy(QueryContext ctx, BiFunction<CriteriaBuilder, Path<?>, List<Order>> orders) {
+    public Where(QueryContext ctx) {
         this.ctx = ctx;
-        this.orders = orders;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<F> apply(Pageable page) {
-        return (List<F>) doApply(ctx.getFromCls())
-                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
-                .get();
     }
 
     @SuppressWarnings("unchecked")
@@ -40,6 +26,14 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
                 .get();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<F> apply(Pageable page) {
+        return (List<F>) doApply(ctx.getFromCls())
+                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
+                .get();
+    }
+
     @Override
     public EntityManager getEntityManager() {
         return ctx.getEntityManager();
@@ -47,8 +41,7 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
 
     @Override
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return ctx.doApply(fromCls)
-                .map(q -> q.orderBy(orders.apply(ctx.getCriteriaBuilder(), getRoot())));
+        return ctx.doApply(fromCls);
     }
 
     @Override
@@ -59,6 +52,11 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
     @Override
     public <T> Path<T> getRoot() {
         return ctx.getRoot();
+    }
+
+    @Override
+    public QueryContext getQueryContext() {
+        return ctx;
     }
 
 }

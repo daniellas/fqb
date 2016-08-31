@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.paging;
 
 import java.util.Arrays;
 import java.util.Collection;
