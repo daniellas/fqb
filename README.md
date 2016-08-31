@@ -19,6 +19,7 @@ There is one important thing to mention. FQB gives you ability to easily constru
 
 *Please note that this project is in early development stage so it's API can change without notice until release.*
 
+Consecutive releases will follow [Semantic Versioning](http://semver.org/) principles. 
 
 ## How to use it?
 
