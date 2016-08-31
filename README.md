@@ -53,7 +53,13 @@ Select.using(em).from(Entity.class).get();
 
 ### JPA Metamodel 
 
-JPA metamodel is required since FQB use it to resolve attributes of your entities. If you use maven, add below plugins configurations to your pom.xml
+JPA metamodel is required since FQB use it to resolve attributes of your entities for:
+
+* ordering
+* grouping
+* expressions 
+
+If you use maven, add below plugins configurations to your pom.xml
 
 ```xml
 <build>
