@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 
 import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.path.PathSelector;
+import com.lynx.fqb.path.Paths;
 
 public class SortsTest extends MockTestBase {
 
@@ -31,4 +33,16 @@ public class SortsTest extends MockTestBase {
         Assert.assertTrue(AttributeSort.class.isAssignableFrom(sort.getClass()));
         Assert.assertEquals("id", ((AttributeSort) sort).attribute.getName());
     }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void bySelectorShouldCreatePathSelectorSort() {
+        PathSelector<Parent, Long> pathSelector = Paths.get(attribute);
+        SortApplier sort = Sorts.by(pathSelector);
+
+        Assert.assertNotNull(sort);
+        Assert.assertTrue(PathSelectorSort.class.isAssignableFrom(sort.getClass()));
+        Assert.assertEquals(pathSelector, ((PathSelectorSort) sort).pathSelector);
+    }
+
 }

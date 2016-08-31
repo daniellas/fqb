@@ -21,6 +21,7 @@ import org.mockito.internal.verification.Times;
 import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.path.Paths;
 
 public class MultipleSortTest extends MockTestBase {
 
@@ -63,8 +64,15 @@ public class MultipleSortTest extends MockTestBase {
     }
 
     @Test
-    public void applyShouldCallCriteriaBuilder() {
+    public void applyByAttributeShouldCallCriteriaBuilder() {
         sorts(by(parentId)).then(by(parentName).reversed()).apply(cb, root);
+
+        Mockito.verify(cb, new Times(2)).asc(Mockito.any());
+    }
+
+    @Test
+    public void applyBySelectorShouldCallCriteriaBuilder() {
+        sorts(by(Paths.get(parentId))).then(by(Paths.get(parentName)).reversed()).apply(cb, root);
 
         Mockito.verify(cb, new Times(2)).asc(Mockito.any());
     }
