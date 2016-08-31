@@ -26,4 +26,15 @@ public abstract class EqualityHashTestBase<T> {
         Assert.assertNotNull(testedObject.getThisObj().hashCode());
     }
 
+    @Test
+    public void hashCodeShouldBeCorrect() {
+        if (testedObject.isEquality()) {
+            Assert.assertTrue(testedObject.getThisObj().hashCode() == testedObject.getThatObj().hashCode());
+        } else {
+            if (testedObject.getThatObj() != null && testedObject.getThisObj() != null) {
+                Assert.assertFalse(testedObject.getThisObj().hashCode() == testedObject.getThatObj().hashCode());
+            }
+        }
+    }
+
 }

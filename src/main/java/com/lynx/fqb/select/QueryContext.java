@@ -8,6 +8,7 @@ import javax.persistence.criteria.Path;
 import com.lynx.fqb.EntityManagerSupplier;
 
 public interface QueryContext extends EntityManagerSupplier {
+
     <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls);
 
     <T> Class<T> fromCls();

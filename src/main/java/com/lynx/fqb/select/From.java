@@ -48,10 +48,6 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, Orders<F>, L
         return ctx.getEntityManager();
     }
 
-    public Path<F> getRoot() {
-        return root;
-    }
-
     @Override
     public QueryContext getQueryContext() {
         return this;
@@ -78,7 +74,7 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, Orders<F>, L
     @SuppressWarnings("unchecked")
     @Override
     public <T> Path<T> root() {
-        return (Path<T>)root;
+        return (Path<T>) root;
     }
 
 }

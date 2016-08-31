@@ -29,13 +29,19 @@ private EntityManager em;
 
 // Retrieve all entities
 Select.using(em).from(Entity.class).list();
-
+```
+### Select with paging
+```java
 // Retrieve first 10 results
 Select.using(em).from(Entity.class).list(PageRequest.of(0,10));
-
+```
+### Distinct select
+```java
 // Retrieve distinct results
 Select.using(em).distinct().from(Entity.class).list();
-
+```
+### Sorting
+```java
 // Sort ascending, by() is Sorts class static method
 Select.using(em).from(Entity.class).orderBy(by(Entity_.id)).list();
 // Sort descending
@@ -43,12 +49,13 @@ Select.using(em).from(Entity.class).orderBy(by(Entity_.id).reversed()).list();
 
 // Sort using nested attributes, get() is Paths class static method
 Select.using(em).from(Entity.class).orderBy(by(get(Entity_.parent).get(Parent_.id)).list();
-
-
+```
+### Single result
+```java
 // Retrieve single result
 Select.using(em).from(Entity.class).get();
-
 ```  
+
 ## Requirements
 
 ### JPA Metamodel 
