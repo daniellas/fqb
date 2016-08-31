@@ -17,7 +17,43 @@ There is one important thing to mention. FQB gives you ability to easily constru
 
 ## How to use it?
 
-### JPA metamodel is required. If you use maven, add below plugins configurations to your pom.xml
+### Select
+
+```java
+// Add static imports to have faster access to helper methods
+import static com.lynx.fqb.path.Paths.*;
+import static com.lynx.fqb.sort.Sorts.*;
+
+// Entity manager must be provided eg. by dependency injection
+private EntityManager em;
+
+// Retrieve all entities
+Select.using(em).from(Entity.class).list();
+
+// Retrieve first 10 results
+Select.using(em).from(Entity.class).list(PageRequest.of(0,10));
+
+// Retrieve distinct results
+Select.using(em).distinct().from(Entity.class).list();
+
+// Sort ascending, by() is Sorts class static method
+Select.using(em).from(Entity.class).orderBy(by(Entity_.id)).list();
+// Sort descending
+Select.using(em).from(Entity.class).orderBy(by(Entity_.id).reversed()).list();
+
+// Sort using nested attributes, get() is Paths class static method
+Select.using(em).from(Entity.class).orderBy(by(get(Entity_.parent).get(Parent_.id)).list();
+
+
+// Retrieve single result
+Select.using(em).from(Entity.class).get();
+
+```  
+## Requirements
+
+### JPA Metamodel 
+
+JPA metamodel is required since FQB use it to resolve attributes of your entities. If you use maven, add below plugins configurations to your pom.xml
 
 ```xml
 <build>
@@ -64,36 +100,3 @@ There is one important thing to mention. FQB gives you ability to easily constru
 </build>
 ```  
 
-### Select
-
-
-```java
-// Add static imports to have faster access to helper methods
-import static com.lynx.fqb.path.Paths.*;
-import static com.lynx.fqb.sort.Sorts.*;
-
-// Entity manager must be provided eg. by dependency injection
-private EntityManager em;
-
-// Retrieve all entities
-Select.using(em).from(Entity.class).list();
-
-// Retrieve first 10 results
-Select.using(em).from(Entity.class).list(PageRequest.of(0,10));
-
-// Retrieve distinct results
-Select.using(em).distinct().from(Entity.class).list();
-
-// Sort ascending, by() is Sorts class static method
-Select.using(em).from(Entity.class).orderBy(by(Entity_.id)).list();
-// Sort descending
-Select.using(em).from(Entity.class).orderBy(by(Entity_.id).reversed()).list();
-
-// Sort using nested attributes, get() is Paths class static method
-Select.using(em).from(Entity.class).orderBy(by(get(Entity_.parent).get(Parent_.id)).list();
-
-
-// Retrieve single result
-Select.using(em).from(Entity.class).get();
-
-```  

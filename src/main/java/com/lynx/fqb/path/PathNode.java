@@ -1,41 +1,35 @@
 package com.lynx.fqb.path;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Function;
 
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
-public class PathNode<A, B> implements PathSelector<A, B> {
+import com.lynx.fqb.History;
 
-    private List<String> attributePath;
+public class PathNode<A, B> extends History<SingularAttribute<? super A, B>, String> implements PathSelector<A, B> {
 
-    public PathNode(List<String> attributePath, SingularAttribute<? super A, B> attr) {
-        this.attributePath = Optional.ofNullable(attributePath).map(p -> {
-            p.add(attr.getName());
-
-            return p;
-        }).orElse(new ArrayList<>(Arrays.asList(attr.getName())));
+    public PathNode(List<String> items, SingularAttribute<? super A, B> element) {
+        super(items, element);
     }
 
     @Override
     public Path<?> apply(Path<?> root) {
-        return doApply(root, attributePath.get(0), 0);
+        return doApply(root, get().get(0), 0);
     }
 
     private Path<?> doApply(Path<?> path, String attr, int idx) {
-        if (idx < attributePath.size() - 1) {
-            return doApply(path.get(attr), attributePath.get(idx + 1), idx + 1);
+        if (idx < get().size() - 1) {
+            return doApply(path.get(attr), get().get(idx + 1), idx + 1);
         }
 
         return path.get(attr);
     }
 
     @Override
-    public List<String> get() {
-        return attributePath;
+    protected Function<SingularAttribute<? super A, B>, String> converter() {
+        return a -> a.getName();
     }
 
 }
