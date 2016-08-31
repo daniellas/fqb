@@ -15,6 +15,11 @@ FQB presents some other approach to this matter. Here below you can find reasons
 
 There is one important thing to mention. FQB gives you ability to easily construct JPA queries whose structure can be defined during runtime depending on variables or method parameters values. 
 
+## Work in progress
+
+*Please note that this project is in early development stage so it's API can change without notice until release.*
+
+
 ## How to use it?
 
 ### Select
@@ -70,6 +75,10 @@ Select.using(em).from(Entity.class).get();
 ```  
 
 ## Requirements
+
+### Java 8
+
+You need Java 8 in order to build and use FQB
 
 ### JPA Metamodel 
 
