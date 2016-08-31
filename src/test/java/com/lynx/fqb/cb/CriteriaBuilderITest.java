@@ -5,14 +5,23 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Child_;
 
+/**
+ * This is just the CriteriaBuilder sanbox
+ * 
+ * @author daniel.las
+ *
+ */
+@Ignore
 public class CriteriaBuilderITest extends IntegrationTestBase {
 
+    @SuppressWarnings("unused")
     @Test
     public void shouldApplyRestrictions() {
         CriteriaQuery<Child> query = cb.createQuery(Child.class);

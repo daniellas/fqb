@@ -1,6 +1,5 @@
 package com.lynx.fqb.sort;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -25,7 +24,7 @@ public class MultipleSort extends History<BiFunction<CriteriaBuilder, Path<?>, O
     }
 
     @Override
-    public Collection<Order> apply(CriteriaBuilder cb, Path<?> path) {
+    public List<Order> apply(CriteriaBuilder cb, Path<?> path) {
         return get().stream().map(a -> a.apply(cb, path)).collect(Collectors.toList());
     }
 

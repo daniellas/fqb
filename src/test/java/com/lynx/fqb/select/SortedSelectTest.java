@@ -13,6 +13,7 @@ import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.paging.PageRequest;
 import com.lynx.fqb.sort.SortApplier;
+import com.lynx.fqb.sort.Sorts;
 
 public class SortedSelectTest extends MockTestBase {
 
@@ -33,14 +34,14 @@ public class SortedSelectTest extends MockTestBase {
     @SuppressWarnings("unchecked")
     @Test
     public void shouldCallOrderByOnList() {
-        Select.using(em).from(Parent.class).orderBy(sort).list();
+        Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort)).list();
         Mockito.verify(parentCriteriaQuery).orderBy(Mockito.anyList());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void shouldCallOrderByOnListPaged() {
-        Select.using(em).from(Parent.class).orderBy(sort).list(PageRequest.of(0, 1));
+        Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort)).list(PageRequest.of(0, 1));
         Mockito.verify(parentCriteriaQuery).orderBy(Mockito.anyList());
     }
 

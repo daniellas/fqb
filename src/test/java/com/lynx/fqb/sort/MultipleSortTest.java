@@ -1,7 +1,7 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.sort;
 
 import static com.lynx.fqb.sort.Sorts.by;
-import static com.lynx.fqb.sort.Sorts.order;
+import static com.lynx.fqb.sort.Sorts.sorts;
 
 import java.util.Collection;
 
@@ -52,19 +52,19 @@ public class MultipleSortTest extends MockTestBase {
 
     @Test
     public void shouldHasAppliers() {
-        Assert.assertEquals(2, order(by(Parent_.id)).then(by(Parent_.name).reversed()).get().size());
+        Assert.assertEquals(2, sorts(by(Parent_.id)).then(by(Parent_.name).reversed()).get().size());
     }
 
     @Test
     public void applyShouldReturnOrders() {
-        Collection<Order> orders = order(by(parentId)).then(by(parentName).reversed()).apply(cb, root);
+        Collection<Order> orders = sorts(by(parentId)).then(by(parentName).reversed()).apply(cb, root);
 
         Assert.assertEquals(2, orders.size());
     }
 
     @Test
     public void applyShouldCallCriteriaBuilder() {
-        order(by(parentId)).then(by(parentName).reversed()).apply(cb, root);
+        sorts(by(parentId)).then(by(parentName).reversed()).apply(cb, root);
 
         Mockito.verify(cb, new Times(2)).asc(Mockito.any());
     }
