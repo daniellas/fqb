@@ -18,4 +18,8 @@ public class Sorts {
         return new PathSelectorSort<F, A, B>(pathSelector);
     }
 
+    public static MultipleSortApplier order(SortApplier applier) {
+        return new MultipleSort(null, applier);
+    }
+
 }

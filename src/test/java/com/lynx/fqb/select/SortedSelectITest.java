@@ -15,7 +15,7 @@ import com.lynx.fqb.entity.Parent_;
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.sort.Sorts.*;
 
-public class OrderedSelectITest extends IntegrationTestBase {
+public class SortedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSortBySort() {

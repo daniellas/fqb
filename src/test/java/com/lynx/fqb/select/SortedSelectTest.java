@@ -14,7 +14,7 @@ import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.paging.PageRequest;
 import com.lynx.fqb.sort.SortApplier;
 
-public class OrderedSelectTest extends MockTestBase {
+public class SortedSelectTest extends MockTestBase {
 
     @Mock
     private Order order;

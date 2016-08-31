@@ -8,7 +8,7 @@ import com.lynx.fqb.path.PathSelector;
 
 public class PathSelectorSort<F, A, B> implements SortApplier {
 
-    private final PathSelector<A, B> pathSelector;
+    final PathSelector<A, B> pathSelector;
 
     public PathSelectorSort(PathSelector<A, B> pathSelector) {
         this.pathSelector = pathSelector;
