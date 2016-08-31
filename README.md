@@ -2,7 +2,7 @@
 
 ## Why?
 
-There are many JPA query libraries available.
+There are many JPA query construction supporting libraries available.
 
 * Spring Data JPA - I really like it but [TBC]
 
@@ -13,7 +13,7 @@ FQB presents some other approach to this matter. Here below you can find reasons
 3. No proxies or other magic under the hood
 4. Minimal required dependencies to run, only JPA 2.1 API 
 
-There is one important thing to mention. FQB gives you ability to easily construct JPA queries whose structure can be changed during runtime. 
+There is one important thing to mention. FQB gives you ability to easily construct JPA queries whose structure can be defined during runtime depending on variables or method parameters values. 
 
 ## How to use it?
 
@@ -97,7 +97,9 @@ If you use maven, add below plugins configurations to your pom.xml
                     <phase>generate-sources</phase>
                     <configuration>
                         <processors>
-                            <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                            <processor>
+                                org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
+                            </processor>
                         </processors>
                     </configuration>
                 </execution>

@@ -11,7 +11,7 @@ import javax.persistence.criteria.Path;
 public interface Orders<F> extends QueryContextSupplier, ListResults<F>, SingleResults<F> {
 
     default <A> OrderBy<F> orderBy(BiFunction<CriteriaBuilder, Path<?>, List<Order>> order) {
-        return new OrderBy<>(getQueryContext(), order);
+        return orderBy(() -> order);
     }
 
     default <A> OrderBy<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Path<?>, List<Order>>> order) {
