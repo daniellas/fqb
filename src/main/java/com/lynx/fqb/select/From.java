@@ -67,13 +67,13 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, Orders<F>, L
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Class<T> fromCls() {
+    public <T> Class<T> getFromCls() {
         return (Class<T>) fromCls.get();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Path<T> root() {
+    public <T> Path<T> getRoot() {
         return (Path<T>) root;
     }
 

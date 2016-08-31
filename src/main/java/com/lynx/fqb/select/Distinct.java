@@ -31,12 +31,12 @@ public class Distinct implements QueryContext, Sources {
     }
 
     @Override
-    public <T> Class<T> fromCls() {
+    public <T> Class<T> getFromCls() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T> Path<T> root() {
+    public <T> Path<T> getRoot() {
         throw new UnsupportedOperationException();
     }
 

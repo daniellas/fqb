@@ -11,7 +11,7 @@ public interface QueryContext extends EntityManagerSupplier {
 
     <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls);
 
-    <T> Class<T> fromCls();
+    <T> Class<T> getFromCls();
 
-    <T> Path<T> root();
+    <T> Path<T> getRoot();
 }

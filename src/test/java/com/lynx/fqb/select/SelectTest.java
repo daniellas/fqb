@@ -8,12 +8,12 @@ public class SelectTest extends MockTestBase {
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldFailOnFromCls() {
-        Select.using(em).fromCls();
+        Select.using(em).getFromCls();
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldFailOnRoot() {
-        Select.using(em).root();
+        Select.using(em).getRoot();
     }
 
 }

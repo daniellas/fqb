@@ -27,7 +27,7 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
     @SuppressWarnings("unchecked")
     @Override
     public List<F> apply(Pageable page) {
-        return (List<F>) doApply(ctx.fromCls())
+        return (List<F>) doApply(ctx.getFromCls())
                 .map(q -> applyListResult(ctx.getEntityManager(), q, page))
                 .get();
     }
@@ -35,7 +35,7 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
     @SuppressWarnings("unchecked")
     @Override
     public F get() {
-        return (F) ctx.doApply(ctx.fromCls())
+        return (F) ctx.doApply(ctx.getFromCls())
                 .map(q -> applySingleResult(ctx.getEntityManager(), q))
                 .get();
     }
@@ -48,17 +48,17 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResul
     @Override
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
         return ctx.doApply(fromCls)
-                .map(q -> q.orderBy(orders.apply(ctx.getEntityManager().getCriteriaBuilder(), root())));
+                .map(q -> q.orderBy(orders.apply(ctx.getEntityManager().getCriteriaBuilder(), getRoot())));
     }
 
     @Override
-    public <T> Class<T> fromCls() {
-        return ctx.fromCls();
+    public <T> Class<T> getFromCls() {
+        return ctx.getFromCls();
     }
 
     @Override
-    public <T> Path<T> root() {
-        return ctx.root();
+    public <T> Path<T> getRoot() {
+        return ctx.getRoot();
     }
 
 }
