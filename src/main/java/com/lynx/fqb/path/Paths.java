@@ -12,4 +12,7 @@ public abstract class Paths {
         return new PathNode<>(null, attr);
     }
 
+    public static <A, B> MultiplePathApplier<A, B> get(PathSelector<A, B> pathSelector) {
+        return new MultiplePath<>(null, pathSelector);
+    }
 }

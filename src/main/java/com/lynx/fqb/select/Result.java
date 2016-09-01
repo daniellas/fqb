@@ -1,36 +1,31 @@
 package com.lynx.fqb.select;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class Select implements QueryContext, SelectOperations {
+public class Result<R> implements QueryContext, ResultOperations {
 
-    final EntityManager em;
+    protected final Supplier<Class<R>> resultCls;
 
-    private Select(EntityManager em) {
-        this.em = em;
-    }
+    private final QueryContext ctx;
 
-    public static SelectOperations using(EntityManager em) {
-        return new Select(Optional.ofNullable(em).orElseThrow(IllegalArgumentException::new));
+    public Result(QueryContext ctx, Class<R> resultCls) {
+        this.ctx = ctx;
+        this.resultCls = () -> resultCls;
     }
 
     @Override
     public EntityManager getEntityManager() {
-        return em;
-    }
-
-    @Override
-    public QueryContext getQueryContext() {
-        return this;
+        return ctx.getEntityManager();
     }
 
     @Override
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return Optional.of(getCriteriaBuilder().createQuery(fromCls));
+        return null;
     }
 
     @Override
@@ -41,6 +36,11 @@ public class Select implements QueryContext, SelectOperations {
     @Override
     public <T> Root<T> getRoot() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public QueryContext getQueryContext() {
+        return this;
     }
 
 }

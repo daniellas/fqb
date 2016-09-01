@@ -6,18 +6,18 @@ import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
 public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperations<F> {
 
-    protected final Supplier<Class<F>> fromCls;
+    private final Supplier<Class<F>> fromCls;
 
     private final QueryContext ctx;
 
-    private Path<F> root;
+    private Root<F> root;
 
     public From(QueryContext ctx, Class<F> fromCls) {
         this.ctx = ctx;
@@ -58,7 +58,7 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
         return ctx.doApply(fromCls)
                 .map(q -> {
-                    root = (Path<F>) q.from(fromCls);
+                    root = (Root<F>) q.from(fromCls);
 
                     return q;
                 });
@@ -73,8 +73,8 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Path<T> getRoot() {
-        return (Path<T>) root;
+    public <T> Root<T> getRoot() {
+        return (Root<T>) root;
     }
 
 }

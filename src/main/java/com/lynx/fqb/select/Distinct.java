@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 public class Distinct implements QueryContext, Sources {
 
@@ -36,7 +36,7 @@ public class Distinct implements QueryContext, Sources {
     }
 
     @Override
-    public <T> Path<T> getRoot() {
+    public <T> Root<T> getRoot() {
         throw new UnsupportedOperationException();
     }
 

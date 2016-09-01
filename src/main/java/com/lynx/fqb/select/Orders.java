@@ -7,15 +7,15 @@ import java.util.function.Supplier;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 public interface Orders<F> extends QueryContextSupplier {
 
-    default OrderByOperations<F> orderBy(BiFunction<CriteriaBuilder, Path<?>, List<Order>> order) {
+    default OrderByOperations<F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
         return orderBy(() -> order);
     }
 
-    default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Path<?>, List<Order>>> order) {
+    default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {
         return new OrderBy<>(getQueryContext(), Optional.ofNullable(order)
                 .map(o -> o.get())
                 .orElse(null));

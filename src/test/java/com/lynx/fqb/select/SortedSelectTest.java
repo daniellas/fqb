@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class SortedSelectTest extends MockTestBase {
     public void init() {
         super.init();
         Mockito.when(parentCriteriaQuery.orderBy(Mockito.anyList())).thenReturn(parentCriteriaQuery);
-        Mockito.when(sort.apply(Mockito.any(CriteriaBuilder.class), Mockito.any(Path.class))).thenReturn(order);
+        Mockito.when(sort.apply(Mockito.any(CriteriaBuilder.class), Mockito.any(Root.class))).thenReturn(order);
     }
 
     @SuppressWarnings("unchecked")

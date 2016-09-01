@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
@@ -50,7 +50,7 @@ public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperat
     }
 
     @Override
-    public <T> Path<T> getRoot() {
+    public <T> Root<T> getRoot() {
         return ctx.getRoot();
     }
 

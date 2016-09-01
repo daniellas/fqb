@@ -7,25 +7,25 @@ import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.Trail;
 
-public class MultipleSort extends Trail<BiFunction<CriteriaBuilder, Path<?>, Order>, BiFunction<CriteriaBuilder, Path<?>, Order>>
+public class MultipleSort extends Trail<BiFunction<CriteriaBuilder, Root<?>, Order>, BiFunction<CriteriaBuilder, Root<?>, Order>>
         implements MultipleSortApplier {
 
-    protected MultipleSort(List<BiFunction<CriteriaBuilder, Path<?>, Order>> items, BiFunction<CriteriaBuilder, Path<?>, Order> element) {
+    protected MultipleSort(List<BiFunction<CriteriaBuilder, Root<?>, Order>> items, BiFunction<CriteriaBuilder, Root<?>, Order> element) {
         super(items, element);
     }
 
     @Override
-    protected Function<BiFunction<CriteriaBuilder, Path<?>, Order>, BiFunction<CriteriaBuilder, Path<?>, Order>> converter() {
+    protected Function<BiFunction<CriteriaBuilder, Root<?>, Order>, BiFunction<CriteriaBuilder, Root<?>, Order>> converter() {
         return a -> a;
     }
 
     @Override
-    public List<Order> apply(CriteriaBuilder cb, Path<?> path) {
-        return get().stream().map(a -> a.apply(cb, path)).collect(Collectors.toList());
+    public List<Order> apply(CriteriaBuilder cb, Root<?> root) {
+        return get().stream().map(a -> a.apply(cb, root)).collect(Collectors.toList());
     }
 
 }

@@ -2,7 +2,7 @@ package com.lynx.fqb.sort;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
 public class AttributeSort<F, A> implements SortApplier {
@@ -14,7 +14,7 @@ public class AttributeSort<F, A> implements SortApplier {
     }
 
     @Override
-    public Order apply(CriteriaBuilder cb, Path<?> path) {
+    public Order apply(CriteriaBuilder cb, Root<?> path) {
         return cb.asc(path.get(attribute.getName()));
     }
 

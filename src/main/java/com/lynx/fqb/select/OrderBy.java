@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
@@ -17,9 +17,9 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOp
 
     private final QueryContext ctx;
 
-    private final BiFunction<CriteriaBuilder, Path<?>, List<Order>> orders;
+    private final BiFunction<CriteriaBuilder, Root<?>, List<Order>> orders;
 
-    public OrderBy(QueryContext ctx, BiFunction<CriteriaBuilder, Path<?>, List<Order>> orders) {
+    public OrderBy(QueryContext ctx, BiFunction<CriteriaBuilder, Root<?>, List<Order>> orders) {
         this.ctx = ctx;
         this.orders = orders;
     }
@@ -61,7 +61,7 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOp
     }
 
     @Override
-    public <T> Path<T> getRoot() {
+    public <T> Root<T> getRoot() {
         return ctx.getRoot();
     }
 
