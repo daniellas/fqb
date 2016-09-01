@@ -35,17 +35,16 @@ public class Select implements QueryContext, SelectOperations {
 
     @Override
     public <T> Class<T> getFromCls() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     @Override
     public <T> Root<T> getRoot() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     @Override
     public <T> Class<T> getResultCls() {
-        // TODO Auto-generated method stub
         return null;
     }
 

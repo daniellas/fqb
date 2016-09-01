@@ -74,7 +74,6 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
 
     @Override
     public <T> Class<T> getResultCls() {
-        // TODO Auto-generated method stub
         return null;
     }
 

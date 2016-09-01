@@ -67,7 +67,6 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOp
 
     @Override
     public <T> Class<T> getResultCls() {
-        // TODO Auto-generated method stub
         return null;
     }
 
