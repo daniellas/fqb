@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 public interface Sources extends QueryContextSupplier {
 
-    default <R, F> FromOperations<R, F> from(Supplier<Class<F>> fromClsSupplier) {
-        return new From<>(getQueryContext(), fromClsSupplier);
+    default <F> FromOperations<F> from(Supplier<Class<F>> fromCls) {
+        return new From<>(getQueryContext(), fromCls);
     }
 
-    default <R, F> FromOperations<R, F> from(Class<F> fromCls) {
+    default <F> FromOperations<F> from(Class<F> fromCls) {
         return from(() -> fromCls);
     }
+
 
 }

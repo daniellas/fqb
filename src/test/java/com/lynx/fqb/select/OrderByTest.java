@@ -70,5 +70,4 @@ public class OrderByTest extends QueryContextTestBase<Parent> {
         Mockito.verify(em).createQuery(parentCriteriaQuery);
     }
 
-
 }

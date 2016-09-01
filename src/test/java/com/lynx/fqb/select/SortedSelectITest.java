@@ -53,7 +53,8 @@ public class SortedSelectITest extends IntegrationTestBase {
     public void shouldReturnParentsInCorrectOrder() {
         List<Parent> parents = Select.using(em).from(Parent.class).list();
 
-        Assert.assertEquals(parents.get(0).getId(), Select.using(em).from(Parent.class).orderBy(sorts(by(Parent_.id))).list().iterator().next().getId());
+        Assert.assertEquals(parents.get(0).getId(),
+                Select.using(em).from(Parent.class).orderBy(sorts(by(Parent_.id))).list().iterator().next().getId());
         Assert.assertEquals(parents.get(parents.size() - 1).getId(),
                 Select.using(em).from(Parent.class).orderBy(sorts(by(Parent_.id).reversed())).list().iterator().next().getId());
     }
