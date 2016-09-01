@@ -11,14 +11,14 @@ import javax.persistence.criteria.Root;
 
 public interface Orders<F> extends QueryContextSupplier {
 
-    default OrderByOperations<F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
-        return orderBy(() -> order);
-    }
-
     default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {
         return new OrderBy<>(getQueryContext(), Optional.ofNullable(order)
                 .map(o -> o.get())
                 .orElse(null));
+    }
+
+    default OrderByOperations<F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
+        return orderBy(() -> order);
     }
 
 }

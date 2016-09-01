@@ -4,12 +4,18 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
+import javax.persistence.metamodel.SingularAttribute;
 
-public interface MultiplePathApplier<A, B> extends Function<Root<?>, List<Selection<?>>>, Supplier<List<PathSelector<A, B>>> {
+public interface MultiplePathApplier extends Function<Root<?>, List<Path<?>>>, Supplier<List<PathSelector<?, ?>>> {
 
-    default MultiplePathApplier<A, B> then(PathSelector<A, B> pathSelector) {
-        return new MultiplePath<>(get(), pathSelector);
+    default <A, B> MultiplePathApplier and(PathSelector<A, B> pathSelector) {
+        return new MultiplePath(get(), pathSelector);
     }
+
+    default <A, B> MultiplePathApplier and(SingularAttribute<A, B> attr) {
+        return and(Paths.get(attr));
+    }
+
 }

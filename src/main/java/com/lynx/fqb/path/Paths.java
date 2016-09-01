@@ -12,7 +12,12 @@ public abstract class Paths {
         return new PathNode<>(null, attr);
     }
 
-    public static <A, B> MultiplePathApplier<A, B> get(PathSelector<A, B> pathSelector) {
-        return new MultiplePath<>(null, pathSelector);
+    public static <A, B> MultiplePathApplier of(PathSelector<A, B> pathSelector) {
+        return new MultiplePath(null, pathSelector);
     }
+
+    public static <A, B> MultiplePathApplier of(SingularAttribute<A, B> attr) {
+        return of(Paths.get(attr));
+    }
+
 }

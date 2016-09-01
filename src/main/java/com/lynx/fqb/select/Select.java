@@ -8,7 +8,7 @@ import javax.persistence.criteria.Root;
 
 public class Select implements QueryContext, SelectOperations {
 
-    final EntityManager em;
+    private final EntityManager em;
 
     private Select(EntityManager em) {
         this.em = em;

@@ -7,15 +7,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import com.lynx.fqb.path.MultiplePathApplier;
+
 public class Result<R> implements QueryContext, ResultOperations {
 
-    protected final Supplier<Class<R>> resultCls;
+    private final Supplier<Class<R>> resultCls;
+
+    private final Supplier<MultiplePathApplier> paths;
 
     private final QueryContext ctx;
 
-    public Result(QueryContext ctx, Class<R> resultCls) {
+    public Result(QueryContext ctx, Supplier<Class<R>> resultCls, Supplier<MultiplePathApplier> paths) {
         this.ctx = ctx;
-        this.resultCls = () -> resultCls;
+        this.resultCls = resultCls;
+        this.paths = paths;
     }
 
     @Override
