@@ -10,7 +10,7 @@ import javax.persistence.criteria.Path;
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class Where<F> implements QueryContext, CriteriaQueryApplier, Orders<F>, ListResults<F>, SingleResults<F> {
+public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperations<F> {
 
     private final QueryContext ctx;
 

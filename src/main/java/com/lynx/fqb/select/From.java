@@ -11,7 +11,7 @@ import javax.persistence.criteria.Path;
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class From<F> implements QueryContext, CriteriaQueryApplier, Restrictions<F>, Orders<F>, ListResults<F>, SingleResults<F> {
+public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperations<F> {
 
     protected final Supplier<Class<F>> fromCls;
 

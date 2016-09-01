@@ -13,7 +13,7 @@ import javax.persistence.criteria.Path;
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, ListResults<F>, SingleResults<F> {
+public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOperations<F> {
 
     private final QueryContext ctx;
 

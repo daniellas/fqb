@@ -1,7 +1,7 @@
 package com.lynx.fqb.select;
 
 public interface Modifiers extends QueryContextSupplier {
-    default Distinct distinct() {
+    default Sources distinct() {
         return new Distinct(getQueryContext());
     }
 }

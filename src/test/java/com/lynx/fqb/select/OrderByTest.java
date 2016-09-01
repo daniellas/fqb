@@ -32,11 +32,6 @@ public class OrderByTest extends QueryContextTestBase<Parent> {
     }
 
     @Override
-    protected QueryContext getQueryContext() {
-        return Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort));
-    }
-
-    @Override
     protected Class<Parent> getFromCls() {
         return Parent.class;
     }

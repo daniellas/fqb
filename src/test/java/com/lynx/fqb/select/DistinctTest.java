@@ -8,12 +8,12 @@ public class DistinctTest extends MockTestBase {
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldFailOnFromCls() {
-        Select.using(em).distinct().getFromCls();
+        Select.using(em).distinct().getQueryContext().getFromCls();
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldFailOnRoot() {
-        Select.using(em).distinct().getRoot();
+        Select.using(em).distinct().getQueryContext().getRoot();
     }
 
 }

@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 
-public class Select implements QueryContext, Modifiers, Sources {
+public class Select implements QueryContext, SelectOperations {
 
     final EntityManager em;
 
@@ -14,7 +14,7 @@ public class Select implements QueryContext, Modifiers, Sources {
         this.em = em;
     }
 
-    public static Select using(EntityManager em) {
+    public static SelectOperations using(EntityManager em) {
         return new Select(Optional.ofNullable(em).orElseThrow(IllegalArgumentException::new));
     }
 
