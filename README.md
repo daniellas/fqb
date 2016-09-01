@@ -89,7 +89,7 @@ JPA metamodel is required since FQB use it to resolve attributes of your entitie
 * grouping
 * expressions 
 
-If you use maven, add below plugins configurations to your pom.xml
+If you use **Apache Maven**, add below plugins configurations to your **pom.xml** to generate metamodel during maven build.
 
 ```xml
 <build>

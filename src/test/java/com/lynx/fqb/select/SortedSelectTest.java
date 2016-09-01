@@ -1,5 +1,7 @@
 package com.lynx.fqb.select;
 
+import java.util.Optional;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
@@ -8,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.Times;
 
 import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
@@ -45,4 +48,17 @@ public class SortedSelectTest extends MockTestBase {
         Mockito.verify(parentCriteriaQuery).orderBy(Mockito.anyList());
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void shouldNotCallOrderByOnEmptySorts() {
+        Object value = null;
+
+        Select.using(em).from(Parent.class).orderBy(() -> {
+            return Optional.ofNullable(value)
+                    .map(v -> Sorts.sorts(sort))
+                    .orElse(null);
+        }).list();
+
+        Mockito.verify(parentCriteriaQuery, new Times(0)).orderBy(Mockito.anyList());
+    }
 }

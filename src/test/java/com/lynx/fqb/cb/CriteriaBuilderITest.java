@@ -1,41 +1,63 @@
 package com.lynx.fqb.cb;
 
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.List;
 
-import org.junit.Ignore;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
-import com.lynx.fqb.entity.Child;
-import com.lynx.fqb.entity.Child_;
+import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.entity.Parent_;
 
 /**
- * This is just the CriteriaBuilder sanbox
+ * This is just the CriteriaBuilder sand box
  * 
  * @author daniel.las
  *
  */
-@Ignore
 public class CriteriaBuilderITest extends IntegrationTestBase {
 
-    @SuppressWarnings("unused")
     @Test
-    public void shouldApplyRestrictions() {
-        CriteriaQuery<Child> query = cb.createQuery(Child.class);
-        Root<Child> from = query.from(Child.class);
+    public void shouldReturnObjectArrayList() {
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Parent> from = query.from(Parent.class);
 
-        query.where(cb.and(cb.equal(from.get(Child_.id), 1)));
+        query.select(cb.construct(Object[].class, new Selection[] { from.get(Parent_.id), from.get(Parent_.name) }));
 
-        Predicate equal = cb.equal(from.get(Child_.id), 1);
-        Expression<String> substring = cb.substring(from.get(Child_.name), 1);
+        List<Object[]> resultList = em.createQuery(query).getResultList();
 
-        query.distinct(true);
+        Assert.assertTrue(Object[].class.isAssignableFrom(resultList.iterator().next().getClass()));
+    }
 
-        em.createQuery(query).getResultList();
+    @Test
+    public void shouldReturnResList() {
+        CriteriaQuery<Res> query = cb.createQuery(Res.class);
+        Root<Parent> from = query.from(Parent.class);
 
+        query.select(cb.construct(Res.class, new Selection[] { from.get(Parent_.id) }));
+
+        List<Res> resultList = em.createQuery(query).getResultList();
+        Assert.assertTrue(Res.class.isAssignableFrom(resultList.iterator().next().getClass()));
+    }
+
+    protected static class Res {
+        private Long id;
+
+        public Res(Long id) {
+            this.id = id;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
     }
 
 }

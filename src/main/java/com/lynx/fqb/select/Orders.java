@@ -1,6 +1,7 @@
 package com.lynx.fqb.select;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -15,7 +16,9 @@ public interface Orders<F> extends QueryContextSupplier {
     }
 
     default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Path<?>, List<Order>>> order) {
-        return new OrderBy<>(getQueryContext(), order.get());
+        return new OrderBy<>(getQueryContext(), Optional.ofNullable(order)
+                .map(o -> o.get())
+                .orElse(null));
     }
 
 }

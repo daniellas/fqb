@@ -48,7 +48,11 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOp
     @Override
     public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
         return ctx.doApply(fromCls)
-                .map(q -> q.orderBy(orders.apply(ctx.getCriteriaBuilder(), getRoot())));
+                .map(q -> {
+                    return Optional.ofNullable(orders)
+                            .map(o -> q.orderBy(orders.apply(ctx.getCriteriaBuilder(), getRoot())))
+                            .orElse(q);
+                });
     }
 
     @Override

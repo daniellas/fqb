@@ -6,9 +6,9 @@ import java.util.function.Function;
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.lynx.fqb.History;
+import com.lynx.fqb.Trail;
 
-public class PathNode<A, B> extends History<SingularAttribute<? super A, B>, String> implements PathSelector<A, B> {
+public class PathNode<A, B> extends Trail<SingularAttribute<? super A, B>, String> implements PathSelector<A, B> {
 
     public PathNode(List<String> items, SingularAttribute<? super A, B> element) {
         super(items, element);

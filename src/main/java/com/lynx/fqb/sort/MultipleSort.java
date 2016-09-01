@@ -9,9 +9,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 
-import com.lynx.fqb.History;
+import com.lynx.fqb.Trail;
 
-public class MultipleSort extends History<BiFunction<CriteriaBuilder, Path<?>, Order>, BiFunction<CriteriaBuilder, Path<?>, Order>>
+public class MultipleSort extends Trail<BiFunction<CriteriaBuilder, Path<?>, Order>, BiFunction<CriteriaBuilder, Path<?>, Order>>
         implements MultipleSortApplier {
 
     protected MultipleSort(List<BiFunction<CriteriaBuilder, Path<?>, Order>> items, BiFunction<CriteriaBuilder, Path<?>, Order> element) {
