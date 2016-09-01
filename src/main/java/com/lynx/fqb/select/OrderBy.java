@@ -65,4 +65,10 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOp
         return ctx.getRoot();
     }
 
+    @Override
+    public <T> Class<T> getResultCls() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

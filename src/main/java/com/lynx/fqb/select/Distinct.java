@@ -40,4 +40,10 @@ public class Distinct implements QueryContext, Sources {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public <T> Class<T> getResultCls() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

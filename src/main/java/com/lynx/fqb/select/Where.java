@@ -59,4 +59,10 @@ public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperat
         return ctx;
     }
 
+    @Override
+    public <T> Class<T> getResultCls() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

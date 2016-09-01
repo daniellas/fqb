@@ -48,4 +48,10 @@ public class Result<R> implements QueryContext, ResultOperations {
         return this;
     }
 
+    @Override
+    public <T> Class<T> getResultCls() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

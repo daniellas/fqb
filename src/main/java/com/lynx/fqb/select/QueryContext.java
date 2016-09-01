@@ -18,6 +18,8 @@ public interface QueryContext {
     <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls);
 
     <T> Class<T> getFromCls();
+    
+    <T> Class<T> getResultCls();
 
     <T> Root<T> getRoot();
 }

@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 
-public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperations<F> {
+public class From<R, F> implements QueryContext, CriteriaQueryApplier, FromOperations<R, F> {
 
     private final Supplier<Class<F>> fromCls;
 
@@ -19,28 +19,25 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
 
     private Root<F> root;
 
-    public From(QueryContext ctx, Class<F> fromCls) {
-        this.ctx = ctx;
-        this.fromCls = () -> fromCls;
-    }
-
     public From(QueryContext ctx, Supplier<Class<F>> fromClsSupplier) {
         this.ctx = ctx;
         this.fromCls = fromClsSupplier;
     }
 
     @Override
-    public List<F> apply(Pageable page) {
-        return doApply(fromCls.get())
-                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
-                .get();
+    public List<R> apply(Pageable page) {
+        // return doApply(fromCls.get())
+        // .map(q -> applyListResult(ctx.getEntityManager(), q, page))
+        // .get();
+        return null;
     }
 
     @Override
-    public F get() {
-        return doApply(fromCls.get())
-                .map(q -> applySingleResult(ctx.getEntityManager(), q))
-                .get();
+    public R get() {
+        // return doApply(fromCls.get())
+        // .map(q -> applySingleResult(ctx.getEntityManager(), q))
+        // .get();
+        return null;
     }
 
     @Override
@@ -75,6 +72,12 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
     @Override
     public <T> Root<T> getRoot() {
         return (Root<T>) root;
+    }
+
+    @Override
+    public <T> Class<T> getResultCls() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -1,5 +1,15 @@
 package com.lynx.fqb.select;
 
-public interface ResultOperations extends Sources {
+import java.util.function.Supplier;
+
+public interface ResultOperations extends QueryContextSupplier {
+
+    default <R, F> FromOperations<R, F> from(Supplier<Class<F>> fromClsSupplier) {
+        return new From<>(getQueryContext(), fromClsSupplier);
+    }
+
+    default <R, F> FromOperations<R, F> from(Class<F> fromCls) {
+        return from(() -> fromCls);
+    }
 
 }
