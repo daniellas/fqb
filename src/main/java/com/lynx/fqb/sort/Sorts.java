@@ -15,9 +15,9 @@ import com.lynx.fqb.path.PathSelector;
  * @author daniel.las
  *
  */
-public class Sorts {
+public abstract class Sorts {
 
-    private Sorts() {
+    protected Sorts() {
 
     }
 

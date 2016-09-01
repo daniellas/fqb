@@ -2,9 +2,9 @@ package com.lynx.fqb.path;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-public class Paths {
+public abstract class Paths {
 
-    private Paths() {
+    protected Paths() {
 
     }
 
