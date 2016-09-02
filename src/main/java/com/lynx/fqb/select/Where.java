@@ -9,13 +9,13 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
-import com.lynx.fqb.select.ctx.QueryContext;
+import com.lynx.fqb.select.ctx.SourceContext;
 
-public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperations<F> {
+public class Where<R, F> implements SourceContext<F>, CriteriaQueryApplier, WhereOperations<R, F> {
 
-    private final QueryContext ctx;
+    private final SourceContext<F> ctx;
 
-    public Where(QueryContext ctx) {
+    public Where(SourceContext<F> ctx) {
         this.ctx = ctx;
     }
 
@@ -25,23 +25,33 @@ public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperat
     }
 
     @Override
-    public QueryContext getQueryContext() {
+    public List<R> apply(Pageable page) {
+        return null;
+    }
+
+    @Override
+    public R get() {
+        return null;
+    }
+
+    @Override
+    public <T> void doApply(CriteriaQuery<T> criteriaQuery) {
+
+    }
+
+    @Override
+    public SourceContext<F> getSourceContext() {
         return this;
     }
 
     @Override
-    public List<F> apply(Pageable page) {
-        return null;
+    public Root<F> getRoot() {
+        return ctx.getRoot();
     }
 
     @Override
-    public F get() {
+    public Optional<CriteriaQuery<F>> doApply() {
         return null;
-    }
-
-    @Override
-    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
-        
     }
 
 }

@@ -24,7 +24,7 @@ public class Distinct implements QueryContext, Sources {
     }
 
     @Override
-    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+    public <T> void doApply(CriteriaQuery<T> criteriaQuery) {
         criteriaQuery.distinct(true);
     }
 

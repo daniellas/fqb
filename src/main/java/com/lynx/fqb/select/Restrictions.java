@@ -1,10 +1,10 @@
 package com.lynx.fqb.select;
 
-import com.lynx.fqb.select.ctx.QueryContextSupplier;
+import com.lynx.fqb.select.ctx.SourceContextSupplier;
 
-public interface Restrictions<F> extends QueryContextSupplier {
+public interface Restrictions<R, F> extends SourceContextSupplier<F> {
 
-    default WhereOperations<F> where() {
-        return new Where<>(getQueryContext());
+    default WhereOperations<R, F> where() {
+        return new Where<>(getSourceContext());
     }
 }

@@ -32,11 +32,6 @@ public class From<F> implements SourceContext<F>, CriteriaQueryApplier, FromOper
     }
 
     @Override
-    public QueryContext getQueryContext() {
-        return this;
-    }
-
-    @Override
     public List<F> apply(Pageable page) {
         return doApply()
                 .map(q -> applyListResult(ctx.getEntityManager(), q, page))
@@ -56,17 +51,22 @@ public class From<F> implements SourceContext<F>, CriteriaQueryApplier, FromOper
     }
 
     @Override
-    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+    public <T> void doApply(CriteriaQuery<T> criteriaQuery) {
     }
 
     @Override
     public Optional<CriteriaQuery<F>> doApply() {
         return Optional.of(getCriteriaBuilder().createQuery(fromCls.get())).map(q -> {
-            ctx.apply(q);
+            ctx.doApply(q);
             root = q.from(fromCls.get());
 
             return q;
         });
+    }
+
+    @Override
+    public SourceContext<F> getSourceContext() {
+        return this;
     }
 
 }

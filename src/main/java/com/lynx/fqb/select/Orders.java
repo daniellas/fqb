@@ -9,17 +9,17 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
-import com.lynx.fqb.select.ctx.QueryContextSupplier;
+import com.lynx.fqb.select.ctx.SourceContextSupplier;
 
-public interface Orders<F> extends QueryContextSupplier {
+public interface Orders<R, F> extends SourceContextSupplier<F> {
 
-    default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {
-        return new OrderBy<>(getQueryContext(), Optional.ofNullable(order)
+    default OrderByOperations<F, F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {
+        return new OrderBy<>(getSourceContext(), Optional.ofNullable(order)
                 .map(o -> o.get())
                 .orElse(null));
     }
 
-    default OrderByOperations<F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
+    default OrderByOperations<F, F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
         return orderBy(() -> order);
     }
 

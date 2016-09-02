@@ -12,6 +12,11 @@ public interface QueryContext {
         return getEntityManager().getCriteriaBuilder();
     }
 
-    <T> void apply(CriteriaQuery<T> criteriaQuery);
+    /**
+     * Applies parameters on given criteriaQuery
+     * 
+     * @param criteriaQuery
+     */
+    <T> void doApply(CriteriaQuery<T> criteriaQuery);
 
 }

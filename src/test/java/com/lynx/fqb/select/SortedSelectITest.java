@@ -31,6 +31,11 @@ public class SortedSelectITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldSortByMultipleSortWithCrossJoin() {
+        Select.using(em).from(Child.class).orderBy(sorts(by(Child_.id)).then(by(get(Child_.parent).get(Parent_.name)))).list();
+    }
+
+    @Test
     public void shouldSortByMultipleSortSupplier() {
         Select.using(em).from(Parent.class).orderBy(() -> {
             return Optional.ofNullable(value)

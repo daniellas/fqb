@@ -1,6 +1,7 @@
 package com.lynx.fqb.select;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.EntityManager;
@@ -11,34 +12,18 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
-import com.lynx.fqb.select.ctx.QueryContext;
+import com.lynx.fqb.select.ctx.SourceContext;
 
-public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOperations<F> {
+public class OrderBy<R, F> implements SourceContext<F>, CriteriaQueryApplier, OrderByOperations<F, F> {
 
-    private final QueryContext ctx;
+    private final SourceContext<F> ctx;
 
     private final BiFunction<CriteriaBuilder, Root<?>, List<Order>> orders;
 
-    public OrderBy(QueryContext ctx, BiFunction<CriteriaBuilder, Root<?>, List<Order>> orders) {
+    public OrderBy(SourceContext<F> ctx, BiFunction<CriteriaBuilder, Root<?>, List<Order>> orders) {
         this.ctx = ctx;
         this.orders = orders;
     }
-
-    // @SuppressWarnings("unchecked")
-    // @Override
-    // public List<F> apply(Pageable page) {
-    // return (List<F>) doApply(ctx.getFromCls())
-    // .map(q -> applyListResult(ctx.getEntityManager(), q, page))
-    // .get();
-    // }
-    //
-    // @SuppressWarnings("unchecked")
-    // @Override
-    // public F get() {
-    // return (F) ctx.doApply(ctx.getFromCls())
-    // .map(q -> applySingleResult(ctx.getEntityManager(), q))
-    // .get();
-    // }
 
     @Override
     public EntityManager getEntityManager() {
@@ -47,28 +32,36 @@ public class OrderBy<F> implements QueryContext, CriteriaQueryApplier, OrderByOp
 
     @Override
     public List<F> apply(Pageable page) {
-        // TODO Auto-generated method stub
-        return null;
+        return doApply()
+                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
+                .get();
     }
 
     @Override
     public F get() {
-        return null;
+        return doApply()
+                .map(q -> applySingleResult(ctx.getEntityManager(), q))
+                .get();
     }
 
     @Override
-    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+    public <T> void doApply(CriteriaQuery<T> criteriaQuery) {
 
     }
 
-    // @Override
-    // public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-    // return ctx.doApply(fromCls)
-    // .map(q -> {
-    // return Optional.ofNullable(orders)
-    // .map(o -> q.orderBy(orders.apply(ctx.getCriteriaBuilder(), getRoot())))
-    // .orElse(q);
-    // });
-    // }
+    @Override
+    public Root<F> getRoot() {
+        return ctx.getRoot();
+    }
+
+    @Override
+    public Optional<CriteriaQuery<F>> doApply() {
+        return ctx.doApply()
+                .map(q -> {
+                    return Optional.ofNullable(orders)
+                            .map(o -> q.orderBy(orders.apply(ctx.getCriteriaBuilder(), getRoot())))
+                            .orElse(q);
+                });
+    }
 
 }

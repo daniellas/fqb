@@ -33,7 +33,7 @@ public class Result<R> implements QueryContext, ResultOperations {
     }
 
     @Override
-    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+    public <T> void doApply(CriteriaQuery<T> criteriaQuery) {
         
     }
 
