@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+
+import com.lynx.fqb.select.ctx.QueryContext;
 
 public class Select implements QueryContext, SelectOperations {
 
@@ -29,23 +30,8 @@ public class Select implements QueryContext, SelectOperations {
     }
 
     @Override
-    public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return Optional.of(getCriteriaBuilder().createQuery(fromCls));
-    }
-
-    @Override
-    public <T> Class<T> getFromCls() {
-        return null;
-    }
-
-    @Override
-    public <T> Root<T> getRoot() {
-        return null;
-    }
-
-    @Override
-    public <T> Class<T> getResultCls() {
-        return null;
+    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+        
     }
 
 }

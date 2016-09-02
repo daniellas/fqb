@@ -5,7 +5,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
-public class AttributeSort<F, A> implements SortApplier {
+public class AttributeSort<F, A> implements SortProvider {
 
     final SingularAttribute<? super F, A> attribute;
 

@@ -9,7 +9,7 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.Trail;
 
-public class MultiplePath extends Trail<PathSelector<?, ?>, PathSelector<?, ?>> implements MultiplePathApplier {
+public class MultiplePath extends Trail<PathSelector<?, ?>, PathSelector<?, ?>> implements MultiplePathProvider {
 
     protected MultiplePath(List<PathSelector<?, ?>> items, PathSelector<?, ?> element) {
         super(items, element);

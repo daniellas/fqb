@@ -9,6 +9,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
+import com.lynx.fqb.select.ctx.QueryContextSupplier;
+
 public interface Orders<F> extends QueryContextSupplier {
 
     default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {

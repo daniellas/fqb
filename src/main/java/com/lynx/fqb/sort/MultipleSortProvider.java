@@ -8,10 +8,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
-public interface MultipleSortApplier
+public interface MultipleSortProvider<X,Y,Z>
         extends BiFunction<CriteriaBuilder, Root<?>, List<Order>>, Supplier<List<BiFunction<CriteriaBuilder, Root<?>, Order>>> {
 
-    default MultipleSortApplier then(BiFunction<CriteriaBuilder, Root<?>, Order> applier) {
+    default MultipleSortProvider then(BiFunction<CriteriaBuilder, Root<?>, Order> applier) {
         return new MultipleSort(get(), applier);
     }
 

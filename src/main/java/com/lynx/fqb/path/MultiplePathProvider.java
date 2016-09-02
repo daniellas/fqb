@@ -8,13 +8,13 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
-public interface MultiplePathApplier extends Function<Root<?>, List<Path<?>>>, Supplier<List<PathSelector<?, ?>>> {
+public interface MultiplePathProvider extends Function<Root<?>, List<Path<?>>>, Supplier<List<PathSelector<?, ?>>> {
 
-    default <A, B> MultiplePathApplier and(PathSelector<A, B> pathSelector) {
+    default <A, B> MultiplePathProvider and(PathSelector<A, B> pathSelector) {
         return new MultiplePath(get(), pathSelector);
     }
 
-    default <A, B> MultiplePathApplier and(SingularAttribute<A, B> attr) {
+    default <A, B> MultiplePathProvider and(SingularAttribute<A, B> attr) {
         return and(Paths.get(attr));
     }
 

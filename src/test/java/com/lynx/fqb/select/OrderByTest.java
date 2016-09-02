@@ -1,10 +1,6 @@
 package com.lynx.fqb.select;
 
-import java.util.List;
-
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
@@ -13,17 +9,18 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.sort.SortApplier;
+import com.lynx.fqb.sort.SortProvider;
 import com.lynx.fqb.sort.Sorts;
 
-public class OrderByTest extends QueryContextTestBase<Parent> {
+public class OrderByTest extends MockTestBase {
 
     @Mock
     private Order order;
 
     @Mock
-    SortApplier sort;
+    SortProvider sort;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -31,36 +28,6 @@ public class OrderByTest extends QueryContextTestBase<Parent> {
         super.init();
         Mockito.when(parentCriteriaQuery.orderBy(Mockito.anyList())).thenReturn(parentCriteriaQuery);
         Mockito.when(sort.apply(Mockito.any(CriteriaBuilder.class), Mockito.any(Root.class))).thenReturn(order);
-    }
-
-    @Override
-    protected Class<Parent> getFromCls() {
-        return Parent.class;
-    }
-
-    @Override
-    protected List<Parent> getListResults() {
-        return Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort)).list();
-    }
-
-    @Override
-    protected Parent getSingleResults() {
-        return Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort)).get();
-    }
-
-    @Override
-    protected QueryContext getQueryContext() {
-        return (QueryContext) Select.using(em).from(Parent.class).orderBy(Sorts.sorts(sort));
-    }
-
-    @Override
-    protected CriteriaQuery<Parent> getCriteriaQuery() {
-        return parentCriteriaQuery;
-    }
-
-    @Override
-    protected TypedQuery<Parent> getTypedQuery() {
-        return parentTypedQuery;
     }
 
     @Test

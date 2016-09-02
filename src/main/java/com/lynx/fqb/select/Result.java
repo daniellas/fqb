@@ -1,23 +1,22 @@
 package com.lynx.fqb.select;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
-import com.lynx.fqb.path.MultiplePathApplier;
+import com.lynx.fqb.path.MultiplePathProvider;
+import com.lynx.fqb.select.ctx.QueryContext;
 
 public class Result<R> implements QueryContext, ResultOperations {
 
     private final Supplier<Class<R>> resultCls;
 
-    private final Supplier<MultiplePathApplier> paths;
+    private final Supplier<MultiplePathProvider> paths;
 
     private final QueryContext ctx;
 
-    public Result(QueryContext ctx, Supplier<Class<R>> resultCls, Supplier<MultiplePathApplier> paths) {
+    public Result(QueryContext ctx, Supplier<Class<R>> resultCls, Supplier<MultiplePathProvider> paths) {
         this.ctx = ctx;
         this.resultCls = resultCls;
         this.paths = paths;
@@ -29,29 +28,13 @@ public class Result<R> implements QueryContext, ResultOperations {
     }
 
     @Override
-    public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return null;
-    }
-
-    @Override
-    public <T> Class<T> getFromCls() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public <T> Root<T> getRoot() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public QueryContext getQueryContext() {
         return this;
     }
 
     @Override
-    public <T> Class<T> getResultCls() {
-        // TODO Auto-generated method stub
-        return null;
+    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+        
     }
 
 }

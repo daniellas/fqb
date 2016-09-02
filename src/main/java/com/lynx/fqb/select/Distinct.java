@@ -1,10 +1,9 @@
 package com.lynx.fqb.select;
 
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+
+import com.lynx.fqb.select.ctx.QueryContext;
 
 public class Distinct implements QueryContext, Sources {
 
@@ -25,24 +24,9 @@ public class Distinct implements QueryContext, Sources {
     }
 
     @Override
-    public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return ctx.doApply(fromCls)
-                .map(q -> q.distinct(true));
-    }
+    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+        criteriaQuery.distinct(true);
 
-    @Override
-    public <T> Class<T> getFromCls() {
-        return null;
-    }
-
-    @Override
-    public <T> Root<T> getRoot() {
-        return null;
-    }
-
-    @Override
-    public <T> Class<T> getResultCls() {
-        return null;
     }
 
 }

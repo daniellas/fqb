@@ -6,7 +6,7 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.path.PathSelector;
 
-public class PathSelectorSort<F, A, B> implements SortApplier {
+public class PathSelectorSort<F, A, B> implements SortProvider {
 
     final PathSelector<A, B> pathSelector;
 

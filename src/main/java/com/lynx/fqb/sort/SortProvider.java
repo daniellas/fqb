@@ -6,7 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
-public interface SortApplier extends BiFunction<CriteriaBuilder, Root<?>, Order> {
+public interface SortProvider extends BiFunction<CriteriaBuilder, Root<?>, Order> {
 
     default BiFunction<CriteriaBuilder, Root<?>, Order> reversed() {
         return andThen((o) -> {

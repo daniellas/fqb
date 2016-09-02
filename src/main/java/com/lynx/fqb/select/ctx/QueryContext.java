@@ -1,11 +1,8 @@
-package com.lynx.fqb.select;
-
-import java.util.Optional;
+package com.lynx.fqb.select.ctx;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public interface QueryContext {
 
@@ -15,11 +12,6 @@ public interface QueryContext {
         return getEntityManager().getCriteriaBuilder();
     }
 
-    <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls);
+    <T> void apply(CriteriaQuery<T> criteriaQuery);
 
-    <T> Class<T> getFromCls();
-    
-    <T> Class<T> getResultCls();
-
-    <T> Root<T> getRoot();
 }

@@ -21,19 +21,19 @@ public abstract class Sorts {
 
     }
 
-    public static <F, A> MultipleSortApplier attribute(SingularAttribute<? super F, A> attribute) {
+    public static <F, A> MultipleSortProvider attribute(SingularAttribute<? super F, A> attribute) {
         return new MultipleSort(null, by(attribute));
     }
 
-    public static <A, B> MultipleSortApplier path(PathSelector<A, B> pathSelector) {
+    public static <A, B> MultipleSortProvider path(PathSelector<A, B> pathSelector) {
         return new MultipleSort(null, by(pathSelector));
     }
 
-    public static <F, A> SortApplier by(SingularAttribute<? super F, A> attribute) {
+    public static <F, A> SortProvider by(SingularAttribute<? super F, A> attribute) {
         return new AttributeSort<>(attribute);
     }
 
-    public static <F, A, B> SortApplier by(PathSelector<A, B> pathSelector) {
+    public static <F, A, B> SortProvider by(PathSelector<A, B> pathSelector) {
         return new PathSelectorSort<F, A, B>(pathSelector);
     }
 
@@ -45,7 +45,7 @@ public abstract class Sorts {
      * 
      * @return
      */
-    public static MultipleSortApplier sorts(BiFunction<CriteriaBuilder, Root<?>, Order> applier) {
+    public static MultipleSortProvider sorts(BiFunction<CriteriaBuilder, Root<?>, Order> applier) {
         return new MultipleSort(null, applier);
     }
 

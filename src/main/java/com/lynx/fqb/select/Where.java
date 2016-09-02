@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
+import com.lynx.fqb.select.ctx.QueryContext;
 
 public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperations<F> {
 
@@ -18,50 +19,29 @@ public class Where<F> implements QueryContext, CriteriaQueryApplier, WhereOperat
         this.ctx = ctx;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public F get() {
-        return (F) ctx.doApply(ctx.getFromCls())
-                .map(q -> applySingleResult(ctx.getEntityManager(), q))
-                .get();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<F> apply(Pageable page) {
-        return (List<F>) doApply(ctx.getFromCls())
-                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
-                .get();
-    }
-
     @Override
     public EntityManager getEntityManager() {
         return ctx.getEntityManager();
     }
 
     @Override
-    public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return ctx.doApply(fromCls);
-    }
-
-    @Override
-    public <T> Class<T> getFromCls() {
-        return ctx.getFromCls();
-    }
-
-    @Override
-    public <T> Root<T> getRoot() {
-        return ctx.getRoot();
-    }
-
-    @Override
     public QueryContext getQueryContext() {
-        return ctx;
+        return this;
     }
 
     @Override
-    public <T> Class<T> getResultCls() {
+    public List<F> apply(Pageable page) {
         return null;
+    }
+
+    @Override
+    public F get() {
+        return null;
+    }
+
+    @Override
+    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+        
     }
 
 }

@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import com.lynx.fqb.Trail;
 
 public class MultipleSort extends Trail<BiFunction<CriteriaBuilder, Root<?>, Order>, BiFunction<CriteriaBuilder, Root<?>, Order>>
-        implements MultipleSortApplier {
+        implements MultipleSortProvider {
 
     protected MultipleSort(List<BiFunction<CriteriaBuilder, Root<?>, Order>> items, BiFunction<CriteriaBuilder, Root<?>, Order> element) {
         super(items, element);

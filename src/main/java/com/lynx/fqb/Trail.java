@@ -1,7 +1,7 @@
 package com.lynx.fqb;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -40,8 +40,8 @@ public abstract class Trail<T, I> implements Supplier<List<I>> {
 
                             return l;
                         })
-                        .orElse(new ArrayList<I>(Arrays.asList(converter().apply(e)))))
-                .orElse(new ArrayList<>());
+                        .orElse(new LinkedList<I>(Arrays.asList(converter().apply(e)))))
+                .orElse(new LinkedList<>());
 
     }
 

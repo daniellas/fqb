@@ -10,8 +10,10 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
+import com.lynx.fqb.select.ctx.QueryContext;
+import com.lynx.fqb.select.ctx.SourceContext;
 
-public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperations<F> {
+public class From<F> implements SourceContext<F>, CriteriaQueryApplier, FromOperations<F> {
 
     private final Supplier<Class<F>> fromCls;
 
@@ -25,20 +27,6 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
     }
 
     @Override
-    public List<F> apply(Pageable page) {
-        return doApply(fromCls.get())
-                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
-                .get();
-    }
-
-    @Override
-    public F get() {
-        return doApply(fromCls.get())
-                .map(q -> applySingleResult(ctx.getEntityManager(), q))
-                .get();
-    }
-
-    @Override
     public EntityManager getEntityManager() {
         return ctx.getEntityManager();
     }
@@ -48,33 +36,37 @@ public class From<F> implements QueryContext, CriteriaQueryApplier, FromOperatio
         return this;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> Optional<CriteriaQuery<T>> doApply(Class<T> fromCls) {
-        return ctx.doApply(fromCls)
-                .map(q -> {
-                    root = (Root<F>) q.from(fromCls);
-
-                    return q;
-                });
-
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> Class<T> getFromCls() {
-        return (Class<T>) fromCls.get();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> Root<T> getRoot() {
-        return (Root<T>) root;
+    public List<F> apply(Pageable page) {
+        return doApply()
+                .map(q -> applyListResult(ctx.getEntityManager(), q, page))
+                .get();
     }
 
     @Override
-    public <T> Class<T> getResultCls() {
-        return null;
+    public F get() {
+        return doApply()
+                .map(q -> applySingleResult(ctx.getEntityManager(), q))
+                .get();
+    }
+
+    @Override
+    public Root<F> getRoot() {
+        return root;
+    }
+
+    @Override
+    public <T> void apply(CriteriaQuery<T> criteriaQuery) {
+    }
+
+    @Override
+    public Optional<CriteriaQuery<F>> doApply() {
+        return Optional.of(getCriteriaBuilder().createQuery(fromCls.get())).map(q -> {
+            ctx.apply(q);
+            root = q.from(fromCls.get());
+
+            return q;
+        });
     }
 
 }

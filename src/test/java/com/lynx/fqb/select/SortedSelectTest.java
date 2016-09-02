@@ -15,7 +15,7 @@ import org.mockito.internal.verification.Times;
 import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.paging.PageRequest;
-import com.lynx.fqb.sort.SortApplier;
+import com.lynx.fqb.sort.SortProvider;
 import com.lynx.fqb.sort.Sorts;
 
 public class SortedSelectTest extends MockTestBase {
@@ -24,7 +24,7 @@ public class SortedSelectTest extends MockTestBase {
     private Order order;
 
     @Mock
-    SortApplier sort;
+    SortProvider sort;
 
     @SuppressWarnings("unchecked")
     @Before

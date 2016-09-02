@@ -27,7 +27,7 @@ public class SortsTest extends MockTestBase {
     @SuppressWarnings("rawtypes")
     @Test
     public void byAttributeShouldCreateAttributeSort() {
-        SortApplier sort = Sorts.by(attribute);
+        SortProvider sort = Sorts.by(attribute);
 
         Assert.assertNotNull(sort);
         Assert.assertTrue(AttributeSort.class.isAssignableFrom(sort.getClass()));
@@ -38,7 +38,7 @@ public class SortsTest extends MockTestBase {
     @Test
     public void bySelectorShouldCreatePathSelectorSort() {
         PathSelector<Parent, Long> pathSelector = Paths.get(attribute);
-        SortApplier sort = Sorts.by(pathSelector);
+        SortProvider sort = Sorts.by(pathSelector);
 
         Assert.assertNotNull(sort);
         Assert.assertTrue(PathSelectorSort.class.isAssignableFrom(sort.getClass()));
