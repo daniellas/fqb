@@ -1,5 +1,12 @@
 package com.lynx.fqb.paging;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@EqualsAndHashCode
+@ToString
 public class PageRequest implements Pageable {
 
     private final int pageNumber;
@@ -14,16 +21,6 @@ public class PageRequest implements Pageable {
         }
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
-    }
-
-    @Override
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    @Override
-    public int getPageSize() {
-        return pageSize;
     }
 
     @Override
@@ -42,36 +39,6 @@ public class PageRequest implements Pageable {
      */
     public static Pageable of(int pageNumber, int pageSize) {
         return new PageRequest(pageNumber, pageSize);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + pageNumber;
-        result = prime * result + pageSize;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PageRequest other = (PageRequest) obj;
-        if (pageNumber != other.pageNumber)
-            return false;
-        if (pageSize != other.pageSize)
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "[" + pageNumber + "," + pageSize + "]";
     }
 
 }
