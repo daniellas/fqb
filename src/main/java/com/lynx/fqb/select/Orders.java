@@ -11,15 +11,15 @@ import javax.persistence.criteria.Root;
 
 import com.lynx.fqb.select.ctx.SourceContextSupplier;
 
-public interface Orders<R, F> extends SourceContextSupplier<F> {
+public interface Orders<F> extends SourceContextSupplier<F> {
 
-    default OrderByOperations<F, F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {
+    default OrderByOperations<F> orderBy(Supplier<BiFunction<CriteriaBuilder, Root<?>, List<Order>>> order) {
         return new OrderBy<>(getSourceContext(), Optional.ofNullable(order)
                 .map(o -> o.get())
                 .orElse(null));
     }
 
-    default OrderByOperations<F, F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
+    default OrderByOperations<F> orderBy(BiFunction<CriteriaBuilder, Root<?>, List<Order>> order) {
         return orderBy(() -> order);
     }
 

@@ -14,7 +14,7 @@ import com.lynx.fqb.CriteriaQueryApplier;
 import com.lynx.fqb.paging.Pageable;
 import com.lynx.fqb.select.ctx.SourceContext;
 
-public class OrderBy<R, F> implements SourceContext<F>, CriteriaQueryApplier, OrderByOperations<F, F> {
+public class OrderBy<R, F> implements SourceContext<F>, CriteriaQueryApplier, OrderByOperations<F> {
 
     private final SourceContext<F> ctx;
 
