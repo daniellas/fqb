@@ -1,5 +1,7 @@
 package com.lynx.fqb;
 
+import java.util.ArrayList;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -32,19 +34,19 @@ public class IntegrationTestBase {
     public void init() {
         em = emf.createEntityManager();
         cb = em.getCriteriaBuilder();
-        
+
         if (!initialized) {
             initialized = true;
 
             EntityTransaction tx = em.getTransaction();
 
             tx.begin();
-            Parent parent = new Parent();
+            Parent parent = new Parent(null, "Max", new ArrayList<>());
 
             parent.addChild(new Child());
             em.persist(parent);
 
-            parent = new Parent();
+            parent = new Parent(null, "John", new ArrayList<>());
             parent.addChild(new Child());
             em.persist(parent);
             tx.commit();

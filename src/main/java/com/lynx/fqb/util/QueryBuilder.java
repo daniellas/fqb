@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -47,6 +48,13 @@ public class QueryBuilder {
             BiFunction<CriteriaBuilder, Root<R>, Predicate[]> predicates) {
         return ctx -> {
             return QueryContext.of(ctx.getCq().where(predicates.apply(cb, ctx.getRoot())), ctx.getRoot());
+        };
+    }
+
+    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyOrder(CriteriaBuilder cb,
+            BiFunction<CriteriaBuilder, Root<R>, Order[]> orders) {
+        return ctx -> {
+            return QueryContext.of(ctx.getCq().orderBy(orders.apply(cb, ctx.getRoot())), ctx.getRoot());
         };
     }
 

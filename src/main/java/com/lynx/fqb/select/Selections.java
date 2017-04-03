@@ -24,9 +24,9 @@ public interface Selections {
     }
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> ofPaths(Function<Path<R>, ? extends Path<?>>... paths) {
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> ofPaths(Function<Path<R>, ? extends Selection<?>>... selections) {
         return (cb, root) -> {
-            return Arrays.stream(paths)
+            return Arrays.stream(selections)
                     .map(p -> p.apply(root))
                     .toArray(Selection<?>[]::new);
         };

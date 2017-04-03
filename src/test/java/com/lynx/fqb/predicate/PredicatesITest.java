@@ -1,6 +1,7 @@
 package com.lynx.fqb.predicate;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.Tuple;
 
@@ -25,7 +26,37 @@ public class PredicatesITest extends IntegrationTestBase {
     public void shouldSelectEntitiesRestricted() {
         List<Parent> resultList = Select
                 .from(Parent.class)
-                .where(of(equal(Parent_.id, 1l)))
+                .where(of(equal(Paths.get(Parent_.id), 1l)))
+                .getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldSelectSingleResult() {
+        Optional<Parent> singleResult = Select
+                .from(Parent.class)
+                .where(of(equal(Paths.get(Parent_.id), 1l)))
+                .getSingleResult(em);
+
+        Assert.assertTrue(singleResult.isPresent());
+    }
+
+    @Test
+    public void shouldSelectEntitiesRestrictedByLike() {
+        List<Parent> resultList = Select
+                .from(Parent.class)
+                .where(of(contains(Paths.get(Parent_.name), "a")))
+                .getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldSelectEntitiesRestrictedByCombinedPredicates() {
+        List<Parent> resultList = Select
+                .from(Parent.class)
+                .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -36,7 +67,7 @@ public class PredicatesITest extends IntegrationTestBase {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Parent.class)
                 .with(Selections.ofAttributes(Parent_.id, Parent_.name))
-                .where(of(equal(Parent_.id, 1l)))
+                .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -47,7 +78,7 @@ public class PredicatesITest extends IntegrationTestBase {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Parent.class)
                 .with(Selections.ofPaths(Paths.get(Parent_.id), Paths.get(Parent_.name)))
-                .where(of(equal(Parent_.id, 1l)))
+                .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -58,7 +89,7 @@ public class PredicatesITest extends IntegrationTestBase {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Child.class)
                 .with(Selections.ofPaths(Paths.get(Child_.id), Paths.get(Child_.parent).andThen(Paths.get(Parent_.name))))
-                .where(of(equal(Child_.id, 2l)))
+                .where(of(equal(Paths.get(Child_.id), 2l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -69,7 +100,7 @@ public class PredicatesITest extends IntegrationTestBase {
         List<Tuple> resultList = Select.tuple()
                 .from(Parent.class)
                 .with(Selections.ofAttributes(Parent_.id, Parent_.name))
-                .where(of(equal(Parent_.id, 1l)))
+                .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

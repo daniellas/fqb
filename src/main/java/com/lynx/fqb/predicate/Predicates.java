@@ -5,12 +5,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
-
-import com.lynx.fqb.path.Paths;
 
 public interface Predicates {
 
@@ -21,13 +19,72 @@ public interface Predicates {
         };
     }
 
-    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(SingularAttribute<T, V> attr, V value) {
-        return equal(Paths.get(attr), value);
-    }
-
-    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(Function<Path<T>, ? extends Path<V>> path, V value) {
+    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(Function<Path<T>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
             return cb.equal(path.apply(root), value);
+        };
+    }
+
+    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> notEqual(Function<Path<T>, ? extends Expression<V>> path, V value) {
+        return (cb, root) -> {
+            return cb.notEqual(path.apply(root), value);
+        };
+    }
+
+    @SafeVarargs
+    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> in(Function<Path<T>, ? extends Expression<V>> path, V... values) {
+        return (cb, root) -> {
+            return path.apply(root).in(values);
+        };
+    }
+
+    @SafeVarargs
+    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> notIn(Function<Path<T>, ? extends Expression<V>> path, V... values) {
+        return (cb, root) -> {
+            return path.apply(root).in(values).not();
+        };
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> isNotNull(Function<Path<T>, ? extends Expression<?>> path) {
+        return (cb, root) -> {
+            return path.apply(root).isNotNull();
+        };
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> isNull(Function<Path<T>, ? extends Expression<?>> path) {
+        return (cb, root) -> {
+            return path.apply(root).isNull();
+        };
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> like(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+        return (cb, root) -> {
+            return cb.like(path.apply(root), pattern);
+        };
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> contains(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+        return like(path, "%" + pattern + "%");
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> startsWith(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+        return like(path, "%" + pattern);
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> endsWith(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+        return like(path, pattern + "%");
+    }
+
+    public static <T, V extends Number> BiFunction<CriteriaBuilder, Root<T>, Predicate> gt(Function<Path<T>, ? extends Expression<V>> path, V value) {
+        return (cb, root) -> {
+            return cb.gt(path.apply(root), value);
+        };
+    }
+
+    public static <T, V extends Comparable<V>> BiFunction<CriteriaBuilder, Root<T>, Predicate> greaterThan(Function<Path<T>, ? extends Expression<V>> path,
+            V value) {
+        return (cb, root) -> {
+            return cb.greaterThan(path.apply(root), value);
         };
     }
 

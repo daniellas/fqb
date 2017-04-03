@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.path;
 
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.util.QueryBuilder.*;
