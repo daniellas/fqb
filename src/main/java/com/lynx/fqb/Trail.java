@@ -29,8 +29,8 @@ public abstract class Trail<T, I> implements Supplier<List<I>> {
      *            list of existing items, if null new list containing converted
      *            element is created
      * @param element
-     *            new history element, if null, no element will be added to
-     *            items, new empty items list will be created
+     *            new trail element, if null, no element will be added to items,
+     *            new empty items list will be created
      */
     protected Trail(List<I> items, T element) {
         this.items = Optional.ofNullable(element)

@@ -16,7 +16,7 @@ public abstract class Paths {
         return new MultiplePath(null, pathSelector);
     }
 
-    public static <A, B> MultiplePathProvider of(SingularAttribute<A, B> attr) {
+    public static <A, B> MultiplePathProvider of(SingularAttribute<? super A, B> attr) {
         return of(Paths.get(attr));
     }
 

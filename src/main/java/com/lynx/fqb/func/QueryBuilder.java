@@ -1,24 +1,28 @@
 package com.lynx.fqb.func;
 
+import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-public interface QueryExecutor {
+public class QueryBuilder {
 
     public static Function<EntityManager, CriteriaBuilder> getCriteriaBuilder() {
         return em -> em.getCriteriaBuilder();
     }
 
-    public static <T> Function<CriteriaBuilder, CriteriaQuery<T>> createCriteriaQuery(Class<T> resultCls) {
+    public static <S> Function<CriteriaBuilder, CriteriaQuery<S>> createCriteriaQuery(Class<S> resultCls) {
         return cb -> cb.createQuery(resultCls);
     }
 
@@ -26,12 +30,19 @@ public interface QueryExecutor {
         return cq -> QueryContext.of(cq, cq.from(rootCls));
     }
 
-    public static <R> Function<QueryContext<R, R>, QueryContext<R, R>> applySelection() {
+    public static <R> Function<QueryContext<R, R>, QueryContext<R, R>> applyRootSelection() {
         return ctx -> QueryContext.of(ctx.getCq().select(ctx.getRoot()), ctx.getRoot());
     }
 
-    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applySelection(Selection<? extends S> selection) {
-        return ctx -> QueryContext.of(ctx.getCq().select(selection), ctx.getRoot());
+    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applySelection(CriteriaBuilder cb,
+            BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selection) {
+        return ctx -> {
+            return QueryContext.of(
+                    ctx.getCq().select(cb.construct(
+                            ctx.getCq().getResultType(),
+                            selection.apply(cb, ctx.getRoot()))),
+                    ctx.getRoot());
+        };
     }
 
     public static <S, R> Function<QueryContext<S, R>, TypedQuery<S>> createTypedQuery(EntityManager em) {
@@ -40,7 +51,7 @@ public interface QueryExecutor {
 
     @Getter
     @RequiredArgsConstructor(staticName = "of")
-    static class QueryContext<S, R> {
+    public static class QueryContext<S, R> {
         private final CriteriaQuery<S> cq;
         private final Root<R> root;
     }

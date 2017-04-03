@@ -1,19 +1,19 @@
 package com.lynx.fqb.func;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public interface Result<A> extends Function<EntityManager, TypedQuery<A>> {
+public interface Result<T> extends Function<EntityManager, TypedQuery<T>> {
 
-    default Collection<A> getResultList(EntityManager em) {
+    default List<T> getResultList(EntityManager em) {
         return apply(em).getResultList();
     }
 
-    default Collection<A> getResultList(EntityManager em, int offset, int limit) {
-        TypedQuery<A> q = apply(em);
+    default List<T> getResultList(EntityManager em, int offset, int limit) {
+        TypedQuery<T> q = apply(em);
 
         q.setFirstResult(offset);
         q.setMaxResults(limit);
@@ -21,7 +21,7 @@ public interface Result<A> extends Function<EntityManager, TypedQuery<A>> {
         return q.getResultList();
     }
 
-    default A getResult(EntityManager em) {
+    default T getResult(EntityManager em) {
         return apply(em).getSingleResult();
     }
 
