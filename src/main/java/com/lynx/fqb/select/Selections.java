@@ -1,18 +1,35 @@
 package com.lynx.fqb.select;
 
-import java.util.function.Supplier;
+import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import com.lynx.fqb.path.MultiplePathProvider;
-import com.lynx.fqb.select.ctx.QueryContextSupplier;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+import javax.persistence.metamodel.SingularAttribute;
 
-public interface Selections<R> extends QueryContextSupplier {
+import com.lynx.fqb.path.Paths;
 
-    default ResultOperations as(Supplier<Class<R>> resultCls, Supplier<MultiplePathProvider> paths) {
-        return new Result<>(getQueryContext(), resultCls, paths);
+public interface Selections {
+
+    @SafeVarargs
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> ofAttributes(SingularAttribute<R, ?>... attrs) {
+        return (cb, root) -> {
+            return Arrays.stream(attrs)
+                    .map(a -> Paths.get(a).apply(root))
+                    .toArray(Selection<?>[]::new);
+        };
     }
 
-    default ResultOperations as(Class<R> resultCls, MultiplePathProvider paths) {
-        return as(() -> resultCls, () -> paths);
+    @SafeVarargs
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> ofPaths(Function<Path<R>, ? extends Path<?>>... paths) {
+        return (cb, root) -> {
+            return Arrays.stream(paths)
+                    .map(p -> p.apply(root))
+                    .toArray(Selection<?>[]::new);
+        };
     }
 
 }

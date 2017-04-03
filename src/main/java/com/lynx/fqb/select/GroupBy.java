@@ -1,10 +1,11 @@
 package com.lynx.fqb.select;
 
-public interface Where<S, R> extends GroupBy<S, R> {
+public interface GroupBy<S,R> extends Having<S,R> {
 
-    default GroupBy<S, R> groupBy() {
+    default Having<S,R> having() {
         return em -> {
             return null;
         };
     }
+
 }

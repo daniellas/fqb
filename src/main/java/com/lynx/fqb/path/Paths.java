@@ -1,23 +1,16 @@
 package com.lynx.fqb.path;
 
+import java.util.function.Function;
+
+import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
-public abstract class Paths {
+public interface Paths {
 
-    protected Paths() {
-
-    }
-
-    public static <A, B> PathSelector<A, B> get(SingularAttribute<? super A, B> attr) {
-        return new PathNode<>(null, attr);
-    }
-
-    public static <A, B> MultiplePathProvider of(PathSelector<A, B> pathSelector) {
-        return new MultiplePath(null, pathSelector);
-    }
-
-    public static <A, B> MultiplePathProvider of(SingularAttribute<? super A, B> attr) {
-        return of(Paths.get(attr));
+    public static <A, B> Function<Path<A>, Path<B>> get(SingularAttribute<? super A, B> attr) {
+        return p -> {
+            return p.get(attr);
+        };
     }
 
 }
