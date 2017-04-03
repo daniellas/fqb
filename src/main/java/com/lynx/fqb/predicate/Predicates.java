@@ -22,12 +22,10 @@ public interface Predicates {
     }
 
     public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(SingularAttribute<T, V> attr, V value) {
-        return (cb, root) -> {
-            return cb.equal(Paths.get(attr).apply(root), value);
-        };
+        return equal(Paths.get(attr), value);
     }
 
-    public static <T,V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(Function<Path<T>, ? extends Path<V>> path, V value) {
+    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(Function<Path<T>, ? extends Path<V>> path, V value) {
         return (cb, root) -> {
             return cb.equal(path.apply(root), value);
         };

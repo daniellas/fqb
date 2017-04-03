@@ -2,10 +2,10 @@ package com.lynx.fqb.select.impl;
 
 import com.lynx.fqb.select.RootSelection;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Data
+@Getter
 @RequiredArgsConstructor(staticName = "of")
 public class RootSelectionImpl<S, R> implements RootSelection<S, R> {
 
