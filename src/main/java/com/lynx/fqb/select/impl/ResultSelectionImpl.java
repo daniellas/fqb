@@ -5,10 +5,10 @@ import com.lynx.fqb.select.ResultSelection;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor(staticName = "of")
 public class ResultSelectionImpl<S> implements ResultSelection<S> {
 
+    @Getter
     private final Class<S> selectionCls;
 
 }

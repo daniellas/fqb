@@ -1,12 +1,8 @@
 package com.lynx.fqb.select.impl;
 
-import static com.lynx.fqb.util.QueryBuilder.*;
-
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -30,16 +26,6 @@ public class EntitySelectionImpl<S> implements EntitySelection<S> {
     @Override
     public Class<S> getRootCls() {
         return selectionCls;
-    }
-
-    @Override
-    public TypedQuery<S> apply(EntityManager em) {
-        return getCriteriaBuilder()
-                .andThen(createCriteriaQuery(selectionCls))
-                .andThen(applyRoot(selectionCls))
-                .andThen(applyRootSelection())
-                .andThen(createTypedQuery(em))
-                .apply(em);
     }
 
 }

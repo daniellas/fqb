@@ -1,4 +1,4 @@
-package com.lynx.fqb.predicate;
+package com.lynx.fqb.select;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import com.lynx.fqb.select.Selections;
 
 import static com.lynx.fqb.predicate.Predicates.*;
 
-public class PredicatesITest extends IntegrationTestBase {
+public class RestrictionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesRestricted() {

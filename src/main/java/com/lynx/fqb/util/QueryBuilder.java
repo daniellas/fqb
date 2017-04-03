@@ -1,5 +1,6 @@
 package com.lynx.fqb.util;
 
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -34,27 +35,33 @@ public class QueryBuilder {
     }
 
     public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applySelection(CriteriaBuilder cb,
-            BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selection) {
+            Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selection) {
         return ctx -> {
-            return QueryContext.of(
-                    ctx.getCq().select(cb.construct(
-                            ctx.getCq().getResultType(),
-                            selection.apply(cb, ctx.getRoot()))),
-                    ctx.getRoot());
+            return selection.map(s -> {
+                return QueryContext.of(
+                        ctx.getCq().select(cb.construct(
+                                ctx.getCq().getResultType(),
+                                s.apply(cb, ctx.getRoot()))),
+                        ctx.getRoot());
+            }).orElse(ctx);
         };
     }
 
     public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyRestriction(CriteriaBuilder cb,
-            BiFunction<CriteriaBuilder, Root<R>, Predicate[]> predicates) {
+            Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> predicates) {
         return ctx -> {
-            return QueryContext.of(ctx.getCq().where(predicates.apply(cb, ctx.getRoot())), ctx.getRoot());
+            return predicates.map(p -> {
+                return QueryContext.of(ctx.getCq().where(p.apply(cb, ctx.getRoot())), ctx.getRoot());
+            }).orElse(ctx);
         };
     }
 
     public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyOrder(CriteriaBuilder cb,
-            BiFunction<CriteriaBuilder, Root<R>, Order[]> orders) {
+            Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> orders) {
         return ctx -> {
-            return QueryContext.of(ctx.getCq().orderBy(orders.apply(cb, ctx.getRoot())), ctx.getRoot());
+            return orders.map(o -> {
+                return QueryContext.of(ctx.getCq().orderBy(o.apply(cb, ctx.getRoot())), ctx.getRoot());
+            }).orElse(ctx);
         };
     }
 
