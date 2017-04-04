@@ -15,7 +15,11 @@ import com.lynx.fqb.select.impl.EntitySelectionImpl;
 public class Select {
 
     public static <R> EntitySelection<R> from(Class<R> rootCls) {
-        return EntitySelectionImpl.of(rootCls);
+        return EntitySelectionImpl.of(false, rootCls);
+    }
+
+    public static <R> EntitySelection<R> distinct(Class<R> rootCls) {
+        return EntitySelectionImpl.of(true, rootCls);
     }
 
     public static <S> ResultSelection<S> as(Class<S> selectionCls) {

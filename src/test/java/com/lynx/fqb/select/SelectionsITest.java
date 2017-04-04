@@ -26,6 +26,20 @@ public class SelectionsITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldSelectPagedEntities() {
+        List<Parent> resultList = Select.from(Parent.class).getResultList(em, 0, 1);
+
+        Assert.assertEquals(1, resultList.size());
+    }
+
+    @Test
+    public void shouldSelectDistinctEntities() {
+        List<Parent> resultList = Select.distinct(Parent.class).getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
     public void shouldSelectCustomResultsFromAttributes() {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Parent.class)

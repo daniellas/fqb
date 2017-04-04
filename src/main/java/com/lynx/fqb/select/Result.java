@@ -1,5 +1,7 @@
 package com.lynx.fqb.select;
 
+import static com.lynx.fqb.util.QueryBuilder.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -14,13 +16,15 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-import static com.lynx.fqb.util.QueryBuilder.*;
-
 public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
 
     Class<S> getSelectionCls();
 
     Class<R> getRootCls();
+
+    default Boolean getDistinct() {
+        return false;
+    }
 
     default Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
         return Optional.empty();
@@ -47,11 +51,13 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return q.getResultList();
     }
 
-    default Optional<S> getSingleResult(EntityManager em) {
+    default SingleResult<S> getSingleResult(EntityManager em) {
         try {
-            return Optional.of(apply(em).getSingleResult());
+            return SingleResult.ofResult(apply(em).getSingleResult());
         } catch (NoResultException e) {
-            return Optional.empty();
+            return SingleResult.ofResult(null);
+        } catch (RuntimeException e) {
+            return SingleResult.ofError(e);
         }
     }
 
@@ -61,6 +67,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
                 .andThen(createCriteriaQuery(getSelectionCls()))
                 .andThen(applyRoot(getRootCls()))
                 .andThen(applySelection(em.getCriteriaBuilder(), getSelections()))
+                .andThen(applyDistinct(em.getCriteriaBuilder(), getDistinct()))
                 .andThen(applyRestriction(em.getCriteriaBuilder(), getRestrictions()))
                 .andThen(applyOrder(em.getCriteriaBuilder(), getOrders()))
                 .andThen(createTypedQuery(em))

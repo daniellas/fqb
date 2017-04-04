@@ -13,9 +13,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QueryBuilder {
 
     public static Function<EntityManager, CriteriaBuilder> getCriteriaBuilder() {
@@ -44,6 +47,12 @@ public class QueryBuilder {
                                 s.apply(cb, ctx.getRoot()))),
                         ctx.getRoot());
             }).orElse(ctx);
+        };
+    }
+
+    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyDistinct(CriteriaBuilder cb, Boolean distinct) {
+        return ctx -> {
+            return QueryContext.of(ctx.getCq().distinct(distinct), ctx.getRoot());
         };
     }
 

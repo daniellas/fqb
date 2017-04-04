@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(staticName = "of")
 public class EntitySelectionImpl<S> implements EntitySelection<S> {
 
+    @Getter
+    private final Boolean distinct;
+    
     private final Class<S> selectionCls;
 
     @Override

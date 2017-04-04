@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 import javax.persistence.metamodel.SingularAttribute;
 
+import com.lynx.fqb.combinator.Combinators;
 import com.lynx.fqb.path.Paths;
 
 public interface Selections {
@@ -25,11 +26,7 @@ public interface Selections {
 
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> ofPaths(Function<Path<R>, ? extends Selection<?>>... selections) {
-        return (cb, root) -> {
-            return Arrays.stream(selections)
-                    .map(p -> p.apply(root))
-                    .toArray(Selection<?>[]::new);
-        };
+        return Combinators.fromFunctionList(selections, Selection<?>[]::new);
     }
 
 }

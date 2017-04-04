@@ -1,6 +1,5 @@
 package com.lynx.fqb.order;
 
-import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -10,13 +9,13 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
+import com.lynx.fqb.combinator.Combinators;
+
 public interface Orders {
 
     @SafeVarargs
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order[]> of(BiFunction<CriteriaBuilder, Root<T>, Order>... orders) {
-        return (cb, root) -> {
-            return Arrays.stream(orders).map(o -> o.apply(cb, root)).toArray(Order[]::new);
-        };
+        return Combinators.fromBiFunctionList(orders, Order[]::new);
     }
 
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> asc(Function<Path<T>, ? extends Expression<?>> path) {

@@ -76,11 +76,7 @@
                     <instructions>
                         <_noee>true</_noee>
                         <Export-Package>
-                            com.lynx.fqb,
-                            com.lynx.fqb.paging,
-                            com.lynx.fqb.path,
-                            com.lynx.fqb.select,
-                            com.lynx.fqb.sort
+                            com.lynx.fqb.*
                         </Export-Package>
                     </instructions>
                 </configuration>

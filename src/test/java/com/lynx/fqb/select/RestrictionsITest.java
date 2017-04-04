@@ -1,7 +1,8 @@
 package com.lynx.fqb.select;
 
+import static com.lynx.fqb.predicate.Predicates.*;
+
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.Tuple;
 
@@ -16,9 +17,6 @@ import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
-import com.lynx.fqb.select.Selections;
-
-import static com.lynx.fqb.predicate.Predicates.*;
 
 public class RestrictionsITest extends IntegrationTestBase {
 
@@ -34,12 +32,33 @@ public class RestrictionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectSingleResult() {
-        Optional<Parent> singleResult = Select
+        SingleResult<Parent> singleResult = Select
                 .from(Parent.class)
                 .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
+        Assert.assertNotNull(singleResult.get());
+    }
+
+    @Test
+    public void shouldSelectEmptySingleResult() {
+        SingleResult<Parent> singleResult = Select
+                .from(Parent.class)
+                .where(of(equal(Paths.get(Parent_.id), -1l)))
+                .getSingleResult(em);
+
+        Assert.assertFalse(singleResult.isPresent());
+    }
+
+    @Test
+    public void shouldSelectNonUniqueSingleResult() {
+        SingleResult<Parent> singleResult = Select
+                .from(Parent.class)
+                .where(of(gt(Paths.get(Parent_.id), -1l)))
+                .getSingleResult(em);
+
+        Assert.assertTrue(singleResult.isNonUnique());
     }
 
     @Test
