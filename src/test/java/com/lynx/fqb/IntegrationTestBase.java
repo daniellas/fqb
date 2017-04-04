@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 
@@ -14,6 +13,7 @@ import org.junit.BeforeClass;
 
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.transaction.TransactionalExecutor;
 
 public class IntegrationTestBase {
 
@@ -37,19 +37,16 @@ public class IntegrationTestBase {
 
         if (!initialized) {
             initialized = true;
+            TransactionalExecutor.using(em).run(() -> {
+                Parent parent = new Parent(null, "Max", new ArrayList<>());
 
-            EntityTransaction tx = em.getTransaction();
+                parent.addChild(new Child());
+                em.persist(parent);
 
-            tx.begin();
-            Parent parent = new Parent(null, "Max", new ArrayList<>());
-
-            parent.addChild(new Child());
-            em.persist(parent);
-
-            parent = new Parent(null, "John", new ArrayList<>());
-            parent.addChild(new Child());
-            em.persist(parent);
-            tx.commit();
+                parent = new Parent(null, "John", new ArrayList<>());
+                parent.addChild(new Child());
+                em.persist(parent);
+            });
         }
     }
 

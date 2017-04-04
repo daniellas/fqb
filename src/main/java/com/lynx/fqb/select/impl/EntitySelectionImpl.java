@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class EntitySelectionImpl<S> implements EntitySelection<S> {
 
     @Getter
-    private final Boolean distinct;
+    private final boolean distinct;
     
     private final Class<S> selectionCls;
 

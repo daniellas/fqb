@@ -12,6 +12,6 @@ public class UtilityPrivacyTest extends ConstructorPrivacyTestBase {
 
     @Parameters
     public static Collection<Class<?>> parameters() {
-        return Arrays.asList(Select.class, QueryBuilder.class, Combinators.class);
+        return Arrays.asList(Select.class, QueryBuilder.class, Combinators.class, Persist.class, Merge.class, Get.class);
     }
 }

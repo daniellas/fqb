@@ -22,7 +22,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
 
     Class<R> getRootCls();
 
-    default Boolean getDistinct() {
+    default boolean getDistinct() {
         return false;
     }
 
