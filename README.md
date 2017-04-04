@@ -1,4 +1,4 @@
-# FQB Functional Query Builder aka. FunctionalQube
+# FQB Functional Query Builder
 
 ## Why?
 
