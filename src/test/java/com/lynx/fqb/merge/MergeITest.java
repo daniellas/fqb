@@ -1,4 +1,4 @@
-package com.lynx.fqb.persist;
+package com.lynx.fqb.merge;
 
 import org.junit.Assert;
 import org.junit.Test;
