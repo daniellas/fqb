@@ -8,8 +8,8 @@ import javax.persistence.metamodel.SingularAttribute;
 public interface Paths {
 
     public static <A, B> Function<Path<A>, Path<B>> get(SingularAttribute<? super A, B> attr) {
-        return p -> {
-            return p.get(attr);
+        return path -> {
+            return path.get(attr);
         };
     }
 

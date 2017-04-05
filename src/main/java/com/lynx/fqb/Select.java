@@ -30,4 +30,20 @@ public class Select {
         return as(Tuple.class);
     }
 
+    public <R> EntitySelection<R> fromEntity(Class<R> rootCls) {
+        return from(rootCls);
+    }
+
+    public <R> EntitySelection<R> distinctEntity(Class<R> rootCls) {
+        return distinct(rootCls);
+    }
+
+    public <S> ResultSelection<S> asCustom(Class<S> selectionCls) {
+        return as(selectionCls);
+    }
+
+    public ResultSelection<Tuple> asTuple() {
+        return tuple();
+    }
+
 }

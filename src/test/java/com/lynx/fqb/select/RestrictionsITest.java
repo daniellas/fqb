@@ -18,13 +18,17 @@ import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
 
+import static com.lynx.fqb.path.Paths.*;
+
+import static com.lynx.fqb.select.Selections.*;
+
 public class RestrictionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesRestricted() {
         List<Parent> resultList = Select
                 .from(Parent.class)
-                .where(of(equal(Paths.get(Parent_.id), 1l)))
+                .where(of(equal(get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -34,7 +38,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectSingleResult() {
         SingleResult<Parent> singleResult = Select
                 .from(Parent.class)
-                .where(of(equal(Paths.get(Parent_.id), 1l)))
+                .where(of(equal(get(Parent_.id), 1l)))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
@@ -45,7 +49,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectEmptySingleResult() {
         SingleResult<Parent> singleResult = Select
                 .from(Parent.class)
-                .where(of(equal(Paths.get(Parent_.id), -1l)))
+                .where(of(equal(get(Parent_.id), -1l)))
                 .getSingleResult(em);
 
         Assert.assertFalse(singleResult.isPresent());
@@ -55,7 +59,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectNonUniqueSingleResult() {
         SingleResult<Parent> singleResult = Select
                 .from(Parent.class)
-                .where(of(gt(Paths.get(Parent_.id), -1l)))
+                .where(of(gt(get(Parent_.id), -1l)))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isNonUnique());
@@ -65,7 +69,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectEntitiesRestrictedByLike() {
         List<Parent> resultList = Select
                 .from(Parent.class)
-                .where(of(contains(Paths.get(Parent_.name), "a")))
+                .where(of(contains(get(Parent_.name), "a")))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -75,7 +79,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectEntitiesRestrictedByCombinedPredicates() {
         List<Parent> resultList = Select
                 .from(Parent.class)
-                .where(of(equal(Paths.get(Parent_.id), 1l)))
+                .where(of(equal(get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -85,8 +89,8 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectCustomResultRestricted() {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Parent.class)
-                .with(Selections.ofAttributes(Parent_.id, Parent_.name))
-                .where(of(equal(Paths.get(Parent_.id), 1l)))
+                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
+                .where(of(equal(get(Parent_.id), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -96,7 +100,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectCustomResultFromPathsRestricted() {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Parent.class)
-                .with(Selections.ofPaths(Paths.get(Parent_.id), Paths.get(Parent_.name)))
+                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
                 .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 
@@ -107,8 +111,8 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectCustomResultFromNestedPathsRestricted() {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Child.class)
-                .with(Selections.ofPaths(Paths.get(Child_.id), Paths.get(Child_.parent).andThen(Paths.get(Parent_.name))))
-                .where(of(equal(Paths.get(Child_.id), 2l)))
+                .with(of(path(get(Child_.id)), path(get(Child_.parent).andThen(Paths.get(Parent_.name)))))
+                .where(of(equal(get(Child_.id), 2l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -118,7 +122,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     public void shouldSelectTupleRestricted() {
         List<Tuple> resultList = Select.tuple()
                 .from(Parent.class)
-                .with(Selections.ofAttributes(Parent_.id, Parent_.name))
+                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
                 .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 

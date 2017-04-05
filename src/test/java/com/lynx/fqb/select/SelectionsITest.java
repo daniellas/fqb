@@ -40,20 +40,10 @@ public class SelectionsITest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldSelectCustomResultsFromAttributes() {
+    public void shouldSelectCustomResults() {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Parent.class)
-                .with(ofAttributes(Parent_.id, Parent_.name))
-                .getResultList(em);
-
-        Assert.assertFalse(resultList.isEmpty());
-    }
-
-    @Test
-    public void shouldSelectCustomResultsFromPaths() {
-        List<CustomResult> resultList = Select.as(CustomResult.class)
-                .from(Parent.class)
-                .with(ofPaths(get(Parent_.id), get(Parent_.name)))
+                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -63,7 +53,7 @@ public class SelectionsITest extends IntegrationTestBase {
     public void shouldSelectCustomResultsFromNestedPaths() {
         List<CustomResult> resultList = Select.as(CustomResult.class)
                 .from(Child.class)
-                .with(ofPaths(get(Child_.id), get(Child_.parent).andThen(get(Parent_.name))))
+                .with(of(path(get(Child_.id)), path(get(Child_.parent).andThen(get(Parent_.name)))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

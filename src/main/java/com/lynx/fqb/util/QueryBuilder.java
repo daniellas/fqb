@@ -33,18 +33,12 @@ public class QueryBuilder {
         return cq -> QueryContext.of(cq, cq.from(rootCls));
     }
 
-    public static <R> Function<QueryContext<R, R>, QueryContext<R, R>> applyRootSelection() {
-        return ctx -> QueryContext.of(ctx.getCq().select(ctx.getRoot()), ctx.getRoot());
-    }
-
     public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applySelection(CriteriaBuilder cb,
             Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selection) {
         return ctx -> {
             return selection.map(s -> {
                 return QueryContext.of(
-                        ctx.getCq().select(cb.construct(
-                                ctx.getCq().getResultType(),
-                                s.apply(cb, ctx.getRoot()))),
+                        ctx.getCq().select(cb.construct(ctx.getCq().getResultType(), s.apply(cb, ctx.getRoot()))),
                         ctx.getRoot());
             }).orElse(ctx);
         };
