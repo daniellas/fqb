@@ -8,7 +8,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.combinator.Combinators;
+import com.lynx.fqb.expression.Expressions.Context;
+import com.lynx.fqb.util.Combinators;
 
 public interface Selections {
 
@@ -20,6 +21,12 @@ public interface Selections {
     public static <R, T> BiFunction<CriteriaBuilder, Root<R>, Selection<?>> path(Function<Path<R>, Path<T>> path) {
         return (cb, root) -> {
             return path.apply(root);
+        };
+    }
+
+    public static <R, E> BiFunction<CriteriaBuilder, Root<R>, Selection<?>> expr(BiFunction<CriteriaBuilder, Root<R>, Context<R, E>> expression) {
+        return (cb, root) -> {
+            return expression.apply(cb, root).getExpression();
         };
     }
 

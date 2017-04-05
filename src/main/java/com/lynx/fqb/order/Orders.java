@@ -9,7 +9,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import com.lynx.fqb.combinator.Combinators;
+import com.lynx.fqb.util.Combinators;
 
 public interface Orders {
 

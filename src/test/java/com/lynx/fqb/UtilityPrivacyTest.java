@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.junit.runners.Parameterized.Parameters;
 
-import com.lynx.fqb.combinator.Combinators;
+import com.lynx.fqb.util.Combinators;
 import com.lynx.fqb.util.QueryBuilder;
 
 public class UtilityPrivacyTest extends ConstructorPrivacyTestBase {

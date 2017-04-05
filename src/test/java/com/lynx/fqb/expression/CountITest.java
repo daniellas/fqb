@@ -1,25 +1,51 @@
 package com.lynx.fqb.expression;
 
-import java.util.function.BiFunction;
+import static com.lynx.fqb.expression.Expressions.*;
+import static com.lynx.fqb.path.Paths.*;
+import static com.lynx.fqb.select.Selections.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
-import com.lynx.fqb.path.Paths;
-import com.lynx.fqb.select.Selections;
 
 public class CountITest extends IntegrationTestBase {
 
     @Test
-    public void shouldCount() {
-//        Select.as(Long.class).from(Parent.class).with();
+    public void shouldSelectEntityCount() {
+        Assert.assertNotNull(Select.as(Long.class).from(Parent.class).with(of(expr(count(Parent.class)))).getSingleResult(em));
     }
+
+    @Test
+    public void shouldSelectEntityCountAndThenSum() {
+        Assert.assertNotNull(Select.as(Long.class).from(Parent.class).with(of(expr(count(Parent.class).andThen(sum(1l))))).getSingleResult(em));
+    }
+
+    @Test
+    public void shouldSelectEntityCountAndThenSumDiff() {
+        Assert.assertNotNull(Select.as(Long.class).from(Parent.class).with(of(expr(
+                count(Parent.class)
+                        .andThen(sum(1l))
+                        .andThen(diff(1l)))))
+                .getSingleResult(em));
+    }
+
+    @Test
+    public void shouldSelectEntityDistinctCount() {
+        Assert.assertNotNull(Select.as(Long.class).from(Parent.class).with(of(expr(countDistinct(Parent.class)))).getSingleResult(em));
+    }
+
+    @Test
+    public void shouldSelectPathCount() {
+        Assert.assertNotNull(Select.as(Long.class).from(Parent.class).with(of(expr(count(get(Parent_.name))))).getSingleResult(em));
+    }
+
+    @Test
+    public void shouldSelectPathDistinctCount() {
+        Assert.assertNotNull(Select.as(Long.class).from(Parent.class).with(of(expr(countDistinct(get(Parent_.name))))).getSingleResult(em));
+    }
+
 }
