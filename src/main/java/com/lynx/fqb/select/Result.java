@@ -16,6 +16,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.predicate.PredicatesInterceptor;
+
 public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
 
     Class<S> getSelectionCls();
@@ -37,6 +39,10 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
     default Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> getOrders() {
         return Optional.empty();
     };
+
+    default PredicatesInterceptor<R> getPredicatesInterceptor() {
+        return PredicatesInterceptor.identity();
+    }
 
     default List<S> getResultList(EntityManager em) {
         return apply(em).getResultList();
@@ -68,7 +74,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
                 .andThen(applyRoot(getRootCls()))
                 .andThen(applySelection(em.getCriteriaBuilder(), getSelections()))
                 .andThen(applyDistinct(em.getCriteriaBuilder(), getDistinct()))
-                .andThen(applyRestriction(em.getCriteriaBuilder(), getRestrictions()))
+                .andThen(applyRestriction(em.getCriteriaBuilder(), getRestrictions(), getPredicatesInterceptor()))
                 .andThen(applyOrder(em.getCriteriaBuilder(), getOrders()))
                 .andThen(createTypedQuery(em))
                 .apply(em);

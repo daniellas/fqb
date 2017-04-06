@@ -1,10 +1,12 @@
 # FQB Functional Query Builder
 
+FQB provides functional fluent interface for criteria queries building along with basic JPA Entity Manager operations like: persist/merge, delete, get.
+
 ## Why?
 
 There are a fiev JPA query construction supporting libraries available:
 
-* Spring Data JPA - I really like it but [TBC]
+* Spring Data JPA - [TBC]
 * QueryDSL - [TBC]
 
 FQB presents some other approach to this matter. Here below you can find reasons why I have created this library.
@@ -12,7 +14,7 @@ FQB presents some other approach to this matter. Here below you can find reasons
 1. It was fun and good exercise
 2. FQB is type safe, most of errors are detected during compile time
 3. No JDK proxies or other magic under the hood
-4. Minimal required dependencies to run, only JPA 2.1 API 
+4. Minimal required runtime dependencies, only JPA 2.1 API 
 
 There is one important thing to mention. FQB aims to give you ability of easy JPA queries construction whose structure can be defined during runtime depending on variables or method parameters values. 
 

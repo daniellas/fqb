@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "of")
-public class ResultSelectionImpl<S> implements ResultSelection<S> {
+public class ResultSelectionImpl<S, R> implements ResultSelection<S> {
 
     @Getter
     private final Class<S> selectionCls;

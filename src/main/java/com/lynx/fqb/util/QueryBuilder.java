@@ -13,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.predicate.PredicatesInterceptor;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,10 +52,13 @@ public class QueryBuilder {
         };
     }
 
-    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyRestriction(CriteriaBuilder cb,
-            Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> predicates) {
+    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyRestriction(
+            CriteriaBuilder cb,
+            Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> predicates,
+            PredicatesInterceptor<R> interceptor) {
         return ctx -> {
             return predicates.map(p -> {
+                interceptor.apply(cb, ctx.getRoot(), p.apply(cb, ctx.getRoot()));
                 return QueryContext.of(ctx.getCq().where(p.apply(cb, ctx.getRoot())), ctx.getRoot());
             }).orElse(ctx);
         };

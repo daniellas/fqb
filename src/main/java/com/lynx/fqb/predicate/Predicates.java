@@ -1,6 +1,7 @@
 package com.lynx.fqb.predicate;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -21,6 +22,16 @@ public interface Predicates {
     public static <R> BiFunction<CriteriaBuilder, Root<R>, Predicate[]> of(BiFunction<CriteriaBuilder, Root<R>, Context<R>>... predicates) {
         return (cb, root) -> {
             return Arrays.stream(predicates).map(p -> p.apply(cb, root).getPredicate()).toArray(Predicate[]::new);
+        };
+    }
+
+    @SafeVarargs
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Predicate[]> of(Optional<BiFunction<CriteriaBuilder, Root<R>, Context<R>>>... predicates) {
+        return (cb, root) -> {
+            return Arrays.stream(predicates)
+                    .filter(Optional::isPresent)
+                    .map(p -> p.get().apply(cb, root).getPredicate())
+                    .toArray(Predicate[]::new);
         };
     }
 
