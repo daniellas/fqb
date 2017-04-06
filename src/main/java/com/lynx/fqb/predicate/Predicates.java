@@ -3,6 +3,7 @@ package com.lynx.fqb.predicate;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -10,82 +11,119 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+// TODO Add support for disjunction/conjunction
 public interface Predicates {
 
     @SafeVarargs
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate[]> of(BiFunction<CriteriaBuilder, Root<T>, Predicate>... predicates) {
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Predicate[]> of(BiFunction<CriteriaBuilder, Root<R>, Context<R>>... predicates) {
         return (cb, root) -> {
-            return Arrays.stream(predicates).map(p -> p.apply(cb, root)).toArray(Predicate[]::new);
-        };
-    }
-
-    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> equal(Function<Path<T>, ? extends Expression<V>> path, V value) {
-        return (cb, root) -> {
-            return cb.equal(path.apply(root), value);
-        };
-    }
-
-    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> notEqual(Function<Path<T>, ? extends Expression<V>> path, V value) {
-        return (cb, root) -> {
-            return cb.notEqual(path.apply(root), value);
+            return Arrays.stream(predicates).map(p -> p.apply(cb, root).getPredicate()).toArray(Predicate[]::new);
         };
     }
 
     @SafeVarargs
-    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> in(Function<Path<T>, ? extends Expression<V>> path, V... values) {
-        return (cb, root) -> {
-            return path.apply(root).in(values);
+    public static <R> Function<Context<R>, Context<R>> and(BiFunction<CriteriaBuilder, Root<R>, Context<R>>... predicates) {
+        return ctx -> {
+            return Context.of(
+                    ctx.getCb(),
+                    ctx.getRoot(),
+                    ctx.getCb().and(Stream.concat(
+                            Arrays.stream(new Predicate[] { ctx.getPredicate() }),
+                            Arrays.stream(predicates).map(p -> p.apply(ctx.getCb(), ctx.getRoot()).getPredicate())).toArray(Predicate[]::new)));
         };
     }
 
     @SafeVarargs
-    public static <T, V> BiFunction<CriteriaBuilder, Root<T>, Predicate> notIn(Function<Path<T>, ? extends Expression<V>> path, V... values) {
-        return (cb, root) -> {
-            return path.apply(root).in(values).not();
+    public static <R> Function<Context<R>, Context<R>> or(BiFunction<CriteriaBuilder, Root<R>, Context<R>>... predicates) {
+        return ctx -> {
+            ctx.getCb().conjunction();
+            return Context.of(
+                    ctx.getCb(),
+                    ctx.getRoot(),
+                    ctx.getCb().or(Stream.concat(
+                            Arrays.stream(new Predicate[] { ctx.getPredicate() }),
+                            Arrays.stream(predicates).map(p -> p.apply(ctx.getCb(), ctx.getRoot()).getPredicate())).toArray(Predicate[]::new)));
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> isNotNull(Function<Path<T>, ? extends Expression<?>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> equal(Function<Path<R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
-            return path.apply(root).isNotNull();
+            return Context.of(cb, root, cb.equal(path.apply(root), value));
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> isNull(Function<Path<T>, ? extends Expression<?>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> notEqual(Function<Path<R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
-            return path.apply(root).isNull();
+            return Context.of(cb, root, cb.notEqual(path.apply(root), value));
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> like(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+    @SafeVarargs
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> in(Function<Path<R>, ? extends Expression<V>> path, V... values) {
         return (cb, root) -> {
-            return cb.like(path.apply(root), pattern);
+            return Context.of(cb, root, path.apply(root).in(values));
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> contains(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+    @SafeVarargs
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> notIn(Function<Path<R>, ? extends Expression<V>> path, V... values) {
+        return (cb, root) -> {
+            return Context.of(cb, root, path.apply(root).in(values).not());
+        };
+    }
+
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> isNotNull(Function<Path<R>, ? extends Expression<?>> path) {
+        return (cb, root) -> {
+            return Context.of(cb, root, path.apply(root).isNotNull());
+        };
+    }
+
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> isNull(Function<Path<R>, ? extends Expression<?>> path) {
+        return (cb, root) -> {
+            return Context.of(cb, root, path.apply(root).isNull());
+        };
+    }
+
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> like(Function<Path<R>, ? extends Expression<String>> path, String pattern) {
+        return (cb, root) -> {
+            return Context.of(cb, root, cb.like(path.apply(root), pattern));
+        };
+    }
+
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> contains(Function<Path<R>, ? extends Expression<String>> path, String pattern) {
         return like(path, "%" + pattern + "%");
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> startsWith(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> startsWith(Function<Path<R>, ? extends Expression<String>> path, String pattern) {
         return like(path, "%" + pattern);
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Predicate> endsWith(Function<Path<T>, ? extends Expression<String>> path, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> endsWith(Function<Path<R>, ? extends Expression<String>> path, String pattern) {
         return like(path, pattern + "%");
     }
 
-    public static <T, V extends Number> BiFunction<CriteriaBuilder, Root<T>, Predicate> gt(Function<Path<T>, ? extends Expression<V>> path, V value) {
+    public static <R, V extends Number> BiFunction<CriteriaBuilder, Root<R>, Context<R>> gt(Function<Path<R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
-            return cb.gt(path.apply(root), value);
+            return Context.of(cb, root, cb.gt(path.apply(root), value));
         };
     }
 
-    public static <T, V extends Comparable<V>> BiFunction<CriteriaBuilder, Root<T>, Predicate> greaterThan(Function<Path<T>, ? extends Expression<V>> path,
+    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Root<R>, Context<R>> greaterThan(Function<Path<R>, ? extends Expression<V>> path,
             V value) {
         return (cb, root) -> {
-            return cb.greaterThan(path.apply(root), value);
+            return Context.of(cb, root, cb.greaterThan(path.apply(root), value));
         };
+    }
+
+    @Getter
+    @RequiredArgsConstructor(staticName = "of")
+    public static class Context<R> {
+        private final CriteriaBuilder cb;
+        private final Root<R> root;
+        private final Predicate predicate;
     }
 
 }

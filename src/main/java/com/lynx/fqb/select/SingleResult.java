@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SingleResult<T> {
 
+    @Getter
     private final Optional<T> result;
 
     @Getter

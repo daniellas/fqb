@@ -83,7 +83,13 @@
                     <instructions>
                         <_noee>true</_noee>
                         <Export-Package>
-                            com.lynx.fqb.*
+                            com.lynx.fqb,
+                            com.lynx.fqb.expression,
+                            com.lynx.fqb.order,
+                            com.lynx.fqb.path,
+                            com.lynx.fqb.predicate,
+                            com.lynx.fqb.select,
+                            com.lynx.fqb.select.impl
                         </Export-Package>
                     </instructions>
                 </configuration>
@@ -246,6 +252,45 @@
 
     </build>
 
+    <profiles>
+        <profile>
+            <id>karafdev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.hrtools</groupId>
+                        <artifactId>karafci-maven-plugin</artifactId>
+                        <version>1.0.28</version>
+                        <configuration>
+                            <url>${jolokia.url}</url>
+                            <user>${jolokia.user}</user>
+                            <password>${jolokia.password}</password>
+                            <name>com.lynx.fqb</name>
+                            <version>${project.version}</version>
+                            <location>mvn:${project.groupId}/${project.artifactId}/${project.version}</location>
+                            <startLevel>80</startLevel>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>updateInstall</goal>
+                                    <goal>setStartLevel</goal>
+                                    <goal>stopPrevious</goal>
+                                    <goal>uninstallPrevious</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
