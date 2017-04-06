@@ -8,18 +8,17 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(staticName = "of")
-public class EntitySelectionImpl<S> implements EntitySelection<S> {
+public class EntitySelectionImpl<R> implements EntitySelection<R> {
 
     @Getter
     private final boolean distinct;
 
-    private final Class<S> selectionCls;
+    private final Class<R> selectionCls;
 
-    @Getter
-    private final PredicatesInterceptor<S> predicatesInterceptor;
+    private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Class<S> getRootCls() {
+    public Class<R> getRootCls() {
         return selectionCls;
     }
 

@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.predicate.PredicatesInterceptor;
 import com.lynx.fqb.select.Join;
 
 public class JoinImpl<S, R> implements Join<S, R> {
@@ -33,6 +34,12 @@ public class JoinImpl<S, R> implements Join<S, R> {
 
     @Override
     public Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PredicatesInterceptor<R> getPredicatesInterceptor() {
         // TODO Auto-generated method stub
         return null;
     }

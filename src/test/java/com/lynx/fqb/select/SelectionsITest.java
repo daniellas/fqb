@@ -41,8 +41,7 @@ public class SelectionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectCustomResults() {
-        List<CustomResult> resultList = Select.as(CustomResult.class)
-                .from(Parent.class)
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
                 .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
                 .getResultList(em);
 
@@ -51,8 +50,7 @@ public class SelectionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectCustomResultsFromNestedPaths() {
-        List<CustomResult> resultList = Select.as(CustomResult.class)
-                .from(Child.class)
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
                 .with(of(path(get(Child_.id)), path(get(Child_.parent).andThen(get(Parent_.name)))))
                 .getResultList(em);
 

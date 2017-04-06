@@ -1,8 +1,8 @@
 package com.lynx.fqb.select;
 
-public interface EntitySelection<S> extends Join<S, S> {
+public interface EntitySelection<R> extends Join<R, R> {
 
-    default Join<S, S> join() {
+    default Join<R, R> join() {
         return null;
     }
 

@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.predicate.PredicatesInterceptor;
 import com.lynx.fqb.select.CustomSelection;
 
 import lombok.Getter;
@@ -22,6 +23,9 @@ public class CustomSelectionImpl<S, R> implements CustomSelection<S, R> {
     private final Class<R> rootCls;
 
     private final BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selections;
+
+    @Getter
+    private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
     public Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {

@@ -9,6 +9,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.predicate.PredicatesInterceptor;
 import com.lynx.fqb.select.OrderBy;
 
 import lombok.Getter;
@@ -28,6 +29,9 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> restrictions;
+
+    @Getter
+    private final PredicatesInterceptor<R> predicatesInterceptor;
 
     private final BiFunction<CriteriaBuilder, Root<R>, Order[]> orders;
 

@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.predicate.PredicatesInterceptor;
 import com.lynx.fqb.select.Having;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,12 @@ public class HavingImpl<S, R> implements Having<S, R> {
 
     @Override
     public TypedQuery<S> apply(EntityManager t) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PredicatesInterceptor<R> getPredicatesInterceptor() {
         // TODO Auto-generated method stub
         return null;
     }

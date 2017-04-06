@@ -40,9 +40,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     };
 
-    default PredicatesInterceptor<R> getPredicatesInterceptor() {
-        return PredicatesInterceptor.identity();
-    }
+    PredicatesInterceptor<R> getPredicatesInterceptor();
 
     default List<S> getResultList(EntityManager em) {
         return apply(em).getResultList();
