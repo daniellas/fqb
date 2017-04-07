@@ -1,16 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <configuration scan="true">
 
-	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%-5p %d{yy-MM-dd HH:mm:ss.SSS} [%X{loggingContextPath}]- %C{1} - %m%n
-			</Pattern>
-		</layout>
-	</appender>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%-5p %d{yy-MM-dd HH:mm:ss.SSS} [%X{loggingContextPath}]- %C{1} - %m%n
+            </Pattern>
+        </layout>
+    </appender>
 
-	<root level="INFO">
-		<appender-ref ref="CONSOLE" />
-	</root>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
 
 </configuration>

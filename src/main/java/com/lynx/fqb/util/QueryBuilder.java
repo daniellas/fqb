@@ -28,65 +28,66 @@ public class QueryBuilder {
         return em -> em.getCriteriaBuilder();
     }
 
-    public static <S> Function<CriteriaBuilder, CriteriaQuery<S>> createCriteriaQuery(Class<S> resultCls) {
-        return cb -> cb.createQuery(resultCls);
+    public static <S, R> Function<CriteriaBuilder, Context<S, R>> createCriteriaQuery(Class<S> resultCls, Class<R> rootCls) {
+        return cb -> Context.of(cb, cb.createQuery(resultCls), null);
     }
 
-    public static <S, R> Function<CriteriaQuery<S>, QueryContext<S, R>> applyRoot(Class<R> rootCls) {
-        return cq -> QueryContext.of(cq, cq.from(rootCls));
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyRoot(Class<R> rootCls) {
+        return ctx -> Context.of(ctx.getCb(), ctx.getCq(), ctx.getCq().from(rootCls));
     }
 
-    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applySelection(CriteriaBuilder cb,
-            Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selection) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applySelection(Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selection) {
         return ctx -> {
             return selection.map(s -> {
-                return QueryContext.of(
-                        ctx.getCq().select(cb.construct(ctx.getCq().getResultType(), s.apply(cb, ctx.getRoot()))),
+                return Context.of(
+                        ctx.getCb(),
+                        ctx.getCq().select(ctx.getCb().construct(ctx.getCq().getResultType(), s.apply(ctx.getCb(), ctx.getRoot()))),
                         ctx.getRoot());
             }).orElse(ctx);
         };
     }
 
-    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyDistinct(CriteriaBuilder cb, Boolean distinct) {
-        return ctx -> QueryContext.of(ctx.getCq().distinct(distinct), ctx.getRoot());
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyDistinct(Boolean distinct) {
+        return ctx -> Context.of(ctx.getCb(),ctx.getCq().distinct(distinct), ctx.getRoot());
     }
 
-    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyRestriction(
-            CriteriaBuilder cb,
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyRestriction(
             Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> predicates,
             PredicatesInterceptor<R> interceptor) {
         return ctx -> {
             return predicates.map(p -> {
-                return QueryContext.of(
+                return Context.of(
+                        ctx.getCb(),
                         ctx.getCq().where(
-                                interceptor.apply(cb, ctx.getRoot(), p.apply(cb, ctx.getRoot()))),
+                                interceptor.apply(ctx.getCb(), ctx.getRoot(), p.apply(ctx.getCb(), ctx.getRoot()))),
                         ctx.getRoot());
             }).orElseGet(() -> {
-                return QueryContext.of(
+                return Context.of(
+                        ctx.getCb(),
                         ctx.getCq().where(
-                                interceptor.apply(cb, ctx.getRoot(), new Predicate[] {})),
+                                interceptor.apply(ctx.getCb(), ctx.getRoot(), new Predicate[] {})),
                         ctx.getRoot());
             });
         };
     }
 
-    public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyOrder(CriteriaBuilder cb,
-            Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> orders) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyOrder(Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> orders) {
         return ctx -> {
             return orders.map(o -> {
-                return QueryContext.of(ctx.getCq().orderBy(o.apply(cb, ctx.getRoot())), ctx.getRoot());
+                return Context.of(ctx.getCb(),ctx.getCq().orderBy(o.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
             }).orElse(ctx);
         };
     }
 
-    public static <S, R> Function<QueryContext<S, R>, TypedQuery<S>> createTypedQuery(EntityManager em) {
+    public static <S, R> Function<Context<S, R>, TypedQuery<S>> createTypedQuery(EntityManager em) {
         return ctx -> em.createQuery(ctx.getCq());
     }
 
     @ToString
     @Getter
     @RequiredArgsConstructor(staticName = "of")
-    public static class QueryContext<S, R> {
+    public static class Context<S, R> {
+        private final CriteriaBuilder cb;
         private final CriteriaQuery<S> cq;
         private final Root<R> root;
     }

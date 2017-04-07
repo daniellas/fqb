@@ -17,6 +17,10 @@ import com.lynx.fqb.transaction.TransactionalExecutor;
 
 public class IntegrationTestBase {
 
+    public static final String PARENT_MAX_NAME = "Max";
+
+    public static final String PARENT_JOHN_NAME = "John";
+
     protected static EntityManagerFactory emf;
 
     protected EntityManager em;
@@ -38,12 +42,12 @@ public class IntegrationTestBase {
         if (!initialized) {
             initialized = true;
             TransactionalExecutor.using(em).run(() -> {
-                Parent parent = new Parent(null, "Max", new ArrayList<>());
+                Parent parent = new Parent(null, PARENT_MAX_NAME, new ArrayList<>());
 
                 parent.addChild(new Child());
                 em.persist(parent);
 
-                parent = new Parent(null, "John", new ArrayList<>());
+                parent = new Parent(null, PARENT_JOHN_NAME, new ArrayList<>());
                 parent.addChild(new Child());
                 em.persist(parent);
             });

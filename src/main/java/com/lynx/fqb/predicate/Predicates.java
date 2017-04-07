@@ -1,6 +1,7 @@
 package com.lynx.fqb.predicate;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -11,6 +12,9 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
+
+import com.lynx.fqb.path.Paths;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +70,10 @@ public interface Predicates {
         };
     }
 
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> equal(SingularAttribute<? super R, V> attr, V value) {
+        return equal(Paths.get(attr), value);
+    }
+
     public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> notEqual(Function<Path<R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.notEqual(path.apply(root), value));
@@ -79,8 +87,20 @@ public interface Predicates {
         };
     }
 
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> in(Function<Path<R>, ? extends Expression<V>> path, Collection<V> values) {
+        return (cb, root) -> {
+            return Context.of(cb, root, path.apply(root).in(values));
+        };
+    }
+
     @SafeVarargs
     public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> notIn(Function<Path<R>, ? extends Expression<V>> path, V... values) {
+        return (cb, root) -> {
+            return Context.of(cb, root, path.apply(root).in(values).not());
+        };
+    }
+
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R>> notIn(Function<Path<R>, ? extends Expression<V>> path, Collection<V> values) {
         return (cb, root) -> {
             return Context.of(cb, root, path.apply(root).in(values).not());
         };
@@ -106,6 +126,10 @@ public interface Predicates {
 
     public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> contains(Function<Path<R>, ? extends Expression<String>> path, String pattern) {
         return like(path, "%" + pattern + "%");
+    }
+
+    public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> contains(SingularAttribute<? super R, String> attr, String pattern) {
+        return contains(Paths.get(attr), pattern);
     }
 
     public static <R> BiFunction<CriteriaBuilder, Root<R>, Context<R>> startsWith(Function<Path<R>, ? extends Expression<String>> path, String pattern) {

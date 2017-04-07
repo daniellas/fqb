@@ -8,9 +8,14 @@
         <class>com.lynx.fqb.entity.Child</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:test" />
-            <property name="hibernate.show_sql" value="true" />
+            <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}" />
+            <property name="javax.persistence.jdbc.url" value="${jdbc.url}" />
+            <property name="javax.persistence.jdbc.user" value="${jdbc.user}" />
+            <property name="javax.persistence.jdbc.password" value="${jdbc.password}" />
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
+            <property name="hibernate.hikari.minimumIdle" value="20" />
+            <property name="hibernate.hikari.maximumPoolSize" value="100" />
+            <property name="hibernate.show_sql" value="${show.sql}" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
     </persistence-unit>

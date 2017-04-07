@@ -11,18 +11,19 @@
 
     <dependencies>
 
-        <!-- JPA -->
+        <!-- JPA API -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>1.0.0.Final</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.1.0.Final</version>
+            <version>5.2.9.Final</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -31,12 +32,33 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-hikaricp</artifactId>
+            <version>5.2.9.Final</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- HSQL in memory database -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- PostgreSQL JDBC driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.6.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -186,6 +208,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*ITest.java</exclude>
+                        <exclude>**/*IPTest.java</exclude>
                     </excludes>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -238,6 +261,12 @@
             </plugin>
         </plugins>
 
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
 
     <profiles>
@@ -260,6 +289,44 @@
                         </configuration>
                         <executions>
                             <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>performance</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <show.sql>false</show.sql>
+                <jdbc.driver>org.postgresql.Driver</jdbc.driver>
+                <jdbc.url>jdbc:postgresql://localhost/fqb</jdbc.url>
+                <jdbc.user>fqb</jdbc.user>
+                <jdbc.password>fqb</jdbc.password>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <configuration>
+                            <includes>
+                                <include>**/*IPTest.java</include>
+                            </includes>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
                                 <goals>
                                     <goal>integration-test</goal>
                                     <goal>verify</goal>
@@ -313,6 +380,12 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <show.sql>true</show.sql>
+        <jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
+        <jdbc.url>jdbc:hsqldb:mem:test</jdbc.url>
+        <jdbc.user>sa</jdbc.user>
+        <jdbc.password></jdbc.password>
     </properties>
 
 </project>

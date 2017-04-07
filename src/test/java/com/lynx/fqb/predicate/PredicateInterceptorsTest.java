@@ -52,4 +52,18 @@ public class PredicateInterceptorsTest extends MockTestBase<Parent, Parent> {
         verify(interceptor).apply(any(), any(), any());
     }
 
+    @Test
+    public void shouldAddPredicatesOnSingleResult() {
+        Predicate[] predicates = new Predicate[] {};
+
+        when(cq.where(predicates)).thenReturn(cq);
+        when(interceptor.apply(any(), any(), any())).thenReturn(predicates);
+
+        new Select.InterceptingSelect<>(interceptor)
+                .from(Parent.class)
+                .getSingleResult(em);
+
+        verify(interceptor).apply(any(), any(), any());
+    }
+
 }

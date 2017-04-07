@@ -68,12 +68,12 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
     @Override
     default TypedQuery<S> apply(EntityManager em) {
         return getCriteriaBuilder()
-                .andThen(createCriteriaQuery(getSelectionCls()))
+                .andThen(createCriteriaQuery(getSelectionCls(), getRootCls()))
                 .andThen(applyRoot(getRootCls()))
-                .andThen(applySelection(em.getCriteriaBuilder(), getSelections()))
-                .andThen(applyDistinct(em.getCriteriaBuilder(), isDistinct()))
-                .andThen(applyRestriction(em.getCriteriaBuilder(), getRestrictions(), getPredicatesInterceptor()))
-                .andThen(applyOrder(em.getCriteriaBuilder(), getOrders()))
+                .andThen(applySelection(getSelections()))
+                .andThen(applyDistinct(isDistinct()))
+                .andThen(applyRestriction(getRestrictions(), getPredicatesInterceptor()))
+                .andThen(applyOrder(getOrders()))
                 .andThen(createTypedQuery(em))
                 .apply(em);
     }

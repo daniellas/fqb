@@ -28,7 +28,7 @@ public class PathsITest extends IntegrationTestBase {
 
     private <T> Root<T> root(Class<T> cls) {
         return getCriteriaBuilder()
-                .andThen(createCriteriaQuery(cls))
+                .andThen(createCriteriaQuery(cls, cls))
                 .andThen(applyRoot(cls))
                 .apply(em)
                 .getRoot();

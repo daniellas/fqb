@@ -10,9 +10,9 @@ import com.lynx.fqb.entity.Parent;
 public class QueryBuilderITest extends IntegrationTestBase {
 
     @Test
-    public void shouldSelectEntity() {
+    public void shouldSelectEntities() {
         getCriteriaBuilder()
-                .andThen(createCriteriaQuery(Parent.class))
+                .andThen(createCriteriaQuery(Parent.class, Parent.class))
                 .andThen(applyRoot(Parent.class))
                 .andThen(createTypedQuery(em))
                 .apply(em)
