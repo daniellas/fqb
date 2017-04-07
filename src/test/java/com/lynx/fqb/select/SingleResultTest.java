@@ -68,4 +68,9 @@ public class SingleResultTest {
 
         Assert.assertEquals(1, cnt.get());
     }
+
+    @Test
+    public void shouldHasResult() {
+        Assert.assertTrue(SingleResult.ofResult(1l).getResult().isPresent());
+    }
 }

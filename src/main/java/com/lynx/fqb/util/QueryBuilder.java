@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QueryBuilder {
@@ -47,9 +48,7 @@ public class QueryBuilder {
     }
 
     public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyDistinct(CriteriaBuilder cb, Boolean distinct) {
-        return ctx -> {
-            return QueryContext.of(ctx.getCq().distinct(distinct), ctx.getRoot());
-        };
+        return ctx -> QueryContext.of(ctx.getCq().distinct(distinct), ctx.getRoot());
     }
 
     public static <S, R> Function<QueryContext<S, R>, QueryContext<S, R>> applyRestriction(
@@ -58,9 +57,16 @@ public class QueryBuilder {
             PredicatesInterceptor<R> interceptor) {
         return ctx -> {
             return predicates.map(p -> {
-                interceptor.apply(cb, ctx.getRoot(), p.apply(cb, ctx.getRoot()));
-                return QueryContext.of(ctx.getCq().where(p.apply(cb, ctx.getRoot())), ctx.getRoot());
-            }).orElse(ctx);
+                return QueryContext.of(
+                        ctx.getCq().where(
+                                interceptor.apply(cb, ctx.getRoot(), p.apply(cb, ctx.getRoot()))),
+                        ctx.getRoot());
+            }).orElseGet(() -> {
+                return QueryContext.of(
+                        ctx.getCq().where(
+                                interceptor.apply(cb, ctx.getRoot(), new Predicate[] {})),
+                        ctx.getRoot());
+            });
         };
     }
 
@@ -77,6 +83,7 @@ public class QueryBuilder {
         return ctx -> em.createQuery(ctx.getCq());
     }
 
+    @ToString
     @Getter
     @RequiredArgsConstructor(staticName = "of")
     public static class QueryContext<S, R> {

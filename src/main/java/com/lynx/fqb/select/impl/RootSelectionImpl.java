@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(staticName = "of")
 public class RootSelectionImpl<S, R> implements RootSelection<S, R> {
 
-    private final boolean disctinc;
-
     private final Class<S> selectionCls;
 
     private final Class<R> rootCls;

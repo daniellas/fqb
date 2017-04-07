@@ -94,10 +94,10 @@ public class RestrictionsITest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldSelectEntitiesRestrictedByCombinedPredicates() {
-        List<Parent> resultList = Select
-                .from(Parent.class)
-                .where(of(equal(get(Parent_.id), 1l)))
+    public void shouldSelectEntitiesRestrictedByPredicatesOnNestedPath() {
+        List<Child> resultList = Select
+                .from(Child.class)
+                .where(of(equal(get(Child_.parent).andThen(get(Parent_.id)), 1l)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

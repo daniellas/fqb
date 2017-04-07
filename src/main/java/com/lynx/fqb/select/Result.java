@@ -24,7 +24,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
 
     Class<R> getRootCls();
 
-    default boolean getDistinct() {
+    default boolean isDistinct() {
         return false;
     }
 
@@ -71,7 +71,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
                 .andThen(createCriteriaQuery(getSelectionCls()))
                 .andThen(applyRoot(getRootCls()))
                 .andThen(applySelection(em.getCriteriaBuilder(), getSelections()))
-                .andThen(applyDistinct(em.getCriteriaBuilder(), getDistinct()))
+                .andThen(applyDistinct(em.getCriteriaBuilder(), isDistinct()))
                 .andThen(applyRestriction(em.getCriteriaBuilder(), getRestrictions(), getPredicatesInterceptor()))
                 .andThen(applyOrder(em.getCriteriaBuilder(), getOrders()))
                 .andThen(createTypedQuery(em))
