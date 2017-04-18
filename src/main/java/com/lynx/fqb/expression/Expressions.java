@@ -1,5 +1,6 @@
 package com.lynx.fqb.expression;
 
+import java.util.Date;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -7,11 +8,31 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
+
+import com.lynx.fqb.path.Paths;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 public interface Expressions {
+
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> fromValue(V value) {
+        return (cb, root) -> {
+            return Context.of(cb, root, cb.literal(value));
+        };
+    }
+
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> fromPath(Function<Path<R>, Path<V>> path) {
+        return (cb, root) -> {
+            return Context.of(cb, root, path.apply(root));
+        };
+    }
+
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> fromAttr(SingularAttribute<R, V> attr) {
+        return fromPath(Paths.get(attr));
+    }
+
 
     public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, Long>> count(Function<Path<R>, Path<V>> path) {
         return (cb, root) -> {
@@ -37,6 +58,18 @@ public interface Expressions {
         };
     }
 
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> max() {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().max(ctx.getExpression()));
+        };
+    }
+
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> sum() {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().sum(ctx.getExpression()));
+        };
+    }
+
     public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> sum(V value) {
         return ctx -> {
             return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().sum(ctx.getExpression(), value));
@@ -47,6 +80,24 @@ public interface Expressions {
         return ctx -> {
             return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().diff(ctx.getExpression(), value));
         };
+    }
+
+    public static <R, I, O> Function<Context<R, I>, Context<R, O>> function(String name, Class<O> type) {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().function(name, type, ctx.getExpression()));
+        };
+    }
+
+    public static <R> Function<Context<R, Date>, Context<R, Number>> year() {
+        return function("year", Number.class);
+    }
+
+    public static <R> Function<Context<R, Date>, Context<R, Number>> month() {
+        return function("month", Number.class);
+    }
+
+    public static <R> Function<Context<R, Date>, Context<R, Number>> dayOfMonth() {
+        return function("dayofmonth", Number.class);
     }
 
     @Getter

@@ -16,7 +16,7 @@ import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 
-public class SelectionsITest extends IntegrationTestBase {
+public class SelectionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntities() {
@@ -42,7 +42,7 @@ public class SelectionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResults() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
-                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
+                .with(of(fromPath(get(Parent_.id)), fromPath(get(Parent_.name))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -51,7 +51,7 @@ public class SelectionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultsFromNestedPaths() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
-                .with(of(path(get(Child_.id)), path(get(Child_.parent).andThen(get(Parent_.name)))))
+                .with(of(fromPath(get(Child_.id)), fromPath(get(Child_.parent).andThen(get(Parent_.name)))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

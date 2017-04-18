@@ -24,9 +24,21 @@ public interface Orders {
         };
     }
 
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> asc(Expression<?> expr) {
+        return (cb, root) -> {
+            return cb.asc(expr);
+        };
+    }
+
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(Function<Path<T>, ? extends Expression<?>> path) {
         return (cb, root) -> {
             return cb.desc(path.apply(root));
+        };
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(Expression<?> expr) {
+        return (cb, root) -> {
+            return cb.desc(expr);
         };
     }
 

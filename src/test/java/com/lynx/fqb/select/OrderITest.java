@@ -14,7 +14,7 @@ import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.order.Orders;
 import com.lynx.fqb.path.Paths;
 
-public class OrdersITest extends IntegrationTestBase {
+public class OrderITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesSortedAsc() {

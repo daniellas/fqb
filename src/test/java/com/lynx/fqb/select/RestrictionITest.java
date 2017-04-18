@@ -26,7 +26,7 @@ import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates.Context;
 
-public class RestrictionsITest extends IntegrationTestBase {
+public class RestrictionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesRestricted() {
@@ -106,7 +106,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultRestricted() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
-                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
+                .with(of(fromPath(get(Parent_.id)), fromPath(get(Parent_.name))))
                 .where(of(equal(get(Parent_.id), 1l)))
                 .getResultList(em);
 
@@ -116,7 +116,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultFromPathsRestricted() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
-                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
+                .with(of(fromPath(get(Parent_.id)), fromPath(get(Parent_.name))))
                 .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 
@@ -126,7 +126,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultFromNestedPathsRestricted() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
-                .with(of(path(get(Child_.id)), path(get(Child_.parent).andThen(Paths.get(Parent_.name)))))
+                .with(of(fromPath(get(Child_.id)), fromPath(get(Child_.parent).andThen(Paths.get(Parent_.name)))))
                 .where(of(equal(get(Child_.id), 2l)))
                 .getResultList(em);
 
@@ -136,7 +136,7 @@ public class RestrictionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectTupleRestricted() {
         List<Tuple> resultList = Select.tupleFrom(Parent.class)
-                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
+                .with(of(fromPath(get(Parent_.id)), fromPath(get(Parent_.name))))
                 .where(of(equal(Paths.get(Parent_.id), 1l)))
                 .getResultList(em);
 

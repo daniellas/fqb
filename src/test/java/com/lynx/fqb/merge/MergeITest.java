@@ -13,7 +13,7 @@ public class MergeITest extends IntegrationTestBase {
     @Test
     public void shouldMerge() {
         Parent entity = TransactionalExecutor.using(em).get(() -> {
-            return Merge.entity(new Parent(null, "Tom", null)).apply(em);
+            return Merge.entity(new Parent(null, "Tom", null, null)).apply(em);
         });
 
         Assert.assertEquals("Tom", entity.getName());

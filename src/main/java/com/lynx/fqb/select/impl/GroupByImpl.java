@@ -3,48 +3,40 @@ package com.lynx.fqb.select.impl;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
 import com.lynx.fqb.select.GroupBy;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "of")
 public class GroupByImpl<S, R> implements GroupBy<S, R> {
 
-    @Override
-    public Class<S> getSelectionCls() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    @Getter
+    private final Class<S> selectionCls;
 
-    @Override
-    public Class<R> getRootCls() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    @Getter
+    private final Class<R> rootCls;
 
-    @Override
-    public Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selections;
 
-    @Override
-    public TypedQuery<S> apply(EntityManager t) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> restrictions;
 
-    @Override
-    public PredicatesInterceptor<R> getPredicatesInterceptor() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    private final BiFunction<CriteriaBuilder, Root<R>, Expression<?>[]> groupings;
+
+    @Getter
+    private final PredicatesInterceptor<R> predicatesInterceptor;
+
+    public Optional<BiFunction<CriteriaBuilder, Root<R>, Expression<?>[]>> getGroupings() {
+        return Optional.of(groupings);
+    };
 
 }

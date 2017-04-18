@@ -1,6 +1,7 @@
 package com.lynx.fqb;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,12 +43,12 @@ public class IntegrationTestBase {
         if (!initialized) {
             initialized = true;
             TransactionalExecutor.using(em).run(() -> {
-                Parent parent = new Parent(null, PARENT_MAX_NAME, new ArrayList<>());
+                Parent parent = new Parent(null, PARENT_MAX_NAME, new ArrayList<>(), new Date());
 
                 parent.addChild(new Child());
                 em.persist(parent);
 
-                parent = new Parent(null, PARENT_JOHN_NAME, new ArrayList<>());
+                parent = new Parent(null, PARENT_JOHN_NAME, new ArrayList<>(), new Date());
                 parent.addChild(new Child());
                 em.persist(parent);
             });

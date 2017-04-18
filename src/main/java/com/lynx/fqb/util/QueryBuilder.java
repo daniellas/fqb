@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -48,7 +49,7 @@ public class QueryBuilder {
     }
 
     public static <S, R> Function<Context<S, R>, Context<S, R>> applyDistinct(Boolean distinct) {
-        return ctx -> Context.of(ctx.getCb(),ctx.getCq().distinct(distinct), ctx.getRoot());
+        return ctx -> Context.of(ctx.getCb(), ctx.getCq().distinct(distinct), ctx.getRoot());
     }
 
     public static <S, R> Function<Context<S, R>, Context<S, R>> applyRestriction(
@@ -74,7 +75,15 @@ public class QueryBuilder {
     public static <S, R> Function<Context<S, R>, Context<S, R>> applyOrder(Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> orders) {
         return ctx -> {
             return orders.map(o -> {
-                return Context.of(ctx.getCb(),ctx.getCq().orderBy(o.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
+                return Context.of(ctx.getCb(), ctx.getCq().orderBy(o.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
+            }).orElse(ctx);
+        };
+    }
+
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyGroup(Optional<BiFunction<CriteriaBuilder, Root<R>, Expression<?>[]>> groupings) {
+        return ctx -> {
+            return groupings.map(g -> {
+                return Context.of(ctx.getCb(), ctx.getCq().groupBy(g.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
             }).orElse(ctx);
         };
     }
