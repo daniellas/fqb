@@ -1,7 +1,6 @@
 package com.lynx.fqb;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
