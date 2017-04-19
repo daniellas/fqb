@@ -2,9 +2,11 @@ package com.lynx.fqb.select.impl;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -27,6 +29,9 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selections;
+    
+    @Getter
+    private final Optional<Function<From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> restrictions;

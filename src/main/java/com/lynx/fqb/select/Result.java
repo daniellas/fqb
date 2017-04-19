@@ -12,6 +12,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -30,6 +32,10 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
     }
 
     default Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
+        return Optional.empty();
+    }
+
+    default Optional<Function<From<R, R>, Join<?, ?>[]>> getJoins() {
         return Optional.empty();
     }
 
@@ -76,6 +82,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
                 .andThen(createCriteriaQuery(getSelectionCls(), getRootCls()))
                 .andThen(applyRoot(getRootCls()))
                 .andThen(applySelection(getSelections()))
+                .andThen(applyJoin(getJoins()))
                 .andThen(applyDistinct(isDistinct()))
                 .andThen(applyRestriction(getRestrictions(), getPredicatesInterceptor()))
                 .andThen(applyGroup(getGroupings()))

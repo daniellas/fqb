@@ -2,8 +2,10 @@ package com.lynx.fqb.select.impl;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -26,6 +28,9 @@ public class WhereImpl<S, R> implements Where<S, R> {
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selections;
 
+    @Getter
+    private final Optional<Function<From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
+
     private final BiFunction<CriteriaBuilder, Root<R>, Predicate[]> restrictions;
 
     @Getter
@@ -35,6 +40,5 @@ public class WhereImpl<S, R> implements Where<S, R> {
     public Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> getRestrictions() {
         return Optional.of(restrictions);
     };
-
 
 }

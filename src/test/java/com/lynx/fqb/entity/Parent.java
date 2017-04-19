@@ -13,11 +13,13 @@ import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(of = { "id", "name" })
 @Entity
 public class Parent {
 

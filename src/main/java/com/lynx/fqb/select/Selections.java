@@ -13,6 +13,7 @@ import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.util.Combinators;
 
+// FIXME Move to separate package. Currently, after moving the project fails to compile
 public interface Selections {
 
     @SafeVarargs

@@ -9,6 +9,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -48,8 +50,17 @@ public class QueryBuilder {
         };
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyDistinct(Boolean distinct) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyDistinct(boolean distinct) {
         return ctx -> Context.of(ctx.getCb(), ctx.getCq().distinct(distinct), ctx.getRoot());
+    }
+
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<Function<From<R, R>, Join<?, ?>[]>> joins) {
+        return ctx -> {
+            joins.ifPresent(j -> {
+                j.apply(ctx.getRoot());
+            });
+            return ctx;
+        };
     }
 
     public static <S, R> Function<Context<S, R>, Context<S, R>> applyRestriction(

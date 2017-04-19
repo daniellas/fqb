@@ -17,7 +17,7 @@ public interface RootSelection<S, R> {
 
     PredicatesInterceptor<R> getPredicatesInterceptor();
 
-    default Join<S, R> with(BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selections) {
+    default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selections) {
         return CustomSelectionImpl.of(getSelectionCls(), getRootCls(), selections, getPredicatesInterceptor());
     }
 
