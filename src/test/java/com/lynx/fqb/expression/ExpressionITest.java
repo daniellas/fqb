@@ -18,8 +18,8 @@ public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldCombineExpressions() {
-        SingleResult<CustomNumberResult> result = Select.customFrom(CustomNumberResult.class, Parent.class).with(of(fromExpr(
-                Expressions.fromAttr(Parent_.birthDate)
+        SingleResult<CustomNumberResult> result = Select.customFrom(CustomNumberResult.class, Parent.class).with(of(expr(
+                Expressions.ofAttr(Parent_.birthDate)
                         .andThen(year())
                         .andThen(sum())
                         .andThen(sum(20)))))

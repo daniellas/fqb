@@ -17,22 +17,21 @@ import lombok.RequiredArgsConstructor;
 
 public interface Expressions {
 
-    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> fromValue(V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> ofValue(V value) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.literal(value));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> fromPath(Function<Path<R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> ofPath(Function<Path<R>, Path<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, path.apply(root));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> fromAttr(SingularAttribute<R, V> attr) {
-        return fromPath(Paths.get(attr));
+    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, V>> ofAttr(SingularAttribute<R, V> attr) {
+        return ofPath(Paths.get(attr));
     }
-
 
     public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Context<R, Long>> count(Function<Path<R>, Path<V>> path) {
         return (cb, root) -> {
@@ -79,6 +78,24 @@ public interface Expressions {
     public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> diff(V value) {
         return ctx -> {
             return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().diff(ctx.getExpression(), value));
+        };
+    }
+
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(V value) {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().prod(ctx.getExpression(), value));
+        };
+    }
+
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(Expression<V> expr) {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().prod(ctx.getExpression(), expr));
+        };
+    }
+
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(SingularAttribute<R, V> attr) {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().prod(ctx.getExpression(), Paths.get(attr).apply(ctx.getRoot())));
         };
     }
 

@@ -9,6 +9,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
+import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.util.Combinators;
 
 public interface Orders {
@@ -30,6 +31,12 @@ public interface Orders {
         };
     }
 
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> asc(BiFunction<CriteriaBuilder, Root<T>, Context<T, ?>> expr) {
+        return (cb, root) -> {
+            return cb.asc(expr.apply(cb, root).getExpression());
+        };
+    }
+
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(Function<Path<T>, ? extends Expression<?>> path) {
         return (cb, root) -> {
             return cb.desc(path.apply(root));
@@ -39,6 +46,12 @@ public interface Orders {
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(Expression<?> expr) {
         return (cb, root) -> {
             return cb.desc(expr);
+        };
+    }
+
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(BiFunction<CriteriaBuilder, Root<T>, Context<T, ?>> expr) {
+        return (cb, root) -> {
+            return cb.desc(expr.apply(cb, root).getExpression());
         };
     }
 

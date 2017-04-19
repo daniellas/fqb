@@ -20,17 +20,17 @@ public interface Groupings {
         return Combinators.fromBiFunctionList(expressions, Expression<?>[]::new);
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Root<R>, Expression<?>> fromPath(Function<Path<R>, Path<T>> path) {
+    public static <R, T> BiFunction<CriteriaBuilder, Root<R>, Expression<?>> byPath(Function<Path<R>, Path<T>> path) {
         return (cb, root) -> {
             return path.apply(root);
         };
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Root<R>, Expression<?>> fromAttr(SingularAttribute<R, T> attr) {
-        return fromPath(Paths.get(attr));
+    public static <R, T> BiFunction<CriteriaBuilder, Root<R>, Expression<?>> byAttr(SingularAttribute<R, T> attr) {
+        return byPath(Paths.get(attr));
     }
 
-    public static <R, E> BiFunction<CriteriaBuilder, Root<R>, Expression<?>> fromExpr(BiFunction<CriteriaBuilder, Root<R>, Context<R, E>> expression) {
+    public static <R, E> BiFunction<CriteriaBuilder, Root<R>, Expression<?>> byExpr(BiFunction<CriteriaBuilder, Root<R>, Context<R, E>> expression) {
         return (cb, root) -> {
             return expression.apply(cb, root).getExpression();
         };

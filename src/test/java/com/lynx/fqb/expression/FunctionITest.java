@@ -17,21 +17,21 @@ public class FunctionITest extends IntegrationTestBase {
     @Test
     public void shouldSelectYear() {
         Assert.assertNotNull(
-                Select.customFrom(CustomNumberResult.class, Parent.class).with(of(fromExpr(Expressions.fromAttr(Parent_.birthDate).andThen(year()))))
+                Select.customFrom(CustomNumberResult.class, Parent.class).with(of(expr(Expressions.ofAttr(Parent_.birthDate).andThen(year()))))
                         .getSingleResult(em));
     }
 
     @Test
     public void shouldSelectMonth() {
         Assert.assertNotNull(
-                Select.customFrom(CustomNumberResult.class, Parent.class).with(of(fromExpr(Expressions.fromAttr(Parent_.birthDate).andThen(month()))))
+                Select.customFrom(CustomNumberResult.class, Parent.class).with(of(expr(Expressions.ofAttr(Parent_.birthDate).andThen(month()))))
                         .getSingleResult(em));
     }
 
     @Test
     public void shouldSelectDayOfMonth() {
         Assert.assertNotNull(
-                Select.customFrom(CustomNumberResult.class, Parent.class).with(of(fromExpr(Expressions.fromAttr(Parent_.birthDate)
+                Select.customFrom(CustomNumberResult.class, Parent.class).with(of(expr(Expressions.ofAttr(Parent_.birthDate)
                         .andThen(dayOfMonth()))))
                         .getSingleResult(em));
     }

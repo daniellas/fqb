@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -31,9 +32,12 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
     private final Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> restrictions;
 
     @Getter
-    private final PredicatesInterceptor<R> predicatesInterceptor;
+    private final Optional<BiFunction<CriteriaBuilder, Root<R>, Expression<?>[]>> groupings;
 
     private final BiFunction<CriteriaBuilder, Root<R>, Order[]> orders;
+
+    @Getter
+    private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
     public Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> getOrders() {

@@ -124,6 +124,7 @@
                             com.lynx.fqb.path,
                             com.lynx.fqb.predicate,
                             com.lynx.fqb.select,
+                            com.lynx.fqb.group,
                             com.lynx.fqb.select.impl
                         </Export-Package>
                     </instructions>

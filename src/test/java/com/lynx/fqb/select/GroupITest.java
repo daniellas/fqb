@@ -22,8 +22,8 @@ public class GroupITest extends IntegrationTestBase {
     @Test
     public void shouldGroupBy() {
         List<Tuple> resultList = Select.tupleFrom(Parent.class)
-                .with(of(fromExpr(Expressions.fromAttr(Parent_.birthDate).andThen(year()).andThen(max()))))
-                .groupBy(Groupings.of(Groupings.fromAttr(Parent_.name)))
+                .with(of(expr(Expressions.ofAttr(Parent_.birthDate).andThen(year()).andThen(max()))))
+                .groupBy(Groupings.of(Groupings.byAttr(Parent_.name)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
