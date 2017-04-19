@@ -10,7 +10,6 @@ import com.lynx.fqb.entity.Parent;
 
 import lombok.extern.slf4j.Slf4j;
 
-// FIXME There are errors on parallel selects execution
 @Slf4j
 public class PerformanceIPTest extends IntegrationTestBase {
 
@@ -29,23 +28,19 @@ public class PerformanceIPTest extends IntegrationTestBase {
     public void simpleSelectParallelPerformanceTest() {
         TimePrinter.run(() -> {
             IntStream.range(0, COUNT).parallel().forEach(i -> {
-                    Select.from(Parent.class).getResultList(em);
+                Select.from(Parent.class).getResultList(emf.createEntityManager());
             });
         }, "Simple select parallel");
     }
 
     private static class TimePrinter {
         public static void run(Runnable task, String name) {
-            int errors = 0;
             long start = System.currentTimeMillis();
 
-            try {
-                task.run();
-            } catch (RuntimeException e) {
-                errors++;
-            }
+            task.run();
+
             long end = System.currentTimeMillis();
-            log.info("{}: Executed {} queries in {} miliseconds, errors: {}", name, COUNT, end - start, errors);
+            log.info("{}: Executed {} queries in {} miliseconds", name, COUNT, end - start);
         }
     }
 }

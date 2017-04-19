@@ -43,12 +43,12 @@ public class IntegrationTestBase {
         if (!initialized) {
             initialized = true;
             TransactionalExecutor.using(em).run(() -> {
-                Parent parent = new Parent(null, PARENT_MAX_NAME, new ArrayList<>(), new Date());
+                Parent parent = new Parent(null, PARENT_MAX_NAME, new ArrayList<>(), DateTimeUtil.of(1970, 1, 1));
 
                 parent.addChild(new Child());
                 em.persist(parent);
 
-                parent = new Parent(null, PARENT_JOHN_NAME, new ArrayList<>(), new Date());
+                parent = new Parent(null, PARENT_JOHN_NAME, new ArrayList<>(), DateTimeUtil.of(1980, 1, 1));
                 parent.addChild(new Child());
                 em.persist(parent);
             });
