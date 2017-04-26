@@ -4,6 +4,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+// TODO  Move to separate package? 
 @FunctionalInterface
 public interface PredicatesInterceptor<R> {
     

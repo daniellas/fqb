@@ -114,12 +114,13 @@
                         <Export-Package>
                             com.lynx.fqb,
                             com.lynx.fqb.expression,
+                            com.lynx.fqb.group,
+                            com.lynx.fqb.intercept,
+                            com.lynx.fqb.join,
                             com.lynx.fqb.order,
                             com.lynx.fqb.path,
                             com.lynx.fqb.predicate,
                             com.lynx.fqb.select,
-                            com.lynx.fqb.group,
-                            com.lynx.fqb.join,
                             com.lynx.fqb.select.impl
                         </Export-Package>
                     </instructions>

@@ -10,6 +10,7 @@ import com.lynx.fqb.select.impl.RootSelectionImpl;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Select {
@@ -30,13 +31,10 @@ public final class Select {
         return new InterceptingSelect<R>(PredicatesInterceptor.identity()).tupleFrom(rootCls);
     }
 
+    @RequiredArgsConstructor
     public static class InterceptingSelect<R> {
 
         private final PredicatesInterceptor<R> predicatesInterceptor;
-
-        public InterceptingSelect(PredicatesInterceptor<R> predicatesInterceptor) {
-            this.predicatesInterceptor = predicatesInterceptor;
-        }
 
         public EntitySelection<R> from(Class<R> rootCls) {
             return EntitySelectionImpl.of(false, rootCls, predicatesInterceptor);
