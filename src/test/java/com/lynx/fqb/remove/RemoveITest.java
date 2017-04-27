@@ -1,5 +1,7 @@
 package com.lynx.fqb.remove;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +17,7 @@ public class RemoveITest extends IntegrationTestBase {
     @Test
     public void shouldPersistRemove() {
         Parent entity = TransactionalExecutor.using(em).get(() -> {
-            return Persist.entity(new Parent()).apply(em);
+            return Persist.entity(new Parent()).andThen(Optional::get).apply(em);
         });
 
         int size = Select.from(Parent.class).getResultList(em).size();

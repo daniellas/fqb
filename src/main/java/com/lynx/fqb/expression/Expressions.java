@@ -87,12 +87,6 @@ public interface Expressions {
         };
     }
 
-    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(Expression<V> expr) {
-        return ctx -> {
-            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().prod(ctx.getExpression(), expr));
-        };
-    }
-
     public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(SingularAttribute<R, V> attr) {
         return ctx -> {
             return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().prod(ctx.getExpression(), Paths.get(attr).apply(ctx.getRoot())));

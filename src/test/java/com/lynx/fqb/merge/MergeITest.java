@@ -1,5 +1,7 @@
 package com.lynx.fqb.merge;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +15,7 @@ public class MergeITest extends IntegrationTestBase {
     @Test
     public void shouldMerge() {
         Parent entity = TransactionalExecutor.using(em).get(() -> {
-            return Merge.entity(new Parent(null, "Tom", null, null)).apply(em);
+            return Merge.entity(new Parent(null, "Tom", null, null)).andThen(Optional::get).apply(em);
         });
 
         Assert.assertEquals("Tom", entity.getName());

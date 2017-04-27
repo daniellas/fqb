@@ -20,21 +20,6 @@ public class CountITest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldSelectEntityCountAndThenSum() {
-        Assert.assertNotNull(Select.customFrom(Long.class, Parent.class).with(of(expr(count(Parent.class).andThen(sum(1l))))).getSingleResult(em));
-    }
-
-    @Test
-    public void shouldSelectEntityCountAndThenSumDiff() {
-        Assert.assertNotNull(Select.customFrom(Long.class, Parent.class)
-                .with(of(expr(
-                        count(Parent.class)
-                                .andThen(sum(1l))
-                                .andThen(diff(1l)))))
-                .getSingleResult(em));
-    }
-
-    @Test
     public void shouldSelectEntityDistinctCount() {
         Assert.assertNotNull(Select.customFrom(Long.class, Parent.class).with(of(expr(countDistinct(Parent.class)))).getSingleResult(em));
     }
