@@ -142,6 +142,28 @@ public interface Predicates {
         };
     }
 
+    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Root<R>, Context<R>> greaterThanOrEqualTo(
+            Function<Path<R>, ? extends Expression<V>> path, V value) {
+        return (cb, root) -> {
+            return Context.of(cb, root, cb.greaterThanOrEqualTo(path.apply(root), value));
+        };
+    }
+
+    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Root<R>, Context<R>> lessThan(Function<Path<R>, ? extends Expression<V>> path,
+            V value) {
+        return (cb, root) -> {
+            return Context.of(cb, root, cb.lessThan(path.apply(root), value));
+        };
+    }
+
+    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Root<R>, Context<R>> lessThanOrEqualTo(
+            Function<Path<R>, ? extends Expression<V>> path,
+            V value) {
+        return (cb, root) -> {
+            return Context.of(cb, root, cb.lessThanOrEqualTo(path.apply(root), value));
+        };
+    }
+
     @Getter
     @RequiredArgsConstructor(staticName = "of")
     public static class Context<R> {

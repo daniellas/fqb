@@ -53,10 +53,10 @@ public class QueryBuilder {
         return ctx -> Context.of(ctx.getCb(), ctx.getCq().distinct(distinct), ctx.getRoot());
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<Function<From<R, R>, Join<?, ?>[]>> joins) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<BiFunction<CriteriaBuilder, From<R, R>, Join<?, ?>[]>> joins) {
         return ctx -> {
             joins.ifPresent(j -> {
-                j.apply(ctx.getRoot());
+                j.apply(ctx.getCb(), ctx.getRoot());
             });
             return ctx;
         };

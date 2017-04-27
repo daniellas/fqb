@@ -2,7 +2,6 @@ package com.lynx.fqb.select.impl;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
@@ -26,14 +25,13 @@ public class JoinImpl<S, R> implements Join<S, R> {
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selections;
-    
-    private final Function<From<R, R>, javax.persistence.criteria.Join<?, ?>[]> joins;
-    
+
+    private final BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]> joins;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
-    public Optional<Function<From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> getJoins() {
+    public Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> getJoins() {
         return Optional.of(joins);
     }
 }
