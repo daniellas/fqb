@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface PostInterceptor<E> extends Function<E, Optional<E>> {
+public interface EntityInterceptor<E> extends Function<E, Optional<E>> {
 
-    public static <E> PostInterceptor<E> noOp() {
+    public static <E> EntityInterceptor<E> noOp() {
         return e -> Optional.of(e);
     }
 }

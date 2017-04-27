@@ -26,6 +26,11 @@ public class PathsITest extends IntegrationTestBase {
         Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.name)).apply(root(Child.class)));
     }
 
+    @Test
+    public void shouldGetNestedPathByGet() {
+        Assert.assertNotNull(get(Child_.parent).get(Parent_.name).apply(root(Child.class)));
+    }
+
     private <T> Root<T> root(Class<T> cls) {
         return getCriteriaBuilder()
                 .andThen(createCriteriaQuery(cls, cls))

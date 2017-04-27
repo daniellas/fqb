@@ -21,7 +21,7 @@ public class RemoveITest extends IntegrationTestBase {
         int size = Select.from(Parent.class).getResultList(em).size();
 
         TransactionalExecutor.using(em).run(() -> {
-            Remove.entity(entity).accept(em);
+            Remove.entity(entity).apply(em);
         });
 
         Assert.assertNotEquals(size, Select.from(Parent.class).getResultList(em).size());

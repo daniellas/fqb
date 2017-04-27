@@ -8,8 +8,10 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 
 import com.lynx.fqb.expression.Expressions.Context;
+import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.util.Combinators;
 
 public interface Orders {
@@ -25,10 +27,8 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> asc(Expression<?> expr) {
-        return (cb, root) -> {
-            return cb.asc(expr);
-        };
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> asc(SingularAttribute<? super T, ?> attr) {
+        return asc(Paths.get(attr));
     }
 
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> asc(BiFunction<CriteriaBuilder, Root<T>, Context<T, ?>> expr) {
@@ -43,10 +43,8 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(Expression<?> expr) {
-        return (cb, root) -> {
-            return cb.desc(expr);
-        };
+    public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(SingularAttribute<? super T, ?> attr) {
+        return desc(Paths.get(attr));
     }
 
     public static <T> BiFunction<CriteriaBuilder, Root<T>, Order> desc(BiFunction<CriteriaBuilder, Root<T>, Context<T, ?>> expr) {

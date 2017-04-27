@@ -22,7 +22,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QueryBuilder {
@@ -103,7 +102,6 @@ public class QueryBuilder {
         return ctx -> em.createQuery(ctx.getCq());
     }
 
-    @ToString
     @Getter
     @RequiredArgsConstructor(staticName = "of")
     public static class Context<S, R> {
