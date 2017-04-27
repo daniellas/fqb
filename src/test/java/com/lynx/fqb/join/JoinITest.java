@@ -44,7 +44,10 @@ public class JoinITest extends IntegrationTestBase {
                         Selections.attr(Child_.id),
                         Selections.attr(Child_.name)))
                 .join(Joins.of(Joins.inner(Child_.parent)))
-                .where(Predicates.of(Predicates.isNotNull(Paths.get(Child_.id)).andThen(Predicates.and(Predicates.isNull(Paths.get(Child_.name))))))
+                .where(Predicates.of(
+                        Predicates.and(
+                                Predicates.isNotNull(Paths.get(Child_.id)),
+                                Predicates.isNull(Paths.get(Child_.name)))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

@@ -7,11 +7,8 @@ import static com.lynx.fqb.select.Selections.*;
 import static com.lynx.fqb.select.Selections.of;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Root;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,9 +21,8 @@ import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
-import com.lynx.fqb.predicate.Predicates.Context;
 
-public class RestrictionITest extends IntegrationTestBase {
+public class PredicatesITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesRestricted() {
@@ -81,13 +77,11 @@ public class RestrictionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesRestrictedByMultiplePredicates() {
-        BiFunction<CriteriaBuilder, Root<Parent>, Context<Parent>> predicates = equal(get(Parent_.id), 1l)
-                .andThen(and(equal(get(Parent_.name), "Max")))
-                .andThen(or(equal(get(Parent_.name), "John"), equal(get(Parent_.name), "Anna")));
-
         List<Parent> resultList = Select
                 .from(Parent.class)
-                .where(of(predicates))
+                .where(of(or(
+                        equal(Parent_.id, 1l),
+                        equal(Parent_.name, IntegrationTestBase.PARENT_MAX_NAME))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
