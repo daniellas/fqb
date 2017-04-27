@@ -1,12 +1,14 @@
 package com.lynx.fqb.intercept;
 
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+
+import javax.persistence.EntityManager;
 
 @FunctionalInterface
-public interface EntityInterceptor<E> extends Function<E, Optional<E>> {
+public interface EntityInterceptor<E> extends BiFunction<EntityManager,E, Optional<E>> {
 
     public static <E> EntityInterceptor<E> noOp() {
-        return e -> Optional.of(e);
+        return (em,e) -> Optional.of(e);
     }
 }

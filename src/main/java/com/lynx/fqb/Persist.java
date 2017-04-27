@@ -24,7 +24,7 @@ public class Persist {
 
         public Function<EntityManager, Optional<E>> entity(E entity) {
             return em -> {
-                return interceptor.apply(entity).map(e -> {
+                return interceptor.apply(em,entity).map(e -> {
                     em.persist(e);
 
                     return e;

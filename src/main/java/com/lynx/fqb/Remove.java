@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Remove {
 
-    public static <E> Function<EntityManager,Boolean> entity(E entity) {
+    public static <E> Function<EntityManager, Boolean> entity(E entity) {
         return new InterceptingRemove<>(EntityInterceptor.noOp()).entity(entity);
     }
 
@@ -22,14 +22,13 @@ public class Remove {
 
         private final EntityInterceptor<E> interceptor;
 
-        public Function<EntityManager,Boolean> entity(E entity) {
+        public Function<EntityManager, Boolean> entity(E entity) {
             return em -> {
-                return interceptor.apply(entity).map(e->{
+                return interceptor.apply(em, entity).map(e -> {
                     em.remove(e);
-                    
+
                     return true;
-                })
-                .orElse(false);
+                }).orElse(false);
             };
         }
     }

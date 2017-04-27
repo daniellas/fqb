@@ -2,6 +2,8 @@ package com.lynx.fqb.find;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -62,7 +64,7 @@ public class FindITest extends IntegrationTestBase {
     private static class OnlyFirstFindInterceptor implements EntityInterceptor<Parent> {
 
         @Override
-        public Optional<Parent> apply(Parent entity) {
+        public Optional<Parent> apply(EntityManager em, Parent entity) {
             if (entity.getId().equals(1l)) {
                 return Optional.of(entity);
             }

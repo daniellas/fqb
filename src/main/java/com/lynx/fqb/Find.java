@@ -33,7 +33,7 @@ public class Find {
             return id -> {
                 return em -> {
                     return Optional.ofNullable(em.find(entityCls, id))
-                            .flatMap(interceptor::apply);
+                            .flatMap(e -> interceptor.apply(em, e));
                 };
             };
         }

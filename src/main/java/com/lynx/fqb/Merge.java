@@ -24,7 +24,7 @@ public class Merge {
 
         public Function<EntityManager, Optional<E>> entity(E entity) {
             return em -> {
-                return interceptor.apply(entity).map(em::merge);
+                return interceptor.apply(em,entity).map(em::merge);
             };
         }
 
