@@ -6,6 +6,7 @@ import java.util.function.BiFunction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -32,7 +33,7 @@ public class GroupByImpl<S, R> implements GroupBy<S, R> {
     private final Optional<BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> restrictions;
+    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> restrictions;
 
     private final BiFunction<CriteriaBuilder, Root<R>, Expression<?>[]> groupings;
 

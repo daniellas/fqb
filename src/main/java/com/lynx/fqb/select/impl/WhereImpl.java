@@ -31,13 +31,13 @@ public class WhereImpl<S, R> implements Where<S, R> {
     @Getter
     private final Optional<BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
 
-    private final BiFunction<CriteriaBuilder, Root<R>, Predicate[]> restrictions;
+    private final BiFunction<CriteriaBuilder, Path<R>, Predicate[]> restrictions;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> getRestrictions() {
+    public Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> getRestrictions() {
         return Optional.of(restrictions);
     };
 

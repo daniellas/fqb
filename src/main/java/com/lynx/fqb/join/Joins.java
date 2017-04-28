@@ -1,6 +1,7 @@
 package com.lynx.fqb.join;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -23,31 +24,23 @@ public interface Joins {
     public interface JoinApplier<A> extends BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> {
     }
 
-    @SafeVarargs
     public static <A> JoinApplier<A> join(SingularAttribute<? super A, ?> attr, JoinType type,
-            BiFunction<CriteriaBuilder, Path<?>, Predicate>... predicates) {
+            Optional<BiFunction<CriteriaBuilder, Path<A>, Predicate[]>> predicates) {
         return (cb, from) -> {
-            Join<A, ?> join = from.join(attr, type);
-
-            if (predicates.length != 0) {
-                Arrays.stream(predicates).map(p -> p.apply(cb, join.getParent())).toArray(Predicate[]::new);
+            if (predicates.isPresent()) {
+                return from.join(attr, type).on(predicates.get().apply(cb, from));
             }
 
-            return join;
+            return from.join(attr, type);
         };
     }
 
-    // @SafeVarargs
-    // public static <A,B> JoinApplier<A,B> inner(SingularAttribute<? super A,
-    // B> attr, BiFunction<CriteriaBuilder, From<A, B>, Predicate>...
-    // predicates) {
-    // return join(attr, JoinType.INNER, predicates);
-    // }
-    //
-    // @SafeVarargs
-    // public static <A> JoinApplier<A> left(SingularAttribute<? super A, ?>
-    // attr, BiFunction<CriteriaBuilder, From<?, A>, Predicate>... predicates) {
-    // return join(attr, JoinType.LEFT, predicates);
-    // }
+    public static <A> JoinApplier<A> inner(SingularAttribute<? super A, ?> attr, BiFunction<CriteriaBuilder, Path<A>, Predicate[]> predicates) {
+        return join(attr, JoinType.INNER, Optional.of(predicates));
+    }
+
+    public static <A> JoinApplier<A> inner(SingularAttribute<? super A, ?> attr) {
+        return join(attr, JoinType.INNER, Optional.empty());
+    }
 
 }

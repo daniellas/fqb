@@ -1,13 +1,12 @@
 package com.lynx.fqb.join;
 
-import java.util.List;
-import java.util.function.BiFunction;
+import static com.lynx.fqb.join.Joins.*;
+import static com.lynx.fqb.join.Joins.of;
+import static com.lynx.fqb.path.Paths.*;
+import static com.lynx.fqb.predicate.Predicates.*;
+import static com.lynx.fqb.predicate.Predicates.of;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,60 +16,67 @@ import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.CustomResult;
-import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
-import com.lynx.fqb.path.Paths;
-import com.lynx.fqb.predicate.Predicates;
 import com.lynx.fqb.select.Selections;
 
 public class JoinITest extends IntegrationTestBase {
 
-    // @Test
-    // public void shouldJoinOnEntitySelection() {
-    // List<Child> resultList = Select.from(Child.class)
-    // .join(Joins.of(Joins.inner(Child_.parent)))
-    // .getResultList(em);
-    //
-    // Assert.assertFalse(resultList.isEmpty());
-    // }
-    //
-    // @Test
-    // public void shouldJoinOnCustomSelection() {
-    // List<CustomResult> resultList = Select.customFrom(CustomResult.class,
-    // Child.class)
-    // .with(Selections.of(
-    // Selections.attr(Child_.id),
-    // Selections.attr(Child_.name)))
-    // .join(Joins.of(Joins.inner(Child_.parent)))
-    // .getResultList(em);
-    //
-    // Assert.assertFalse(resultList.isEmpty());
-    // }
-    //
-    // @Test
-    // public void shouldJoinOnFullQuery() {
-    // List<CustomResult> resultList = Select.customFrom(CustomResult.class,
-    // Child.class)
-    // .with(Selections.of(
-    // Selections.attr(Child_.id),
-    // Selections.attr(Child_.name)))
-    // .join(Joins.of(Joins.inner(Child_.parent)))
-    // .where(Predicates.of(
-    // Predicates.and(
-    // Predicates.isNotNull(Paths.get(Child_.id)),
-    // Predicates.isNull(Paths.get(Child_.name)))))
-    // .getResultList(em);
-    //
-    // Assert.assertFalse(resultList.isEmpty());
-    // }
+    @Test
+    public void shouldJoinOnEntitySelection() {
+        List<Child> resultList = Select.from(Child.class)
+                .join(Joins.of(Joins.inner(Child_.parent)))
+                .getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
 
     @Test
-    public void shoouldJoinWithPredicates() {
-        BiFunction<CriteriaBuilder, Root<Parent>, Predicate[]> of = Predicates.of(Predicates.equal(Parent_.id, 1l));
-        
-        Select.from(Child.class)
-//                .join(Joins.of(Joins.join(Child_.parent, JoinType.INNER,of)))
+    public void shouldJoinOnCustomSelection() {
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
+                .with(Selections.of(
+                        Selections.attr(Child_.id),
+                        Selections.attr(Child_.name)))
+                .join(Joins.of(Joins.inner(Child_.parent)))
                 .getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldJoinWithWhere() {
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
+                .with(Selections.of(
+                        Selections.attr(Child_.id),
+                        Selections.attr(Child_.name)))
+                .join(Joins.of(Joins.inner(Child_.parent)))
+                .where(of(and(
+                        isNotNull(get(Child_.id)),
+                        isNull(get(Child_.name)))))
+                .getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldJoinWithSinglePredicate() {
+        List<Child> resultList = Select.from(Child.class)
+                .join(of(inner(Child_.parent,
+                        of(equal(get(Child_.parent).get(Parent_.id), 1l)))))
+                .getResultList(em);
+
+        Assert.assertEquals(1, resultList.size());
+    }
+
+    @Test
+    public void shouldJoinWithMultiplePredicates() {
+        List<Child> resultList = Select.from(Child.class)
+                .join(of(inner(Child_.parent,
+                        of(or(
+                                equal(get(Child_.parent).get(Parent_.id), 1l),
+                                equal(get(Child_.parent).get(Parent_.id), 2l))))))
+                .getResultList(em);
+
+        Assert.assertEquals(1, resultList.size());
     }
 
 }

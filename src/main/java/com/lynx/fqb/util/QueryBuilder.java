@@ -12,6 +12,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -63,7 +64,7 @@ public class QueryBuilder {
     }
 
     public static <S, R> Function<Context<S, R>, Context<S, R>> applyRestriction(
-            Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> predicates,
+            Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> predicates,
             PredicatesInterceptor<R> interceptor) {
         return ctx -> {
             return predicates.map(p -> {

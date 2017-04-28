@@ -15,6 +15,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -39,7 +40,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     }
 
-    default Optional<BiFunction<CriteriaBuilder, Root<R>, Predicate[]>> getRestrictions() {
+    default Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> getRestrictions() {
         return Optional.empty();
     };
 
