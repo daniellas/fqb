@@ -10,45 +10,47 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 public interface Joins {
 
+    @SuppressWarnings("unchecked")
     @SafeVarargs
-    public static <A> BiFunction<CriteriaBuilder, From<A, A>, Join<?, ?>[]> of(BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>>... joins) {
+    public static <A> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>[]> of(BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>>... joins) {
         return (cb, from) -> {
             return Arrays.stream(joins).map(j -> j.apply(cb, from)).toArray(Join[]::new);
         };
     }
 
-    public interface JoinApplier<A> extends BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> {
-    }
-
-    public static <A> JoinApplier<A> join(SingularAttribute<? super A, ?> attr, JoinType type,
-            Optional<BiFunction<CriteriaBuilder, Path<A>, Predicate[]>> predicates) {
-        return (cb, from) -> {
-            if (predicates.isPresent()) {
-                return from.join(attr, type).on(predicates.get().apply(cb, from));
-            }
-
-            return from.join(attr, type);
-        };
-    }
-
-    public static <A, B> JoinApplier<A> join(ListAttribute<? super A, ?> attr, JoinType type,
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> join(SingularAttribute<? super A, B> attr, JoinType type,
             Optional<BiFunction<CriteriaBuilder, Path<B>, Predicate[]>> predicates) {
         return (cb, from) -> {
-            return from.join(attr, type);
+            Join<A, B> join = from.join(attr, type);
+
+            if (predicates.isPresent()) {
+                return join.on(predicates.get().apply(cb, join));
+            }
+
+            return join;
         };
     }
 
-    public static <A> JoinApplier<A> inner(SingularAttribute<? super A, ?> attr, BiFunction<CriteriaBuilder, Path<A>, Predicate[]> predicates) {
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> inner(SingularAttribute<? super A, B> attr,
+            BiFunction<CriteriaBuilder, Path<B>, Predicate[]> predicates) {
         return join(attr, JoinType.INNER, Optional.of(predicates));
     }
 
-    public static <A> JoinApplier<A> inner(SingularAttribute<? super A, ?> attr) {
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> inner(SingularAttribute<? super A, B> attr) {
         return join(attr, JoinType.INNER, Optional.empty());
+    }
+
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> left(SingularAttribute<? super A, B> attr,
+            BiFunction<CriteriaBuilder, Path<B>, Predicate[]> predicates) {
+        return join(attr, JoinType.LEFT, Optional.of(predicates));
+    }
+
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> left(SingularAttribute<? super A, B> attr) {
+        return join(attr, JoinType.LEFT, Optional.empty());
     }
 
 }

@@ -30,7 +30,7 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
     private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
+    private final Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]>> joins;
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> restrictions;

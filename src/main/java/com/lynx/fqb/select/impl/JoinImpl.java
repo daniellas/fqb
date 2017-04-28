@@ -26,12 +26,12 @@ public class JoinImpl<S, R> implements Join<S, R> {
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
 
-    private final BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]> joins;
+    private final BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]> joins;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
-    public Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> getJoins() {
+    public Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]>> getJoins() {
         return Optional.of(joins);
     }
 }
