@@ -4,10 +4,11 @@ FQB provides functional fluent interface for criteria queries building along wit
 
 ## Why?
 
-There are a fiev JPA query construction supporting libraries available:
+There are a few JPA query construction supporting libraries available:
 
 * Spring Data JPA - [TBC]
 * QueryDSL - [TBC]
+* other not mentioned here I'm not aware of
 
 FQB presents some other approach to this matter. Here below you can find reasons why I have created this library.
 
