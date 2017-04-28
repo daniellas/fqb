@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;

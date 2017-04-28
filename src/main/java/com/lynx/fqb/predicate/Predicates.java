@@ -17,32 +17,35 @@ import com.lynx.fqb.util.Combinators;
 
 public interface Predicates {
 
+    public interface PredicateApplier<R> extends BiFunction<CriteriaBuilder, Root<R>, Predicate> {
+    }
+
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Root<R>, Predicate[]> of(BiFunction<CriteriaBuilder, Root<R>, Predicate>... predicates) {
         return Combinators.fromBiFunctionList(predicates, Predicate[]::new);
     }
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Root<R>, Predicate> and(BiFunction<CriteriaBuilder, Root<R>, Predicate>... predicates) {
+    public static <R> PredicateApplier<R> and(BiFunction<CriteriaBuilder, Root<R>, Predicate>... predicates) {
         return (cb, root) -> {
             return cb.and(Arrays.stream(predicates).map(p -> p.apply(cb, root)).toArray(Predicate[]::new));
         };
     }
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Root<R>, Predicate> or(BiFunction<CriteriaBuilder, Root<R>, Predicate>... predicates) {
+    public static <R> PredicateApplier<R> or(BiFunction<CriteriaBuilder, Root<R>, Predicate>... predicates) {
         return (cb, root) -> {
             return cb.or(Arrays.stream(predicates).map(p -> p.apply(cb, root)).toArray(Predicate[]::new));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Predicate> equal(Function<Path<R>, ? extends Expression<V>> path, V value) {
+    public static <R, V> PredicateApplier<R> equal(Function<Path<R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
             return cb.equal(path.apply(root), value);
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Root<R>, Predicate> equal(SingularAttribute<? super R, V> attr, V value) {
+    public static <R, V> PredicateApplier<R> equal(SingularAttribute<? super R, V> attr, V value) {
         return equal(Paths.get(attr), value);
     }
 
