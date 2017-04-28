@@ -1,5 +1,8 @@
 package com.lynx.fqb;
 
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,9 +15,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import lombok.RequiredArgsConstructor;
-
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
 
 @RequiredArgsConstructor
 @RunWith(MockitoJUnitRunner.class)

@@ -3,7 +3,7 @@ package com.lynx.fqb.select;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
@@ -17,7 +17,7 @@ public interface RootSelection<S, R> {
 
     PredicatesInterceptor<R> getPredicatesInterceptor();
 
-    default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selections) {
+    default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]> selections) {
         return CustomSelectionImpl.of(getSelectionCls(), getRootCls(), selections, getPredicatesInterceptor());
     }
 

@@ -7,8 +7,6 @@ import javax.persistence.NonUniqueResultException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.lynx.fqb.select.SingleResult;
-
 public class SingleResultTest {
 
     @Test

@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
@@ -30,7 +30,7 @@ public class HavingImpl<S, R> implements Having<S, R> {
     }
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
+    public Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> getSelections() {
         // TODO Auto-generated method stub
         return null;
     }

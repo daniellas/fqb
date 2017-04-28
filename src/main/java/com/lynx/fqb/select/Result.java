@@ -17,7 +17,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
@@ -32,7 +31,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return false;
     }
 
-    default Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
+    default Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> getSelections() {
         return Optional.empty();
     }
 
@@ -44,11 +43,11 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Root<R>, Order[]>> getOrders() {
+    default Optional<BiFunction<CriteriaBuilder, Path<R>, Order[]>> getOrders() {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Root<R>, Expression<?>[]>> getGroupings() {
+    default Optional<BiFunction<CriteriaBuilder, Path<R>, Expression<?>[]>> getGroupings() {
         return Optional.empty();
     };
 

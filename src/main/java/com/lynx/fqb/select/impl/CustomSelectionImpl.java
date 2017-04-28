@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
@@ -22,13 +22,13 @@ public class CustomSelectionImpl<S, R> implements CustomSelection<S, R> {
     @Getter
     private final Class<R> rootCls;
 
-    private final BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]> selections;
+    private final BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]> selections;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> getSelections() {
+    public Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> getSelections() {
         return Optional.of(selections);
     }
 

@@ -5,7 +5,7 @@ import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
@@ -24,7 +24,7 @@ public class JoinImpl<S, R> implements Join<S, R> {
     private final Class<R> rootCls;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selections;
+    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
 
     private final BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]> joins;
 

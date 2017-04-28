@@ -7,7 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
@@ -26,7 +25,7 @@ public class WhereImpl<S, R> implements Where<S, R> {
     private final Class<R> rootCls;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Root<R>, Selection<?>[]>> selections;
+    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
