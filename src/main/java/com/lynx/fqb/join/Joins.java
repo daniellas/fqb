@@ -10,6 +10,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 public interface Joins {
@@ -31,6 +32,13 @@ public interface Joins {
                 return from.join(attr, type).on(predicates.get().apply(cb, from));
             }
 
+            return from.join(attr, type);
+        };
+    }
+
+    public static <A, B> JoinApplier<A> join(ListAttribute<? super A, ?> attr, JoinType type,
+            Optional<BiFunction<CriteriaBuilder, Path<B>, Predicate[]>> predicates) {
+        return (cb, from) -> {
             return from.join(attr, type);
         };
     }

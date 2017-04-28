@@ -2,6 +2,7 @@ package com.lynx.fqb.predicate;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -145,6 +146,14 @@ public interface Predicates {
             Function<Path<R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
             return cb.lessThanOrEqualTo(path.apply(root), value);
+        };
+    }
+
+    @SafeVarargs
+    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Predicate> test(Function<Path<R>, ? extends Expression<List<V>>> path,
+            V... values) {
+        return (cb, root) -> {
+            return path.apply(root).in(values);
         };
     }
 
