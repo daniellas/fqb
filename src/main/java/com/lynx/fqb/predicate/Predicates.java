@@ -86,10 +86,18 @@ public interface Predicates {
         };
     }
 
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNotNull(SingularAttribute<? super R, ?> attr) {
+        return isNotNull(Paths.get(attr));
+    }
+
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNull(Function<Path<? extends R>, ? extends Expression<?>> path) {
         return (cb, root) -> {
             return path.apply(root).isNull();
         };
+    }
+
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNull(SingularAttribute<? super R, ?> attr) {
+        return isNull(Paths.get(attr));
     }
 
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> like(Function<Path<? extends R>, ? extends Expression<String>> path, String pattern) {

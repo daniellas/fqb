@@ -25,7 +25,7 @@ public interface Groupings {
         };
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> byAttr(SingularAttribute<R, T> attr) {
+    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> byAttr(SingularAttribute<? super R, T> attr) {
         return byPath(Paths.get(attr));
     }
 

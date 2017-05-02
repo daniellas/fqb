@@ -4,12 +4,8 @@ import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.select.Selections.*;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Selection;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,10 +15,8 @@ import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.CustomResult;
-import com.lynx.fqb.entity.EntityBase;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
-import com.lynx.fqb.expression.Expressions;
 import com.lynx.fqb.path.Paths;
 
 public class SelectionITest extends IntegrationTestBase {
@@ -80,9 +74,4 @@ public class SelectionITest extends IntegrationTestBase {
         Assert.assertFalse(resultList.isEmpty());
     }
 
-    @Test
-    public void shouldSelectExpressionFromSuperType() {
-        Select.tupleFrom(Parent.class)
-                .with(Selections.of(Selections.expr(Expressions.ofAttr(Parent_.dateCreate).andThen(Expressions.month()))));
-    }
 }

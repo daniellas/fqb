@@ -16,7 +16,7 @@ import com.lynx.fqb.util.Combinators;
 public interface Selections {
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>>... selections) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
         return Combinators.fromBiFunctionList(selections, Selection<?>[]::new);
     }
 

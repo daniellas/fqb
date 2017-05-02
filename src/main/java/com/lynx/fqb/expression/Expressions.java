@@ -56,6 +56,12 @@ public interface Expressions {
         };
     }
 
+    public static <R> Function<Context<R, Long>, Context<R, Long>> count() {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().count(ctx.getExpression()));
+        };
+    }
+
     public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> max() {
         return ctx -> {
             return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().max(ctx.getExpression()));
