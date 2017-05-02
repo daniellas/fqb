@@ -21,6 +21,7 @@ import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
+import com.lynx.fqb.predicate.Predicates;
 
 public class PredicatesITest extends IntegrationTestBase {
 
@@ -137,4 +138,11 @@ public class PredicatesITest extends IntegrationTestBase {
         Assert.assertFalse(resultList.isEmpty());
     }
 
+    @Test
+    public void shouldSelectRestrictedByObject() {
+        Parent parent = Select.from(Parent.class).where(Predicates.of(Predicates.equal(Parent_.id, 1l))).getSingleResult(em).get();
+
+        List<Child> resultList = Select.from(Child.class).where(Predicates.of(Predicates.equal(Child_.parent, parent))).getResultList(em);
+        Assert.assertFalse(resultList.isEmpty());
+    }
 }
