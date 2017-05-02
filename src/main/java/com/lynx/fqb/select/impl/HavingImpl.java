@@ -30,7 +30,7 @@ public class HavingImpl<S, R> implements Having<S, R> {
     }
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> getSelections() {
+    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
         // TODO Auto-generated method stub
         return null;
     }

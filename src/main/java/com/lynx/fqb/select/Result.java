@@ -31,7 +31,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return false;
     }
 
-    default Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> getSelections() {
+    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
         return Optional.empty();
     }
 
@@ -39,15 +39,15 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     }
 
-    default Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> getRestrictions() {
+    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getRestrictions() {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Path<R>, Order[]>> getOrders() {
+    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Path<R>, Expression<?>[]>> getGroupings() {
+    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> getGroupings() {
         return Optional.empty();
     };
 

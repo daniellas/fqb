@@ -23,7 +23,7 @@ public interface Joins {
     }
 
     public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> join(SingularAttribute<? super A, B> attr, JoinType type,
-            Optional<BiFunction<CriteriaBuilder, Path<B>, Predicate[]>> predicates) {
+            Optional<BiFunction<CriteriaBuilder, Path<? extends B>, Predicate[]>> predicates) {
         return (cb, from) -> {
             Join<A, B> join = from.join(attr, type);
 
@@ -36,7 +36,7 @@ public interface Joins {
     }
 
     public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> inner(SingularAttribute<? super A, B> attr,
-            BiFunction<CriteriaBuilder, Path<B>, Predicate[]> predicates) {
+            BiFunction<CriteriaBuilder, Path<? extends B>, Predicate[]> predicates) {
         return join(attr, JoinType.INNER, Optional.of(predicates));
     }
 
@@ -45,7 +45,7 @@ public interface Joins {
     }
 
     public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>> left(SingularAttribute<? super A, B> attr,
-            BiFunction<CriteriaBuilder, Path<B>, Predicate[]> predicates) {
+            BiFunction<CriteriaBuilder, Path<? extends B>, Predicate[]> predicates) {
         return join(attr, JoinType.LEFT, Optional.of(predicates));
     }
 

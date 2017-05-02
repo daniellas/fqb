@@ -51,7 +51,7 @@ public interface Paths {
      * @param <A>
      * @param <B>
      */
-    public interface PathSelector<A, B> extends Function<Path<A>, Path<B>> {
+    public interface PathSelector<A, B> extends Function<Path<? extends A>, Path<B>> {
         /**
          * Gets nested path by given attribute
          * 
@@ -59,7 +59,7 @@ public interface Paths {
          *            to return path for
          * @return path selecting function
          */
-        default <C> Function<Path<A>, Path<C>> get(SingularAttribute<? super B, C> attr) {
+        default <C> Function<Path<? extends A>, Path<C>> get(SingularAttribute<? super B, C> attr) {
             return andThen(Paths.get(attr));
         }
     }

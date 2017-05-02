@@ -39,7 +39,7 @@ public class QueryBuilder {
         return ctx -> Context.of(ctx.getCb(), ctx.getCq(), ctx.getCq().from(rootCls));
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applySelection(Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selection) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applySelection(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selection) {
         return ctx -> {
             return selection.map(s -> {
                 return Context.of(
@@ -64,7 +64,7 @@ public class QueryBuilder {
     }
 
     public static <S, R> Function<Context<S, R>, Context<S, R>> applyRestriction(
-            Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> predicates,
+            Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> predicates,
             PredicatesInterceptor<R> interceptor) {
         return ctx -> {
             return predicates.map(p -> {
@@ -83,7 +83,7 @@ public class QueryBuilder {
         };
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyOrder(Optional<BiFunction<CriteriaBuilder, Path<R>, Order[]>> orders) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyOrder(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> orders) {
         return ctx -> {
             return orders.map(o -> {
                 return Context.of(ctx.getCb(), ctx.getCq().orderBy(o.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
@@ -91,7 +91,7 @@ public class QueryBuilder {
         };
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyGroup(Optional<BiFunction<CriteriaBuilder, Path<R>, Expression<?>[]>> groupings) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyGroup(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings) {
         return ctx -> {
             return groupings.map(g -> {
                 return Context.of(ctx.getCb(), ctx.getCq().groupBy(g.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());

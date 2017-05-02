@@ -17,7 +17,7 @@ public interface RootSelection<S, R> {
 
     PredicatesInterceptor<R> getPredicatesInterceptor();
 
-    default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]> selections) {
+    default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections) {
         return CustomSelectionImpl.of(getSelectionCls(), getRootCls(), selections, getPredicatesInterceptor());
     }
 

@@ -48,7 +48,7 @@ public class JoinITest extends IntegrationTestBase {
 
     @Test
     public void shouldJoinOnEntitySelection() {
-        BiFunction<CriteriaBuilder, Path<Parent>, Predicate[]> predicates = Predicates.of(Predicates.in(Paths.get(Parent_.id), 1l));
+        BiFunction<CriteriaBuilder, Path<? extends Parent>, Predicate[]> predicates = Predicates.of(Predicates.in(Paths.get(Parent_.id), 1l));
         BiFunction<CriteriaBuilder, From<Child, Child>, Join<Child, ?>> join = Joins.join(Child_.parent, JoinType.INNER, Optional.of(predicates));
         BiFunction<CriteriaBuilder, From<Child, Child>, Join<Child, ?>[]> of = Joins.of(join);
 

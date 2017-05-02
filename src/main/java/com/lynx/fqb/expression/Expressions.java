@@ -16,41 +16,41 @@ import lombok.RequiredArgsConstructor;
 
 public interface Expressions {
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Context<R, V>> ofValue(V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofValue(V value) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.literal(value));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Context<R, V>> ofPath(Function<Path<R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofPath(Function<Path<? extends R>, Path<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, path.apply(root));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Context<R, V>> ofAttr(SingularAttribute<R, V> attr) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofAttr(SingularAttribute<R, V> attr) {
         return ofPath(Paths.get(attr));
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Context<R, Long>> count(Function<Path<R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> count(Function<Path<? extends R>, Path<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.count(path.apply(root)));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Context<R, Long>> countDistinct(Function<Path<R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> countDistinct(Function<Path<? extends R>, Path<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.countDistinct(path.apply(root)));
         };
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<R>, Context<R, Long>> count(Class<R> rootCls) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> count(Class<R> rootCls) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.count(root));
         };
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<R>, Context<R, Long>> countDistinct(Class<R> rootCls) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> countDistinct(Class<R> rootCls) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.countDistinct(root));
         };
@@ -114,7 +114,7 @@ public interface Expressions {
     @RequiredArgsConstructor(staticName = "of")
     public static class Context<R, E> {
         private final CriteriaBuilder cb;
-        private final Path<R> root;
+        private final Path<? extends R> root;
         private final Expression<E> expression;
     }
 }

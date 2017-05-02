@@ -16,21 +16,21 @@ import com.lynx.fqb.util.Combinators;
 public interface Selections {
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<R>, Selection<?>>... selections) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>>... selections) {
         return Combinators.fromBiFunctionList(selections, Selection<?>[]::new);
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Path<R>, Selection<?>> path(Function<Path<R>, Path<T>> path) {
+    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> path(Function<Path<? extends R>, Path<T>> path) {
         return (cb, root) -> {
             return path.apply(root);
         };
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Path<R>, Selection<?>> attr(SingularAttribute<R, T> attr) {
+    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> attr(SingularAttribute<? super R, T> attr) {
         return path(Paths.get(attr));
     }
 
-    public static <R, E> BiFunction<CriteriaBuilder, Path<R>, Selection<?>> expr(BiFunction<CriteriaBuilder, Path<R>, Context<R, E>> expression) {
+    public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> expr(BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
         return (cb, root) -> {
             return expression.apply(cb, root).getExpression();
         };

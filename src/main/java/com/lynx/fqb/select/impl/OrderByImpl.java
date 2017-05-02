@@ -27,24 +27,24 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
     private final Class<R> rootCls;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections;
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]>> joins;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> restrictions;
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> restrictions;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Expression<?>[]>> groupings;
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings;
 
-    private final BiFunction<CriteriaBuilder, Path<R>, Order[]> orders;
+    private final BiFunction<CriteriaBuilder, Path<? extends R>, Order[]> orders;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Path<R>, Order[]>> getOrders() {
+    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
         return Optional.ofNullable(orders);
     }
 

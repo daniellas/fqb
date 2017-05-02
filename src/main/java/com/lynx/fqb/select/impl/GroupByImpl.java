@@ -26,20 +26,21 @@ public class GroupByImpl<S, R> implements GroupBy<S, R> {
     private final Class<R> rootCls;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections;
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.Join<R, ?>[]>> joins;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Predicate[]>> restrictions;
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> restrictions;
 
-    private final BiFunction<CriteriaBuilder, Path<R>, Expression<?>[]> groupings;
+    private final BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> groupings;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
-    public Optional<BiFunction<CriteriaBuilder, Path<R>, Expression<?>[]>> getGroupings() {
+    @Override
+    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> getGroupings() {
         return Optional.of(groupings);
     };
 

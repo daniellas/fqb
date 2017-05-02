@@ -10,7 +10,7 @@ import com.lynx.fqb.select.impl.WhereImpl;
 
 public interface Join<S, R> extends Where<S, R> {
 
-    default Where<S, R> where(BiFunction<CriteriaBuilder, Path<R>, Predicate[]> restrictions) {
+    default Where<S, R> where(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions) {
         return WhereImpl.of(getSelectionCls(), getRootCls(), getSelections(), getJoins(), restrictions, getPredicatesInterceptor());
     }
 

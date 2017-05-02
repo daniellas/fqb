@@ -22,13 +22,13 @@ public class CustomSelectionImpl<S, R> implements CustomSelection<S, R> {
     @Getter
     private final Class<R> rootCls;
 
-    private final BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]> selections;
+    private final BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> getSelections() {
+    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
         return Optional.of(selections);
     }
 

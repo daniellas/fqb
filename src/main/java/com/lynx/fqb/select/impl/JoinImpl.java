@@ -24,7 +24,7 @@ public class JoinImpl<S, R> implements Join<S, R> {
     private final Class<R> rootCls;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, Path<R>, Selection<?>[]>> selections;
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections;
 
     private final BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]> joins;
 

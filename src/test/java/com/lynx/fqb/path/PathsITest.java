@@ -36,6 +36,11 @@ public class PathsITest extends IntegrationTestBase {
         Assert.assertNotNull(Paths.getList(Parent_.children).apply(root(Parent.class)));
     }
 
+    @Test
+    public void shouldGetInheritedAttribute() {
+        Assert.assertNotNull(Paths.get(Parent_.dateCreate).apply(root(Parent.class)));
+    }
+
     private <T> Root<T> root(Class<T> cls) {
         return getCriteriaBuilder()
                 .andThen(createCriteriaQuery(cls, cls))

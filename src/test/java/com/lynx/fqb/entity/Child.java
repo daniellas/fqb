@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(of = { "id", "name" })
+@EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
 @Entity
-public class Child {
+public class Child extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +26,5 @@ public class Child {
 
     @ManyToOne
     private Parent parent;
-
 
 }
