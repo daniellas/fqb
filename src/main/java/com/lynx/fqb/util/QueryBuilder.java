@@ -84,7 +84,7 @@ public class QueryBuilder {
         };
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyOrder(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> orders) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyOrder(Optional<BiFunction<CriteriaBuilder, Path<?>, Order[]>> orders) {
         return ctx -> {
             return orders.map(o -> {
                 return Context.of(ctx.getCb(), ctx.getCq().orderBy(o.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());

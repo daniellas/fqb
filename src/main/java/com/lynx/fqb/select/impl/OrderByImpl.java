@@ -41,13 +41,13 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> havings;
 
-    private final BiFunction<CriteriaBuilder, Path<? extends R>, Order[]> orders;
+    private final BiFunction<CriteriaBuilder, Path<?>, Order[]> orders;
 
     @Getter
     private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
+    public Optional<BiFunction<CriteriaBuilder, Path<?>, Order[]>> getOrders() {
         return Optional.ofNullable(orders);
     }
 

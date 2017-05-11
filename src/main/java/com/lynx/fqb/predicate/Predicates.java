@@ -44,7 +44,7 @@ public interface Predicates {
         };
     }
 
-    public static <R, V> PredicateApplier<R> equal(SingularAttribute<? super R, V> attr, V value) {
+    public static <R, V> PredicateApplier<R> equal(SingularAttribute<R, V> attr, V value) {
         return equal(Paths.get(attr), value);
     }
 
@@ -86,7 +86,7 @@ public interface Predicates {
         };
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNotNull(SingularAttribute<? super R, ?> attr) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNotNull(SingularAttribute<R, ?> attr) {
         return isNotNull(Paths.get(attr));
     }
 
@@ -96,7 +96,7 @@ public interface Predicates {
         };
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNull(SingularAttribute<? super R, ?> attr) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNull(SingularAttribute<R, ?> attr) {
         return isNull(Paths.get(attr));
     }
 
@@ -111,7 +111,7 @@ public interface Predicates {
         return like(path, "%" + pattern + "%");
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> contains(SingularAttribute<? super R, String> attr, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> contains(SingularAttribute<R, String> attr, String pattern) {
         return contains(Paths.get(attr), pattern);
     }
 

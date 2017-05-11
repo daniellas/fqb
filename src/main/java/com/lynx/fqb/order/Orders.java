@@ -1,5 +1,6 @@
 package com.lynx.fqb.order;
 
+import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -11,13 +12,14 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.path.Paths;
-import com.lynx.fqb.util.Combinators;
 
 public interface Orders {
 
     @SafeVarargs
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order[]> of(BiFunction<CriteriaBuilder, Path<? extends T>, Order>... orders) {
-        return Combinators.fromBiFunctionList(orders, Order[]::new);
+        return (cb,root)->{
+            return Arrays.stream(orders).map(i -> i.apply(cb, root)).toArray(Order[]::new);
+        };
     }
 
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(Function<Path<? extends T>, ? extends Expression<?>> path) {
@@ -26,8 +28,10 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(SingularAttribute<? super T, ?> attr) {
-        return asc(Paths.get(attr));
+    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(SingularAttribute<T, ?> attr) {
+        return (cb, root) -> {
+            return cb.asc(root.get(attr));
+        };
     }
 
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(BiFunction<CriteriaBuilder, Path<? extends T>, Context<T, ?>> expr) {
@@ -48,7 +52,7 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(SingularAttribute<? super T, ?> attr) {
+    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(SingularAttribute<T, ?> attr) {
         return desc(Paths.get(attr));
     }
 

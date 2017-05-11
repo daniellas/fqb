@@ -5,8 +5,6 @@ import static com.lynx.fqb.select.Selections.*;
 
 import java.util.List;
 
-import javax.persistence.Tuple;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -17,9 +15,8 @@ import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
-import com.lynx.fqb.path.Paths;
 
-public class SelectionITest extends IntegrationTestBase {
+public class SelectionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntities() {
@@ -54,27 +51,28 @@ public class SelectionITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultsFromNestedPaths() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
-                .with(of(path(get(Child_.id)), path(get(Child_.parent).andThen(get(Parent_.name)))))
+                .with(of(
+                        path(get(Child_.id)), 
+                        path(get(Child_.parent).andThen(get(Parent_.name)))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
     }
 
-    @Test
-    public void shouldSelectAttrFromSuperType() {
-        List<Tuple> resultList = Select.tupleFrom(Parent.class).with(Selections.of(Selections.attr(Parent_.dateCreate))).getResultList(em);
+//    @Test
+//    public void shouldSelectAttrFromSuperType() {
+//        List<Tuple> resultList = Select.tupleFrom(Parent.class)
+//                .with(Selections.of(Selections.attr(Parent_.dateCreate))).getResultList(em);
+//
+//        Assert.assertFalse(resultList.isEmpty());
+//    }
+//
+//    @Test
+//    public void shouldSelectPathFromSuperType() {
+//        List<Tuple> resultList = Select.tupleFrom(Parent.class)
+//                .with(Selections.of(Selections.path(Paths.get(Parent_.dateCreate)))).getResultList(em);
+//
+//        Assert.assertFalse(resultList.isEmpty());
+//    }
 
-        Assert.assertFalse(resultList.isEmpty());
-    }
-
-    @Test
-    public void shouldSelectPathFromSuperType() {
-        List<Tuple> resultList = Select.tupleFrom(Parent.class).with(Selections.of(Selections.path(Paths.get(Parent_.dateCreate)))).getResultList(em);
-
-        Assert.assertFalse(resultList.isEmpty());
-    }
-
-    public void shouldSelectEntityProperty() {
-        
-    }
 }

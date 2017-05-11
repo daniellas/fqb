@@ -1,9 +1,6 @@
 package com.lynx.fqb.path;
 
 import static com.lynx.fqb.path.Paths.*;
-import static com.lynx.fqb.util.QueryBuilder.*;
-
-import javax.persistence.criteria.Root;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,27 +23,24 @@ public class PathsITest extends IntegrationTestBase {
         Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.name)).apply(root(Child.class)));
     }
 
-    @Test
-    public void shouldGetNestedPathByGet() {
-        Assert.assertNotNull(get(Child_.parent).get(Parent_.name).apply(root(Child.class)));
-    }
+    // @Test
+    // public void shouldGetNestedPathByGet() {
+    // Assert.assertNotNull(get(Child_.parent).get(Parent_.name).apply(root(Child.class)));
+    // }
 
     @Test
     public void shouldGetListAttribute() {
-        Assert.assertNotNull(Paths.getList(Parent_.children).apply(root(Parent.class)));
+        Assert.assertNotNull(getList(Parent_.children).apply(root(Parent.class)));
     }
 
     @Test
     public void shouldGetInheritedAttribute() {
-        Assert.assertNotNull(Paths.get(Parent_.dateCreate).apply(root(Parent.class)));
+        Assert.assertNotNull(get(Parent_.dateCreate).apply(root(Parent.class)));
     }
 
-    private <T> Root<T> root(Class<T> cls) {
-        return getCriteriaBuilder()
-                .andThen(createCriteriaQuery(cls, cls))
-                .andThen(applyRoot(cls))
-                .apply(em)
-                .getRoot();
+    @Test
+    public void shouldGetInheritedNestedAttribute() {
+        Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.dateCreate)).apply(root(Child.class)));
     }
 
 }

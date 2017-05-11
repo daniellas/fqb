@@ -28,7 +28,7 @@ public interface Expressions {
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofAttr(SingularAttribute<? super R, V> attr) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofAttr(SingularAttribute<R, V> attr) {
         return ofPath(Paths.get(attr));
     }
 

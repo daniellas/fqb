@@ -18,7 +18,7 @@ import com.lynx.fqb.expression.Expressions;
 import com.lynx.fqb.group.Groupings;
 import com.lynx.fqb.path.Paths;
 
-public class GroupITest extends IntegrationTestBase {
+public class GroupedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldGroupByAttribute() {

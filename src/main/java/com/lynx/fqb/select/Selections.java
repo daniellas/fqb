@@ -26,7 +26,7 @@ public interface Selections {
         };
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> attr(SingularAttribute<? super R, T> attr) {
+    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> attr(SingularAttribute<R, T> attr) {
         return path(Paths.get(attr));
     }
 

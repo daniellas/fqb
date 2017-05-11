@@ -43,7 +43,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
+    default Optional<BiFunction<CriteriaBuilder, Path<?>, Order[]>> getOrders() {
         return Optional.empty();
     };
 

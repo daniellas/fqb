@@ -1,39 +1,25 @@
 package com.lynx.fqb.select;
 
 import java.util.List;
+import java.util.function.BiFunction;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
+import com.lynx.fqb.entity.EntityBase;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.expression.Expressions;
 import com.lynx.fqb.order.Orders;
 import com.lynx.fqb.path.Paths;
 
-public class OrderITest extends IntegrationTestBase {
-
-    @Test
-    public void shouldSelectEntitiesSortedByPathAsc() {
-        List<Parent> resultList = Select
-                .from(Parent.class)
-                .orderBy(Orders.of(Orders.asc(Paths.get(Parent_.id))))
-                .getResultList(em);
-
-        assertAsc(resultList);
-    }
-
-    @Test
-    public void shouldSelectEntitiesSortedByPathDesc() {
-        List<Parent> resultList = Select
-                .from(Parent.class)
-                .orderBy(Orders.of(Orders.desc(Paths.get(Parent_.id))))
-                .getResultList(em);
-
-        assertDesc(resultList);
-    }
+public class OrderedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntitiesSortedByAttributeAsc() {
@@ -56,6 +42,27 @@ public class OrderITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldSelectEntitiesSortedByPathAsc() {
+        List<Parent> resultList = Select
+                .from(Parent.class)
+                .orderBy(Orders.of(Orders.asc(Paths.get(Parent_.id))))
+                .getResultList(em);
+
+        assertAsc(resultList);
+    }
+
+    @Test
+    public void shouldSelectEntitiesSortedByPathDesc() {
+        List<Parent> resultList = Select
+                .from(Parent.class)
+                .orderBy(Orders.of(Orders.desc(Paths.get(Parent_.id))))
+                .getResultList(em);
+
+        assertDesc(resultList);
+    }
+
+
+    @Test
     public void shouldSelectEntitiesSortedByExpressionAsc() {
         List<Parent> resultList = Select
                 .from(Parent.class)
@@ -73,6 +80,18 @@ public class OrderITest extends IntegrationTestBase {
                 .getResultList(em);
 
         assertDesc(resultList);
+    }
+
+    @Test
+    public void shouldSelectEntitiesSortedByParentPathAsc() {
+        List<Parent> resultList = Select
+                .from(Parent.class)
+                .orderBy(Orders.of(
+                        Orders.asc(Paths.get(Parent_.id)),
+                        Orders.asc(Paths.get(Parent_.dateCreate))))
+                .getResultList(em);
+
+        assertAsc(resultList);
     }
 
     private void assertAsc(List<Parent> resultList) {
