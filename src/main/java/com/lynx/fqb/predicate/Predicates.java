@@ -48,7 +48,7 @@ public interface Predicates {
         return equal(Paths.get(attr), value);
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<R>, Predicate> notEqual(Function<Path<R>, ? extends Expression<V>> path, V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notEqual(Function<Path<? extends R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
             return cb.notEqual(path.apply(root), value);
         };
@@ -100,6 +100,7 @@ public interface Predicates {
         return isNull(Paths.get(attr));
     }
 
+    
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> like(Function<Path<? extends R>, ? extends Expression<String>> path, String pattern) {
         return (cb, root) -> {
             return cb.like(path.apply(root), pattern);

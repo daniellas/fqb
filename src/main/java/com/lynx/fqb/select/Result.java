@@ -51,6 +51,10 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     };
 
+    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings() {
+        return Optional.empty();
+    }
+
     PredicatesInterceptor<R> getPredicatesInterceptor();
 
     default List<S> getResultList(EntityManager em) {
@@ -86,6 +90,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
                 .andThen(applyDistinct(isDistinct()))
                 .andThen(applyRestriction(getRestrictions(), getPredicatesInterceptor()))
                 .andThen(applyGroup(getGroupings()))
+                .andThen(applyHaving(getHavings()))
                 .andThen(applyOrder(getOrders()))
                 .andThen(createTypedQuery(em))
                 .apply(em);

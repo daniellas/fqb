@@ -68,6 +68,18 @@ public interface Expressions {
         };
     }
 
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> min() {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().min(ctx.getExpression()));
+        };
+    }
+
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, Double>> avg() {
+        return ctx -> {
+            return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().avg(ctx.getExpression()));
+        };
+    }
+
     public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> sum() {
         return ctx -> {
             return Context.of(ctx.getCb(), ctx.getRoot(), ctx.getCb().sum(ctx.getExpression()));

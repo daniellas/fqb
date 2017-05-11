@@ -38,6 +38,9 @@ public class OrderByImpl<S, R> implements OrderBy<S, R> {
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings;
 
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> havings;
+
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Order[]> orders;
 
     @Getter

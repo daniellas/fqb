@@ -3,48 +3,48 @@ package com.lynx.fqb.select.impl;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.predicate.PredicatesInterceptor;
 import com.lynx.fqb.select.Having;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "of")
 public class HavingImpl<S, R> implements Having<S, R> {
-    
-    @Override
-    public Class<S> getSelectionCls() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
+    @Getter
+    private final Class<S> selectionCls;
+
+    @Getter
+    private final Class<R> rootCls;
+
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections;
+
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]>> joins;
+
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> restrictions;
+
+    @Getter
+    private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings;
+
+    private final BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> havings;
+
+    @Getter
+    private final PredicatesInterceptor<R> predicatesInterceptor;
 
     @Override
-    public Class<R> getRootCls() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public TypedQuery<S> apply(EntityManager t) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public PredicatesInterceptor<R> getPredicatesInterceptor() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings() {
+        return Optional.of(havings);
+    };
 
 }

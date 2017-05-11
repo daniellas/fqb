@@ -39,7 +39,8 @@ public class QueryBuilder {
         return ctx -> Context.of(ctx.getCb(), ctx.getCq(), ctx.getCq().from(rootCls));
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applySelection(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selection) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applySelection(
+            Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selection) {
         return ctx -> {
             return selection.map(s -> {
                 return Context.of(
@@ -91,10 +92,19 @@ public class QueryBuilder {
         };
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyGroup(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyGroup(
+            Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings) {
         return ctx -> {
             return groupings.map(g -> {
                 return Context.of(ctx.getCb(), ctx.getCq().groupBy(g.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
+            }).orElse(ctx);
+        };
+    }
+
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyHaving(Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> havings) {
+        return ctx -> {
+            return havings.map(h -> {
+                return Context.of(ctx.getCb(), ctx.getCq().having(h.apply(ctx.getCb(), ctx.getRoot())), ctx.getRoot());
             }).orElse(ctx);
         };
     }
