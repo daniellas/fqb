@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 import javax.persistence.metamodel.SingularAttribute;
@@ -16,7 +17,8 @@ import com.lynx.fqb.util.Combinators;
 public interface Selections {
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(
+            BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
         return Combinators.fromBiFunctionList(selections, Selection<?>[]::new);
     }
 
@@ -30,10 +32,15 @@ public interface Selections {
         return path(Paths.get(attr));
     }
 
-    public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> expr(BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
+    public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> expr(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
         return (cb, root) -> {
             return expression.apply(cb, root).getExpression();
         };
     }
 
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> customExpr(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> expression) {
+        return expression;
+    }
 }
