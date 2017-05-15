@@ -1,5 +1,7 @@
 package com.lynx.fqb.order;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
+import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Child;
 import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.EntityBase;
@@ -50,10 +53,13 @@ public class OrderITest extends IntegrationTestBase {
 
     @Test
     public void shouldApplyMultipleOrderWithSuperPath() {
-        BiFunction<CriteriaBuilder, Path<? extends Parent>, Order> name = Orders.asc(Paths.get(Parent_.name));
-        BiFunction<CriteriaBuilder, Path<? extends EntityBase>, Order> date = Orders.asc(Paths.get(Parent_.dateCreate));
+        BiFunction<CriteriaBuilder, Path<? super Parent>, Order> name = Orders.asc(Paths.get(Parent_.name));
+        BiFunction<CriteriaBuilder, Path<? super EntityBase>, Order> date = Orders.asc(Paths.get(Parent_.dateCreate));
 
-        Assert.assertEquals(2, Orders.of(name, date).apply(cb, root(Parent.class)).length);
+        Select.from(Parent.class)
+                .orderBy(Orders.of(name, (cb, root) -> {
+                    return date.apply(cb, root);
+                }));
     }
 
 }

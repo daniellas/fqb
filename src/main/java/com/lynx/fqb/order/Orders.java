@@ -1,6 +1,7 @@
 package com.lynx.fqb.order;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -16,13 +17,13 @@ import com.lynx.fqb.path.Paths;
 public interface Orders {
 
     @SafeVarargs
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order[]> of(BiFunction<CriteriaBuilder, Path<? extends T>, Order>... orders) {
-        return (cb,root)->{
+    public static <T> BiFunction<CriteriaBuilder, Path<? super T>, Order[]> of(BiFunction<CriteriaBuilder, Path<? super T>, Order>... orders) {
+        return (cb, root) -> {
             return Arrays.stream(orders).map(i -> i.apply(cb, root)).toArray(Order[]::new);
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(Function<Path<? extends T>, ? extends Expression<?>> path) {
+    public static <T> BiFunction<CriteriaBuilder, Path<? super T>, Order> asc(Function<Path<? super T>, ? extends Expression<?>> path) {
         return (cb, root) -> {
             return cb.asc(path.apply(root));
         };

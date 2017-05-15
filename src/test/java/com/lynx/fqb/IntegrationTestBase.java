@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Path;
 
 import org.junit.After;
 import org.junit.Before;
@@ -60,7 +60,7 @@ public class IntegrationTestBase {
         em.close();
     }
 
-    protected <T> Root<T> root(Class<T> cls) {
+    protected <T> Path<T> root(Class<T> cls) {
         return cb.createQuery(cls).from(cls);
     }
 

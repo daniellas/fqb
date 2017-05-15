@@ -1,12 +1,8 @@
 package com.lynx.fqb.path;
 
-import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
-import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 /**
@@ -24,21 +20,9 @@ public interface Paths {
      *            of required path
      * @return path selecting function as {@link PathSelector}
      */
-    public static <A, B> Function<Path<? extends A>, Path<B>> get(SingularAttribute<A, B> attr) {
+    public static <A, B> Function<Path<A>, Path<B>> get(SingularAttribute<? super A, B> attr) {
         return path -> {
             return path.get(attr);
-        };
-    }
-
-    public static <A, B> Function<Path<A>, Expression<List<B>>> getList(PluralAttribute<A, List<B>, B> coll) {
-        return path -> {
-            return path.get(coll);
-        };
-    }
-
-    public static <A, B> Function<Path<A>, Expression<Set<B>>> getSet(PluralAttribute<A, Set<B>, B> coll) {
-        return path -> {
-            return path.get(coll);
         };
     }
 
