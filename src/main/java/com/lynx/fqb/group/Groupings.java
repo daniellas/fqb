@@ -16,7 +16,7 @@ public interface Groupings {
 
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>>... expressions) {
-        return Combinators.fromBiFunctionList(expressions, Expression<?>[]::new);
+        return Combinators.fromBiFunctionArray(expressions, Expression<?>[]::new);
     }
 
     public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> byPath(Function<Path<? extends R>, Path<T>> path) {

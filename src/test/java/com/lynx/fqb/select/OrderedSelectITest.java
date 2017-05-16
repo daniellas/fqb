@@ -1,18 +1,12 @@
 package com.lynx.fqb.select;
 
 import java.util.List;
-import java.util.function.BiFunction;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
-import com.lynx.fqb.entity.EntityBase;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.expression.Expressions;
@@ -61,7 +55,6 @@ public class OrderedSelectITest extends IntegrationTestBase {
         assertDesc(resultList);
     }
 
-
     @Test
     public void shouldSelectEntitiesSortedByExpressionAsc() {
         List<Parent> resultList = Select
@@ -88,7 +81,9 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .from(Parent.class)
                 .orderBy(Orders.of(
                         Orders.asc(Paths.get(Parent_.id)),
-                        Orders.asc(Paths.get(Parent_.dateCreate))))
+                        (cb, root) -> {
+                            return cb.asc(root.get(Parent_.birthDate));
+                        }))
                 .getResultList(em);
 
         assertAsc(resultList);

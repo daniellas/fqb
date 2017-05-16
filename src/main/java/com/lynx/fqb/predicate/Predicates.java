@@ -21,7 +21,7 @@ public interface Predicates {
 
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
-        return Combinators.fromBiFunctionList(predicates, Predicate[]::new);
+        return Combinators.fromBiFunctionArray(predicates, Predicate[]::new);
     }
 
     @SafeVarargs

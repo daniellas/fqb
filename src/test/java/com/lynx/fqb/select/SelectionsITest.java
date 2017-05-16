@@ -5,6 +5,8 @@ import static com.lynx.fqb.select.Selections.*;
 
 import java.util.List;
 
+import javax.persistence.Tuple;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,27 +54,19 @@ public class SelectionsITest extends IntegrationTestBase {
     public void shouldSelectCustomResultsFromNestedPaths() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
                 .with(of(
-                        path(get(Child_.id)), 
+                        path(get(Child_.id)),
                         path(get(Child_.parent).andThen(get(Parent_.name)))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
     }
 
-//    @Test
-//    public void shouldSelectAttrFromSuperType() {
-//        List<Tuple> resultList = Select.tupleFrom(Parent.class)
-//                .with(Selections.of(Selections.attr(Parent_.dateCreate))).getResultList(em);
-//
-//        Assert.assertFalse(resultList.isEmpty());
-//    }
-//
-//    @Test
-//    public void shouldSelectPathFromSuperType() {
-//        List<Tuple> resultList = Select.tupleFrom(Parent.class)
-//                .with(Selections.of(Selections.path(Paths.get(Parent_.dateCreate)))).getResultList(em);
-//
-//        Assert.assertFalse(resultList.isEmpty());
-//    }
+    @Test
+    public void shouldSelectAttrFromSuperType() {
+        List<Tuple> resultList = Select.tupleFrom(Parent.class)
+                .with(Selections.of((cb, root) -> root.get(Parent_.dateCreate))).getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
 
 }

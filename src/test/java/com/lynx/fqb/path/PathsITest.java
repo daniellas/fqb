@@ -23,16 +23,6 @@ public class PathsITest extends IntegrationTestBase {
         Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.name)).apply(root(Child.class)));
     }
 
-    // @Test
-    // public void shouldGetNestedPathByGet() {
-    // Assert.assertNotNull(get(Child_.parent).get(Parent_.name).apply(root(Child.class)));
-    // }
-
-    // @Test
-    // public void shouldGetListAttribute() {
-    // Assert.assertNotNull(getList(Parent_.children).apply(root(Parent.class)));
-    // }
-
     @Test
     public void shouldGetInheritedAttribute() {
         Assert.assertNotNull(get(Parent_.dateCreate).apply(root(Parent.class)));

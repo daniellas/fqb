@@ -17,7 +17,7 @@ public interface Selections {
 
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
-        return Combinators.fromBiFunctionList(selections, Selection<?>[]::new);
+        return Combinators.fromBiFunctionArray(selections, Selection<?>[]::new);
     }
 
     public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> path(Function<Path<? extends R>, Path<T>> path) {
