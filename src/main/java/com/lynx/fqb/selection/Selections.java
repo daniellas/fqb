@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.selection;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;

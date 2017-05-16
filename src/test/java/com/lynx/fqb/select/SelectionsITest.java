@@ -1,7 +1,7 @@
 package com.lynx.fqb.select;
 
 import static com.lynx.fqb.path.Paths.*;
-import static com.lynx.fqb.select.Selections.*;
+import static com.lynx.fqb.selection.Selections.*;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.selection.Selections;
 
 public class SelectionsITest extends IntegrationTestBase {
 
