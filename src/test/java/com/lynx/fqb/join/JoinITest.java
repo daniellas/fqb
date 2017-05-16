@@ -29,7 +29,7 @@ import com.lynx.fqb.entity.Parent;
 import com.lynx.fqb.entity.Parent_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates;
-import com.lynx.fqb.select.Selections;
+import com.lynx.fqb.selection.Selections;
 
 public class JoinITest extends IntegrationTestBase {
 

@@ -1,7 +1,7 @@
 package com.lynx.fqb.expression;
 
 import static com.lynx.fqb.expression.Expressions.*;
-import static com.lynx.fqb.select.Selections.*;
+import static com.lynx.fqb.selection.Selections.*;
 
 import org.junit.Assert;
 import org.junit.Test;

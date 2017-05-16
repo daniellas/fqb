@@ -2,9 +2,7 @@ package com.lynx.fqb.select;
 
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.predicate.Predicates.*;
-import static com.lynx.fqb.predicate.Predicates.of;
-import static com.lynx.fqb.select.Selections.*;
-import static com.lynx.fqb.select.Selections.of;
+import static com.lynx.fqb.selection.Selections.*;
 
 import java.util.List;
 
