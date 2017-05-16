@@ -146,10 +146,4 @@ public class RestrictedSelectITest extends IntegrationTestBase {
         Assert.assertFalse(resultList.isEmpty());
     }
 
-//    @Test
-//    public void shouldRestrictBySuperTypePath() {
-//        List<Parent> resultList = Select.from(Parent.class).where(Predicates.of(Predicates.isNull(Paths.get(Parent_.dateCreate)))).getResultList(em);
-//        
-//        Assert.assertFalse(resultList.isEmpty());
-//    }
 }

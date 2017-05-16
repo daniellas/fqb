@@ -11,13 +11,11 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.metamodel.SingularAttribute;
 
+import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.util.Combinators;
 
-public interface Predicates {
-
-    public interface PredicateApplier<R> extends BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> {
-    }
+public class Predicates {
 
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
@@ -25,30 +23,31 @@ public interface Predicates {
     }
 
     @SafeVarargs
-    public static <R> PredicateApplier<R> and(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> and(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
         return (cb, root) -> {
             return cb.and(Arrays.stream(predicates).map(p -> p.apply(cb, root)).toArray(Predicate[]::new));
         };
     }
 
     @SafeVarargs
-    public static <R> PredicateApplier<R> or(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> or(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
         return (cb, root) -> {
             return cb.or(Arrays.stream(predicates).map(p -> p.apply(cb, root)).toArray(Predicate[]::new));
         };
     }
 
-    public static <R, V> PredicateApplier<R> equal(Function<Path<? extends R>, ? extends Expression<V>> path, V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> equal(Function<Path<? extends R>, ? extends Expression<V>> path, V value) {
         return (cb, root) -> {
             return cb.equal(path.apply(root), value);
         };
     }
 
-    public static <R, V> PredicateApplier<R> equal(SingularAttribute<R, V> attr, V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> equal(SingularAttribute<R, V> attr, V value) {
         return equal(Paths.get(attr), value);
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notEqual(Function<Path<? extends R>, ? extends Expression<V>> path, V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notEqual(Function<Path<? extends R>, ? extends Expression<V>> path,
+            V value) {
         return (cb, root) -> {
             return cb.notEqual(path.apply(root), value);
         };
@@ -61,20 +60,23 @@ public interface Predicates {
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(Function<Path<? extends R>, ? extends Expression<V>> path, Collection<V> values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(Function<Path<? extends R>, ? extends Expression<V>> path,
+            Collection<V> values) {
         return (cb, root) -> {
             return path.apply(root).in(values);
         };
     }
 
     @SafeVarargs
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(Function<Path<? extends R>, ? extends Expression<V>> path, V... values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(Function<Path<? extends R>, ? extends Expression<V>> path,
+            V... values) {
         return (cb, root) -> {
             return path.apply(root).in(values).not();
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(Function<Path<? extends R>, ? extends Expression<V>> path, Collection<V> values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(Function<Path<? extends R>, ? extends Expression<V>> path,
+            Collection<V> values) {
         return (cb, root) -> {
             return path.apply(root).in(values).not();
         };
@@ -100,14 +102,15 @@ public interface Predicates {
         return isNull(Paths.get(attr));
     }
 
-    
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> like(Function<Path<? extends R>, ? extends Expression<String>> path, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> like(Function<Path<? extends R>, ? extends Expression<String>> path,
+            String pattern) {
         return (cb, root) -> {
             return cb.like(path.apply(root), pattern);
         };
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> contains(Function<Path<? extends R>, ? extends Expression<String>> path, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> contains(Function<Path<? extends R>, ? extends Expression<String>> path,
+            String pattern) {
         return like(path, "%" + pattern + "%");
     }
 
@@ -115,21 +118,32 @@ public interface Predicates {
         return contains(Paths.get(attr), pattern);
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> startsWith(Function<Path<? extends R>, ? extends Expression<String>> path, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> startsWith(Function<Path<? extends R>, ? extends Expression<String>> path,
+            String pattern) {
         return like(path, "%" + pattern);
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> endsWith(Function<Path<? extends R>, ? extends Expression<String>> path, String pattern) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> endsWith(Function<Path<? extends R>, ? extends Expression<String>> path,
+            String pattern) {
         return like(path, pattern + "%");
     }
 
-    public static <R, V extends Number> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> gt(Function<Path<? extends R>, ? extends Expression<V>> path, V value) {
+    public static <R, V extends Number> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> gt(Function<Path<? extends R>, ? extends Expression<V>> path,
+            V value) {
         return (cb, root) -> {
             return cb.gt(path.apply(root), value);
         };
     }
 
-    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> greaterThan(Function<Path<? extends R>, ? extends Expression<V>> path,
+    public static <R, V extends Number> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> gt(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> expression, V value) {
+        return (cb, root) -> {
+            return cb.gt(expression.apply(cb, root).getExpression(), value);
+        };
+    }
+
+    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> greaterThan(
+            Function<Path<? extends R>, ? extends Expression<V>> path,
             V value) {
         return (cb, root) -> {
             return cb.greaterThan(path.apply(root), value);
@@ -143,7 +157,8 @@ public interface Predicates {
         };
     }
 
-    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> lessThan(Function<Path<? extends R>, ? extends Expression<V>> path,
+    public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> lessThan(
+            Function<Path<? extends R>, ? extends Expression<V>> path,
             V value) {
         return (cb, root) -> {
             return cb.lessThan(path.apply(root), value);
