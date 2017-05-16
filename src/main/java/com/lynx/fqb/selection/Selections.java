@@ -12,11 +12,11 @@ import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.util.Combinators;
 
-// FIXME Move to separate package. Currently, after moving the project fails to compile
 public interface Selections {
 
     @SafeVarargs
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(
+            BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
         return Combinators.fromBiFunctionArray(selections, Selection<?>[]::new);
     }
 
@@ -30,7 +30,8 @@ public interface Selections {
         return path(Paths.get(attr));
     }
 
-    public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> expr(BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
+    public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> expr(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
         return (cb, root) -> {
             return expression.apply(cb, root).getExpression();
         };

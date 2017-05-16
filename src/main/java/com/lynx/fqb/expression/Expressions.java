@@ -22,7 +22,7 @@ public interface Expressions {
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofPath(Function<Path<? extends R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofPath(Function<Path<? extends R>, ? extends Expression<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, path.apply(root));
         };
@@ -32,13 +32,13 @@ public interface Expressions {
         return ofPath(Paths.get(attr));
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> count(Function<Path<? extends R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> count(Function<Path<? extends R>, ? extends Expression<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.count(path.apply(root)));
         };
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> countDistinct(Function<Path<? extends R>, Path<V>> path) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> countDistinct(Function<Path<? extends R>, ? extends Expression<V>> path) {
         return (cb, root) -> {
             return Context.of(cb, root, cb.countDistinct(path.apply(root)));
         };

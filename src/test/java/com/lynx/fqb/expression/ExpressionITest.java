@@ -5,6 +5,8 @@ import static com.lynx.fqb.selection.Selections.*;
 
 import java.util.List;
 
+import javax.persistence.Tuple;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -76,6 +78,36 @@ public class ExpressionITest extends IntegrationTestBase {
                 .getResultList(em);
 
         Assert.assertEquals(10l, sumId(resultList).longValue());
+    }
+
+    @Test
+    public void shouldSelectAverage() {
+        SingleResult<Tuple> singleResult = Select.tupleFrom(Parent.class)
+                .with(of(expr(ofAttr(Parent_.id).andThen(Expressions.avg()))))
+                .getSingleResult(em);
+
+        Assert.assertTrue(singleResult.isPresent());
+        Assert.assertEquals(2.0, singleResult.get().get(0));
+    }
+
+    @Test
+    public void shouldSelectMin() {
+        SingleResult<Tuple> singleResult = Select.tupleFrom(Parent.class)
+                .with(of(expr(ofAttr(Parent_.id).andThen(Expressions.min()))))
+                .getSingleResult(em);
+
+        Assert.assertTrue(singleResult.isPresent());
+        Assert.assertEquals(1l, singleResult.get().get(0));
+    }
+
+    @Test
+    public void shouldSelectCount() {
+        SingleResult<Tuple> singleResult = Select.tupleFrom(Parent.class)
+                .with(of(expr(ofAttr(Parent_.id).andThen(Expressions.count()))))
+                .getSingleResult(em);
+
+        Assert.assertTrue(singleResult.isPresent());
+        Assert.assertEquals(2l, singleResult.get().get(0));
     }
 
     private Long sumId(List<CustomResult> resultList) {
