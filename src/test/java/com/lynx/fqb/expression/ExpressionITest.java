@@ -87,7 +87,7 @@ public class ExpressionITest extends IntegrationTestBase {
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(2.0, singleResult.get().get(0));
+        Assert.assertEquals(2.0, singleResult.getResult().get(0));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class ExpressionITest extends IntegrationTestBase {
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(1l, singleResult.get().get(0));
+        Assert.assertEquals(1l, singleResult.getResult().get(0));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class ExpressionITest extends IntegrationTestBase {
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(2l, singleResult.get().get(0));
+        Assert.assertEquals(2l, singleResult.getResult().get(0));
     }
 
     private Long sumId(List<CustomResult> resultList) {

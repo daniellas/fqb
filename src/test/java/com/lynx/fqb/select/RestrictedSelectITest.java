@@ -41,7 +41,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertNotNull(singleResult.get());
+        Assert.assertNotNull(singleResult.getResult());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectRestrictedByObject() {
-        Parent parent = Select.from(Parent.class).where(Predicates.of(Predicates.equal(Parent_.id, 1l))).getSingleResult(em).get();
+        Parent parent = Select.from(Parent.class).where(Predicates.of(Predicates.equal(Parent_.id, 1l))).getSingleResult(em).getResult();
 
         List<Child> resultList = Select.from(Child.class).where(Predicates.of(Predicates.equal(Child_.parent, parent))).getResultList(em);
         Assert.assertFalse(resultList.isEmpty());

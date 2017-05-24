@@ -26,7 +26,7 @@ public class SingleResultTest {
 
     @Test
     public void shouldHaveResult() {
-        Assert.assertEquals("1", SingleResult.ofResult("1").get());
+        Assert.assertEquals("1", SingleResult.ofResult("1").getResult());
     }
 
     @Test
@@ -69,6 +69,17 @@ public class SingleResultTest {
 
     @Test
     public void shouldHasResult() {
-        Assert.assertTrue(SingleResult.ofResult(1l).getResult().isPresent());
+        Assert.assertTrue(SingleResult.ofResult(1l).isPresent());
     }
+
+    @Test
+    public void shouldMapResult() {
+        Assert.assertEquals(2l, SingleResult.ofResult(1l).map(v -> v + 1).longValue());
+    }
+
+    @Test
+    public void shouldReturnAlternativeValue() {
+        Assert.assertEquals(2l, SingleResult.ofResult(null).orElse(2l));
+    }
+
 }

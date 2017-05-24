@@ -32,6 +32,7 @@ public class OrderITest extends IntegrationTestBase {
         Assert.assertEquals(1, Orders.of(Orders.asc(Paths.get(Parent_.name))).apply(cb, root(Parent.class)).length);
     }
 
+
     @Test
     public void shouldApplyMultipleOrder() {
         Assert.assertEquals(2,
