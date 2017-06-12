@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.expression.Expressions;
 import com.lynx.fqb.group.Groupings;
 import com.lynx.fqb.path.Paths;
@@ -22,9 +22,9 @@ public class GroupedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldGroupByAttribute() {
-        List<Tuple> resultList = Select.tupleFrom(Parent.class)
-                .with(of(expr(Expressions.ofAttr(Parent_.birthDate).andThen(year()).andThen(max()))))
-                .groupBy(Groupings.of(Groupings.byAttr(Parent_.name)))
+        List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()))))
+                .groupBy(Groupings.of(Groupings.byAttr(SellOrder_.number)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -32,9 +32,9 @@ public class GroupedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldGroupByPath() {
-        List<Tuple> resultList = Select.tupleFrom(Parent.class)
-                .with(of(path(Paths.get(Parent_.name))))
-                .groupBy(Groupings.of(Groupings.byPath(Paths.get(Parent_.name))))
+        List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
+                .with(of(path(Paths.get(SellOrder_.number))))
+                .groupBy(Groupings.of(Groupings.byPath(Paths.get(SellOrder_.number))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -42,9 +42,9 @@ public class GroupedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldGroupByExpression() {
-        List<Tuple> resultList = Select.tupleFrom(Parent.class)
-                .with(of(expr(Expressions.ofAttr(Parent_.id).andThen(sum()))))
-                .groupBy(Groupings.of(Groupings.byExpr(Expressions.ofAttr(Parent_.birthDate).andThen(Expressions.month()))))
+        List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(Expressions.ofAttr(SellOrder_.id).andThen(sum()))))
+                .groupBy(Groupings.of(Groupings.byExpr(Expressions.ofAttr(SellOrder_.dueDate).andThen(Expressions.month()))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

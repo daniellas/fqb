@@ -6,31 +6,31 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
-import com.lynx.fqb.entity.Child;
-import com.lynx.fqb.entity.Child_;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.Item;
+import com.lynx.fqb.entity.Item_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 
 public class PathsITest extends IntegrationTestBase {
 
     @Test
     public void shouldGetSinglePath() {
-        Assert.assertNotNull(get(Parent_.id).apply(root(Parent.class)));
+        Assert.assertNotNull(get(SellOrder_.id).apply(root(SellOrder.class)));
     }
 
     @Test
     public void shouldGetNestedPath() {
-        Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.name)).apply(root(Child.class)));
+        Assert.assertNotNull(get(Item_.sellOrder).andThen(get(SellOrder_.number)).apply(root(Item.class)));
     }
 
     @Test
     public void shouldGetInheritedAttribute() {
-        Assert.assertNotNull(get(Parent_.dateCreate).apply(root(Parent.class)));
+        Assert.assertNotNull(get(SellOrder_.dateCreate).apply(root(SellOrder.class)));
     }
 
     @Test
     public void shouldGetInheritedNestedAttribute() {
-        Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.dateCreate)).apply(root(Child.class)));
+        Assert.assertNotNull(get(Item_.sellOrder).andThen(get(SellOrder_.dateCreate)).apply(root(Item.class)));
     }
 
 }

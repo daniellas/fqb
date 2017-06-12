@@ -14,16 +14,16 @@ import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.CustomNumberResult;
 import com.lynx.fqb.entity.CustomResult;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.select.SingleResult;
 
 public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldCombineExpressions() {
-        SingleResult<CustomNumberResult> result = Select.customFrom(CustomNumberResult.class, Parent.class).with(of(expr(
-                Expressions.ofAttr(Parent_.birthDate)
+        SingleResult<CustomNumberResult> result = Select.customFrom(CustomNumberResult.class, SellOrder.class).with(of(expr(
+                Expressions.ofAttr(SellOrder_.dueDate)
                         .andThen(year())
                         .andThen(sum())
                         .andThen(sum(20)))))
@@ -34,14 +34,14 @@ public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntityCountAndThenSum() {
-        Assert.assertNotNull(Select.customFrom(Long.class, Parent.class).with(of(expr(count(Parent.class).andThen(sum(1l))))).getSingleResult(em));
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(count(SellOrder.class).andThen(sum(1l))))).getSingleResult(em));
     }
 
     @Test
     public void shouldSelectEntityCountAndThenSumDiff() {
-        Assert.assertNotNull(Select.customFrom(Long.class, Parent.class)
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
                 .with(of(expr(
-                        count(Parent.class)
+                        count(SellOrder.class)
                                 .andThen(sum(1l))
                                 .andThen(diff(1l)))))
                 .getSingleResult(em));
@@ -49,10 +49,10 @@ public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectLiteralExpression() {
-        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
                 .with(of(
                         expr(ofValue(1l)),
-                        attr(Parent_.name)))
+                        attr(SellOrder_.number)))
                 .getResultList(em);
 
         Assert.assertEquals(resultList.size(), sumId(resultList).intValue());
@@ -60,40 +60,40 @@ public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectIdProdByValue() {
-        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
                 .with(of(
-                        expr(ofAttr(Parent_.id).andThen(prod(1l))),
-                        attr(Parent_.name)))
+                        expr(ofAttr(SellOrder_.id).andThen(prod(1l))),
+                        attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(4l, sumId(resultList).longValue());
+        Assert.assertEquals(5l, sumId(resultList).longValue());
     }
 
     @Test
     public void shouldSelectIdProdByAttribute() {
-        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
                 .with(of(
-                        expr(ofAttr(Parent_.id).andThen(prod(Parent_.id))),
-                        attr(Parent_.name)))
+                        expr(ofAttr(SellOrder_.id).andThen(prod(SellOrder_.id))),
+                        attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(10l, sumId(resultList).longValue());
+        Assert.assertEquals(17l, sumId(resultList).longValue());
     }
 
     @Test
     public void shouldSelectAverage() {
-        SingleResult<Tuple> singleResult = Select.tupleFrom(Parent.class)
-                .with(of(expr(ofAttr(Parent_.id).andThen(Expressions.avg()))))
+        SingleResult<Tuple> singleResult = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.avg()))))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(2.0, singleResult.getResult().get(0));
+        Assert.assertEquals(2.5, singleResult.getResult().get(0));
     }
 
     @Test
     public void shouldSelectMin() {
-        SingleResult<Tuple> singleResult = Select.tupleFrom(Parent.class)
-                .with(of(expr(ofAttr(Parent_.id).andThen(Expressions.min()))))
+        SingleResult<Tuple> singleResult = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.min()))))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
@@ -102,8 +102,8 @@ public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectCount() {
-        SingleResult<Tuple> singleResult = Select.tupleFrom(Parent.class)
-                .with(of(expr(ofAttr(Parent_.id).andThen(Expressions.count()))))
+        SingleResult<Tuple> singleResult = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.count()))))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());

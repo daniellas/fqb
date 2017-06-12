@@ -38,12 +38,6 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> ascExpr(BiFunction<CriteriaBuilder, Path<? extends T>, Expression<?>> expr) {
-        return (cb, root) -> {
-            return cb.asc(expr.apply(cb, root));
-        };
-    }
-
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(Function<Path<? extends T>, ? extends Expression<?>> path) {
         return (cb, root) -> {
             return cb.desc(path.apply(root));
@@ -57,12 +51,6 @@ public interface Orders {
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(BiFunction<CriteriaBuilder, Path<? extends T>, Context<T, ?>> expr) {
         return (cb, root) -> {
             return cb.desc(expr.apply(cb, root).getExpression());
-        };
-    }
-
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> descExpr(BiFunction<CriteriaBuilder, Path<? extends T>, Expression<?>> expr) {
-        return (cb, root) -> {
-            return cb.desc(expr.apply(cb, root));
         };
     }
 

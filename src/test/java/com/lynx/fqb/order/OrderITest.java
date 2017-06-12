@@ -4,32 +4,32 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
-import com.lynx.fqb.entity.Child;
-import com.lynx.fqb.entity.Child_;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.Item;
+import com.lynx.fqb.entity.Item_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.path.Paths;
 
 public class OrderITest extends IntegrationTestBase {
 
     @Test
     public void shouldCreateAscOrderFromPath() {
-        Assert.assertNotNull(Orders.asc(Paths.get(Parent_.name)).apply(cb, root(Parent.class)));
+        Assert.assertNotNull(Orders.asc(Paths.get(SellOrder_.number)).apply(cb, root(SellOrder.class)));
     }
 
     @Test
     public void shouldCreateAscOrderFromNestedPath() {
-        Assert.assertNotNull(Orders.asc(Paths.get(Child_.parent).andThen(Paths.get(Parent_.name))).apply(cb, root(Child.class)));
+        Assert.assertNotNull(Orders.asc(Paths.get(Item_.sellOrder).andThen(Paths.get(SellOrder_.number))).apply(cb, root(Item.class)));
     }
 
     @Test
     public void shouldCreateAscOrderFromSuperPath() {
-        Assert.assertNotNull(Orders.asc(Paths.get(Parent_.dateCreate)).apply(cb, root(Parent.class)));
+        Assert.assertNotNull(Orders.asc(Paths.get(SellOrder_.dateCreate)).apply(cb, root(SellOrder.class)));
     }
 
     @Test
     public void shouldApplySingleOrder() {
-        Assert.assertEquals(1, Orders.of(Orders.asc(Paths.get(Parent_.name))).apply(cb, root(Parent.class)).length);
+        Assert.assertEquals(1, Orders.of(Orders.asc(Paths.get(SellOrder_.number))).apply(cb, root(SellOrder.class)).length);
     }
 
 
@@ -37,9 +37,9 @@ public class OrderITest extends IntegrationTestBase {
     public void shouldApplyMultipleOrder() {
         Assert.assertEquals(2,
                 Orders.of(
-                        Orders.asc(Paths.get(Parent_.name)),
-                        Orders.asc(Paths.get(Parent_.id)))
-                        .apply(cb, root(Parent.class)).length);
+                        Orders.asc(Paths.get(SellOrder_.number)),
+                        Orders.asc(Paths.get(SellOrder_.id)))
+                        .apply(cb, root(SellOrder.class)).length);
     }
 
 }

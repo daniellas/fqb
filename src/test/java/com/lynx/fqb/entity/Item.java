@@ -1,5 +1,7 @@
 package com.lynx.fqb.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
 @Entity
-public class Child extends EntityBase {
+public class Item extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +27,10 @@ public class Child extends EntityBase {
     private String name;
 
     @ManyToOne
-    private Parent parent;
+    private SellOrder sellOrder;
+    
+    private BigDecimal price;
+    
+    private Integer quantity;
 
 }

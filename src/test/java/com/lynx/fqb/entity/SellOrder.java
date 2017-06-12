@@ -19,23 +19,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
+@EqualsAndHashCode(of = { "id", "number" }, callSuper = false)
 @Entity
-public class Parent extends EntityBase {
+public class SellOrder extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
+    private String number;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Child> children = new ArrayList<>();
+    @OneToMany(mappedBy = "sellOrder", cascade = CascadeType.ALL)
+    private List<Item> items = new ArrayList<>();
+    
+    private Date dueDate;
 
-    private Date birthDate;
-
-    public void addChild(Child child) {
-        children.add(child);
-        child.setParent(this);
+    public void addItem(Item item) {
+        items.add(item);
+        item.setSellOrder(this);
     }
 }

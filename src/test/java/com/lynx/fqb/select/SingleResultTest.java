@@ -1,54 +1,60 @@
 package com.lynx.fqb.select;
 
+import static org.junit.Assert.*;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.persistence.NonUniqueResultException;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class SingleResultTest {
 
     @Test
     public void shouldBePresent() {
-        Assert.assertTrue(SingleResult.ofResult(1l).isPresent());
+        assertTrue(SingleResult.ofResult(1l).isPresent());
     }
 
     @Test
     public void shouldBeError() {
-        Assert.assertTrue(SingleResult.ofError(new RuntimeException()).isError());
+        assertTrue(SingleResult.ofError(new RuntimeException()).isError());
     }
 
     @Test
     public void shouldNotBeError() {
-        Assert.assertFalse(SingleResult.ofResult(1l).isError());
+        assertFalse(SingleResult.ofResult(1l).isError());
     }
 
     @Test
     public void shouldHaveResult() {
-        Assert.assertEquals("1", SingleResult.ofResult("1").getResult());
+        assertEquals("1", SingleResult.ofResult("1").getResult());
     }
 
     @Test
     public void shouldHaveException() {
         RuntimeException e = new RuntimeException();
 
-        Assert.assertEquals(e, SingleResult.ofError(e).getException());
+        assertEquals(e, SingleResult.ofError(e).getException());
+    }
+
+    @Test
+    public void shouldNotHaveExceptionOnResult() {
+        assertNull(SingleResult.ofResult(1l).getException());
     }
 
     @Test
     public void shouldBeNonUnique() {
-        Assert.assertTrue(SingleResult.ofError(new NonUniqueResultException()).isNonUnique());
+        assertTrue(SingleResult.ofError(new NonUniqueResultException()).isNonUnique());
     }
 
     @Test
     public void shouldNotBeNonUniqueOnException() {
-        Assert.assertFalse(SingleResult.ofError(new RuntimeException()).isNonUnique());
+        assertFalse(SingleResult.ofError(new RuntimeException()).isNonUnique());
     }
 
     @Test
     public void shouldNotBeNonUniqueOnResult() {
-        Assert.assertFalse(SingleResult.ofResult(1).isNonUnique());
+        assertFalse(SingleResult.ofResult(1).isNonUnique());
     }
 
     @Test(expected = NullPointerException.class)
@@ -57,29 +63,80 @@ public class SingleResultTest {
     }
 
     @Test
-    public void shouldConsume() {
+    public void shouldConsumeOnResult() {
         AtomicInteger cnt = new AtomicInteger(0);
 
         SingleResult.ofResult(1l).ifPresent(r -> {
             cnt.incrementAndGet();
         });
 
-        Assert.assertEquals(1, cnt.get());
+        assertEquals(1, cnt.get());
     }
 
     @Test
     public void shouldHasResult() {
-        Assert.assertTrue(SingleResult.ofResult(1l).isPresent());
+        assertTrue(SingleResult.ofResult(1l).isPresent());
     }
 
     @Test
     public void shouldMapResult() {
-        Assert.assertEquals(2l, SingleResult.ofResult(1l).map(v -> v + 1).longValue());
+        assertEquals(2l, SingleResult.ofResult(1l).map(v -> v + 1).longValue());
     }
 
     @Test
     public void shouldReturnAlternativeValue() {
-        Assert.assertEquals(2l, SingleResult.ofResult(null).orElse(2l));
+        assertEquals(2l, SingleResult.ofResult(null).orElse(2l));
+    }
+
+    @Test
+    public void shouldReturnResultValue() {
+        assertEquals(1l, SingleResult.ofResult(1l).orElse(2l).longValue());
+    }
+
+    @Test
+    public void shouldReturnAlternativeValueBySupplier() {
+        assertEquals(2l, SingleResult.ofResult(null).orElseGet(() -> 2l));
+    }
+
+    @Test
+    public void shouldReturnResultValueBySupplier() {
+        assertEquals(1l, SingleResult.ofResult(1l).orElseGet(() -> 2l).longValue());
+    }
+
+    @Test
+    public void shouldHaveNullResultOnError() {
+        assertNull(SingleResult.ofError(new NonUniqueResultException()).getResult());
+    }
+
+    @Test
+    public void shouldNotBePresentOnError() {
+        assertFalse(SingleResult.ofError(new NonUniqueResultException()).isPresent());
+    }
+
+    @Test
+    public void shouldNotConsumeOnError() {
+        AtomicInteger cnt = new AtomicInteger(0);
+
+        SingleResult.ofError(new NonUniqueResultException()).ifPresent(r -> {
+            cnt.incrementAndGet();
+        });
+
+        assertEquals(0, cnt.get());
+    }
+
+    @Test
+    public void shouldMapOnError() {
+        assertEquals(1l, SingleResult.ofError(new NonUniqueResultException()).map(v -> 1l).longValue());
+    }
+
+    @Test
+    public void shouldReturnAlternateValueOnError() {
+        assertEquals(1l, SingleResult.ofError(new NonUniqueResultException()).orElse(1l));
+    }
+
+    @Test
+    public void shouldReturnAlternateValueBySupplierOnError() {
+        assertEquals(1l, SingleResult.ofError(new NonUniqueResultException()).orElseGet(() -> 1l));
     }
 
 }

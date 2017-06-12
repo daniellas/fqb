@@ -12,40 +12,40 @@ import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
-import com.lynx.fqb.entity.Child;
-import com.lynx.fqb.entity.Child_;
 import com.lynx.fqb.entity.CustomResult;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.Item;
+import com.lynx.fqb.entity.Item_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.selection.Selections;
 
 public class SelectionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntities() {
-        List<Parent> resultList = Select.from(Parent.class).getResultList(em);
+        List<SellOrder> resultList = Select.from(SellOrder.class).getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
     }
 
     @Test
     public void shouldSelectPagedEntities() {
-        List<Parent> resultList = Select.from(Parent.class).getResultList(em, 0, 1);
+        List<SellOrder> resultList = Select.from(SellOrder.class).getResultList(em, 0, 1);
 
         Assert.assertEquals(1, resultList.size());
     }
 
     @Test
     public void shouldSelectDistinctEntities() {
-        List<Parent> resultList = Select.distinct(Parent.class).getResultList(em);
+        List<SellOrder> resultList = Select.distinct(SellOrder.class).getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
     }
 
     @Test
     public void shouldSelectCustomResults() {
-        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Parent.class)
-                .with(of(path(get(Parent_.id)), path(get(Parent_.name))))
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
+                .with(of(path(get(SellOrder_.id)), path(get(SellOrder_.number))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -53,10 +53,10 @@ public class SelectionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectCustomResultsFromNestedPaths() {
-        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Child.class)
+        List<CustomResult> resultList = Select.customFrom(CustomResult.class, Item.class)
                 .with(of(
-                        path(get(Child_.id)),
-                        path(get(Child_.parent).andThen(get(Parent_.name)))))
+                        path(get(Item_.id)),
+                        path(get(Item_.sellOrder).andThen(get(SellOrder_.number)))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -64,8 +64,8 @@ public class SelectionsITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectAttrFromSuperType() {
-        List<Tuple> resultList = Select.tupleFrom(Parent.class)
-                .with(Selections.of((cb, root) -> root.get(Parent_.dateCreate))).getResultList(em);
+        List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
+                .with(Selections.of((cb, root) -> root.get(SellOrder_.dateCreate))).getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
     }
