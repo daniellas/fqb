@@ -27,7 +27,7 @@ Consecutive releases will follow [Semantic Versioning](http://semver.org/) princ
 
 ## How to use it?
 
-To be completed
+Please see project tests to see usage examples.
 
 ## Requirements
 
