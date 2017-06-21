@@ -74,7 +74,4 @@ public class SelectionITest extends IntegrationTestBase {
         Assert.assertFalse(resultList.isEmpty());
     }
 
-    public void shouldSelectEntityProperty() {
-        
-    }
 }

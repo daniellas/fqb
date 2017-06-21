@@ -148,7 +148,7 @@ public class PredicatesITest extends IntegrationTestBase {
 
     @Test
     public void shouldRestrictBySuperTypePath() {
-        List<Parent> resultList = Select.from(Parent.class).where(Predicates.of(Predicates.isNull(Paths.get(Parent_.dateCreate)))).getResultList(em);
+        List<Parent> resultList = Select.from(Parent.class).where(Predicates.of(Predicates.isNotNull(Paths.get(Parent_.dateCreate)))).getResultList(em);
         
         Assert.assertFalse(resultList.isEmpty());
     }
