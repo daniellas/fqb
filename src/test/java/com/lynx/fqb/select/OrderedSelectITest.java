@@ -90,11 +90,11 @@ public class OrderedSelectITest extends IntegrationTestBase {
     }
 
     private void assertAsc(List<SellOrder> resultList) {
-        Assert.assertEquals(1l, resultList.get(0).getId().longValue());
+        Assert.assertEquals(ORDER_ONE_ID, resultList.get(0).getId());
     }
 
     private void assertDesc(List<SellOrder> resultList) {
-        Assert.assertNotEquals(1l, resultList.get(0).getId().longValue());
+        Assert.assertEquals(ORDER_TWO_ID, resultList.get(0).getId());
     }
 
 }

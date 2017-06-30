@@ -29,7 +29,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     public void shouldSelectEntitiesRestricted() {
         List<SellOrder> resultList = Select
                 .from(SellOrder.class)
-                .where(of(equal(get(SellOrder_.id), 1l)))
+                .where(of(equal(get(SellOrder_.id), ORDER_ONE_ID)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -39,7 +39,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     public void shouldSelectSingleResult() {
         SingleResult<SellOrder> singleResult = Select
                 .from(SellOrder.class)
-                .where(of(equal(get(SellOrder_.id), 1l)))
+                .where(of(equal(get(SellOrder_.id), ORDER_ONE_ID)))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
@@ -82,7 +82,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
                 .from(SellOrder.class)
                 .where(of(or(
                         equal(SellOrder_.id, 1l),
-                        equal(SellOrder_.number, IntegrationTestBase.ORDER_ONE_NUMBER))))
+                        equal(SellOrder_.number, ORDER_ONE_NUMBER))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -92,7 +92,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     public void shouldSelectEntitiesRestrictedByPredicatesOnNestedPath() {
         List<Item> resultList = Select
                 .from(Item.class)
-                .where(of(equal(get(Item_.sellOrder).andThen(get(SellOrder_.id)), 1l)))
+                .where(of(equal(get(Item_.sellOrder).andThen(get(SellOrder_.id)), ORDER_ONE_ID)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -101,8 +101,8 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultRestricted() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
-                .with(of(path(get(SellOrder_.id)), path(get(SellOrder_.number))))
-                .where(of(equal(get(SellOrder_.id), 1l)))
+                .with(of(path(get(SellOrder_.total)), path(get(SellOrder_.number))))
+                .where(of(equal(get(SellOrder_.id), ORDER_ONE_ID)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -111,8 +111,8 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultFromPathsRestricted() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
-                .with(of(path(get(SellOrder_.id)), path(get(SellOrder_.number))))
-                .where(of(equal(Paths.get(SellOrder_.id), 1l)))
+                .with(of(path(get(SellOrder_.total)), path(get(SellOrder_.number))))
+                .where(of(equal(Paths.get(SellOrder_.id), ORDER_ONE_ID)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -121,8 +121,8 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResultFromNestedPathsRestricted() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Item.class)
-                .with(of(path(get(Item_.id)), path(get(Item_.sellOrder).andThen(Paths.get(SellOrder_.number)))))
-                .where(of(equal(get(Item_.id), 2l)))
+                .with(of(path(get(Item_.price)), path(get(Item_.sellOrder).andThen(Paths.get(SellOrder_.number)))))
+                .where(of(equal(get(Item_.name), "Item 1.1")))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -132,7 +132,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     public void shouldSelectTupleRestricted() {
         List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
                 .with(of(path(get(SellOrder_.id)), path(get(SellOrder_.number))))
-                .where(of(equal(Paths.get(SellOrder_.id), 1l)))
+                .where(of(equal(Paths.get(SellOrder_.id), ORDER_ONE_ID)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -140,7 +140,7 @@ public class RestrictedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectRestrictedByObject() {
-        SellOrder parent = Select.from(SellOrder.class).where(Predicates.of(Predicates.equal(SellOrder_.id, 1l))).getSingleResult(em).getResult();
+        SellOrder parent = Select.from(SellOrder.class).where(Predicates.of(Predicates.equal(SellOrder_.id, ORDER_ONE_ID))).getSingleResult(em).getResult();
 
         List<Item> resultList = Select.from(Item.class).where(Predicates.of(Predicates.equal(Item_.sellOrder, parent))).getResultList(em);
         Assert.assertFalse(resultList.isEmpty());

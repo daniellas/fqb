@@ -45,7 +45,7 @@ public class SelectionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCustomResults() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
-                .with(of(path(get(SellOrder_.id)), path(get(SellOrder_.number))))
+                .with(of(path(get(SellOrder_.total)), path(get(SellOrder_.number))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
@@ -55,7 +55,7 @@ public class SelectionsITest extends IntegrationTestBase {
     public void shouldSelectCustomResultsFromNestedPaths() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Item.class)
                 .with(of(
-                        path(get(Item_.id)),
+                        path(get(Item_.price)),
                         path(get(Item_.sellOrder).andThen(get(SellOrder_.number)))))
                 .getResultList(em);
 
