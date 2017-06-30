@@ -15,13 +15,18 @@ import org.junit.BeforeClass;
 
 import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.User;
 import com.lynx.fqb.transaction.TransactionalExecutor;
 
 public class IntegrationTestBase {
 
     public static final String ORDER_ONE_NUMBER = "1/2017";
 
+    public static final Long ORDER_ONE_ID = 3l;
+
     public static final String ORDER_TWO_NUMBER = "2/2017";
+
+    public static final Long ORDER_TWO_ID = 6l;
 
     protected static EntityManagerFactory emf;
 
@@ -44,13 +49,16 @@ public class IntegrationTestBase {
         if (!initialized) {
             initialized = true;
             TransactionalExecutor.using(em).run(() -> {
-                SellOrder order = new SellOrder(null, ORDER_ONE_NUMBER, new ArrayList<>(), DateTimeUtil.of(1970, 1, 1));
+                User creator = em.merge(new User(null, "Creator"));
+                User supervisor = em.merge(new User(null, "Supervisor"));
+
+                SellOrder order = new SellOrder(null, ORDER_ONE_NUMBER, new ArrayList<>(), DateTimeUtil.of(1970, 1, 1), BigDecimal.ONE, creator, supervisor);
 
                 order.addItem(new Item(null, "Item 1.1", null, BigDecimal.ONE, 1));
                 order.addItem(new Item(null, "Item 1.2", null, BigDecimal.ONE, 1));
                 em.persist(order);
 
-                order = new SellOrder(null, ORDER_TWO_NUMBER, new ArrayList<>(), DateTimeUtil.of(1980, 1, 1));
+                order = new SellOrder(null, ORDER_TWO_NUMBER, new ArrayList<>(), DateTimeUtil.of(1980, 1, 1), BigDecimal.TEN, creator, null);
                 order.addItem(new Item(null, "Item 2.1", null, new BigDecimal("1.5"), 2));
                 em.persist(order);
             });

@@ -17,9 +17,9 @@ public class FindITest extends IntegrationTestBase {
 
     @Test
     public void shouldGetById() {
-        Optional<SellOrder> entity = Find.entity(SellOrder.class).byId(1l).apply(em);
+        Optional<SellOrder> entity = Find.entity(SellOrder.class).byId(ORDER_ONE_ID).apply(em);
 
-        Assert.assertEquals(new Long(1), entity.get().getId());
+        Assert.assertEquals(ORDER_ONE_ID, entity.get().getId());
     }
 
     @Test
@@ -31,14 +31,14 @@ public class FindITest extends IntegrationTestBase {
 
     @Test
     public void shouldInterceptAndReturnEntity() {
-        Optional<SellOrder> result = new InterceptingFind<>(new OnlyFirstFindInterceptor()).entity(SellOrder.class).byId(1l).apply(em);
+        Optional<SellOrder> result = new InterceptingFind<>(new OnlyFirstFindInterceptor()).entity(SellOrder.class).byId(ORDER_ONE_ID).apply(em);
 
         Assert.assertTrue(result.isPresent());
     }
 
     @Test
     public void shouldInterceptAndReturnEmpty() {
-        Long id = 4l;
+        Long id = ORDER_TWO_ID;
 
         Assert.assertTrue(Find.entity(SellOrder.class).byId(id).apply(em).isPresent());
 
@@ -49,7 +49,7 @@ public class FindITest extends IntegrationTestBase {
 
     @Test
     public void shouldIdentityInterceptOnExistingResult() {
-        Optional<SellOrder> result = new InterceptingFind<SellOrder>(EntityInterceptor.noOp()).entity(SellOrder.class).byId(1l).apply(em);
+        Optional<SellOrder> result = new InterceptingFind<SellOrder>(EntityInterceptor.noOp()).entity(SellOrder.class).byId(ORDER_ONE_ID).apply(em);
 
         Assert.assertTrue(result.isPresent());
     }
@@ -65,7 +65,7 @@ public class FindITest extends IntegrationTestBase {
 
         @Override
         public Optional<SellOrder> apply(EntityManager em, SellOrder entity) {
-            if (entity.getId().equals(1l)) {
+            if (entity.getId().equals(ORDER_ONE_ID)) {
                 return Optional.of(entity);
             }
 

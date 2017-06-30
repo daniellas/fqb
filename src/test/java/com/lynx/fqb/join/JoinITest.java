@@ -17,7 +17,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
@@ -48,7 +49,7 @@ public class JoinITest extends IntegrationTestBase {
 
     @Test
     public void shouldJoinOnEntitySelection() {
-        BiFunction<CriteriaBuilder, Path<? extends SellOrder>, Predicate[]> predicates = Predicates.of(Predicates.in(Paths.get(SellOrder_.id), 1l));
+        BiFunction<CriteriaBuilder, Path<? extends SellOrder>, Predicate[]> predicates = Predicates.of(Predicates.in(Paths.get(SellOrder_.id), ORDER_ONE_ID));
         BiFunction<CriteriaBuilder, From<Item, Item>, Join<Item, ?>> join = Joins.join(Item_.sellOrder, JoinType.INNER, Optional.of(predicates));
         BiFunction<CriteriaBuilder, From<Item, Item>, Join<Item, ?>[]> of = Joins.of(join);
 
@@ -56,19 +57,19 @@ public class JoinITest extends IntegrationTestBase {
                 .join(of)
                 .getResultList(em);
 
-        Assert.assertFalse(resultList.isEmpty());
+        assertFalse(resultList.isEmpty());
     }
 
     @Test
     public void shouldJoinOnCustomSelection() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Item.class)
                 .with(Selections.of(
-                        Selections.attr(Item_.id),
+                        Selections.attr(Item_.price),
                         Selections.attr(Item_.name)))
                 .join(Joins.of(Joins.inner(Item_.sellOrder)))
                 .getResultList(em);
 
-        Assert.assertFalse(resultList.isEmpty());
+        assertFalse(resultList.isEmpty());
     }
 
     @Test
@@ -83,7 +84,7 @@ public class JoinITest extends IntegrationTestBase {
                         isNotNull(get(Item_.name)))))
                 .getResultList(em);
 
-        Assert.assertFalse(resultList.isEmpty());
+        assertFalse(resultList.isEmpty());
     }
 
     @Test
@@ -98,16 +99,16 @@ public class JoinITest extends IntegrationTestBase {
                         isNotNull(get(Item_.name)))))
                 .getResultList(em);
 
-        Assert.assertFalse(resultList.isEmpty());
+        assertFalse(resultList.isEmpty());
     }
 
     @Test
     public void shouldJoinWithSinglePredicate() {
         List<Item> resultList = Select.from(Item.class)
-                .join(Joins.of(Joins.inner(Item_.sellOrder, of(equal(get(SellOrder_.id), 1l)))))
+                .join(Joins.of(Joins.inner(Item_.sellOrder, of(equal(get(SellOrder_.id), ORDER_ONE_ID)))))
                 .getResultList(em);
 
-        Assert.assertEquals(2, resultList.size());
+        assertEquals(2, resultList.size());
     }
 
     @Test
@@ -115,10 +116,11 @@ public class JoinITest extends IntegrationTestBase {
         List<Item> resultList = Select.from(Item.class)
                 .join(Joins.of(Joins.inner(Item_.sellOrder,
                         of(or(
-                                equal(get(SellOrder_.id), 1l),
-                                equal(get(SellOrder_.id), 2l))))))
+                                equal(get(SellOrder_.id), ORDER_ONE_ID),
+                                equal(get(SellOrder_.id), ORDER_TWO_ID))))))
                 .getResultList(em);
 
-        Assert.assertEquals(2, resultList.size());
+        assertThat(resultList.size(), is(3));
     }
+
 }

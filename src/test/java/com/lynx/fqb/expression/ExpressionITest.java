@@ -3,6 +3,7 @@ package com.lynx.fqb.expression;
 import static com.lynx.fqb.expression.Expressions.*;
 import static com.lynx.fqb.selection.Selections.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Tuple;
@@ -51,7 +52,7 @@ public class ExpressionITest extends IntegrationTestBase {
     public void shouldSelectLiteralExpression() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
                 .with(of(
-                        expr(ofValue(1l)),
+                        expr(ofValue(BigDecimal.ONE)),
                         attr(SellOrder_.number)))
                 .getResultList(em);
 
@@ -62,42 +63,42 @@ public class ExpressionITest extends IntegrationTestBase {
     public void shouldSelectIdProdByValue() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
                 .with(of(
-                        expr(ofAttr(SellOrder_.id).andThen(prod(1l))),
+                        expr(ofAttr(SellOrder_.total).andThen(prod(BigDecimal.ONE))),
                         attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(5l, sumId(resultList).longValue());
+        Assert.assertEquals(11l, sumId(resultList).longValue());
     }
 
     @Test
     public void shouldSelectIdProdByAttribute() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, SellOrder.class)
                 .with(of(
-                        expr(ofAttr(SellOrder_.id).andThen(prod(SellOrder_.id))),
+                        expr(ofAttr(SellOrder_.total).andThen(prod(SellOrder_.total))),
                         attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(17l, sumId(resultList).longValue());
+        Assert.assertEquals(101l, sumId(resultList).longValue());
     }
 
     @Test
     public void shouldSelectAverage() {
         SingleResult<Tuple> singleResult = Select.tupleFrom(SellOrder.class)
-                .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.avg()))))
+                .with(of(expr(ofAttr(SellOrder_.total).andThen(Expressions.avg()))))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(2.5, singleResult.getResult().get(0));
+        Assert.assertEquals(5.5, singleResult.getResult().get(0));
     }
 
     @Test
     public void shouldSelectMin() {
         SingleResult<Tuple> singleResult = Select.tupleFrom(SellOrder.class)
-                .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.min()))))
+                .with(of(expr(ofAttr(SellOrder_.total).andThen(Expressions.min()))))
                 .getSingleResult(em);
 
         Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(1l, singleResult.getResult().get(0));
+        Assert.assertEquals(1l, singleResult.getResult().get(0, BigDecimal.class).longValue());
     }
 
     @Test
@@ -110,9 +111,9 @@ public class ExpressionITest extends IntegrationTestBase {
         Assert.assertEquals(2l, singleResult.getResult().get(0));
     }
 
-    private Long sumId(List<CustomResult> resultList) {
+    private BigDecimal sumId(List<CustomResult> resultList) {
         return resultList.stream()
-                .map(CustomResult::getId)
-                .reduce(0l, Long::sum);
+                .map(CustomResult::getNumber)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
