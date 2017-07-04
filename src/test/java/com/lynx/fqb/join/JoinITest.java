@@ -2,6 +2,9 @@ package com.lynx.fqb.join;
 
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.predicate.Predicates.*;
+import static com.lynx.fqb.predicate.Predicates.contains;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +20,6 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
@@ -121,6 +122,24 @@ public class JoinITest extends IntegrationTestBase {
                 .getResultList(em);
 
         assertThat(resultList.size(), is(3));
+    }
+
+    @Test
+    public void shouldJoinInnerOnList() {
+        List<SellOrder> resultList = Select.from(SellOrder.class)
+                .join(Joins.of(Joins.join(SellOrder_.items, JoinType.INNER)))
+                .getResultList(em);
+
+        assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldJoinLeftOnList() {
+        List<SellOrder> resultList = Select.from(SellOrder.class)
+                .join(Joins.of(Joins.join(SellOrder_.items, JoinType.LEFT)))
+                .getResultList(em);
+
+        assertFalse(resultList.isEmpty());
     }
 
 }
