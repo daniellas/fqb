@@ -1,8 +1,11 @@
 package com.lynx.fqb.join;
 
+import static com.lynx.fqb.join.Joins.*;
+import static com.lynx.fqb.join.Joins.of;
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.predicate.Predicates.*;
 import static com.lynx.fqb.predicate.Predicates.contains;
+import static com.lynx.fqb.predicate.Predicates.of;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -51,7 +54,7 @@ public class JoinITest extends IntegrationTestBase {
     @Test
     public void shouldJoinOnEntitySelection() {
         BiFunction<CriteriaBuilder, Path<? extends SellOrder>, Predicate[]> predicates = Predicates.of(Predicates.in(Paths.get(SellOrder_.id), ORDER_ONE_ID));
-        BiFunction<CriteriaBuilder, From<Item, Item>, Join<Item, ?>> join = Joins.join(Item_.sellOrder, JoinType.INNER, Optional.of(predicates));
+        BiFunction<CriteriaBuilder, From<Item, Item>, Join<Item, SellOrder>> join = Joins.join(Item_.sellOrder, JoinType.INNER, Optional.of(predicates));
         BiFunction<CriteriaBuilder, From<Item, Item>, Join<Item, ?>[]> of = Joins.of(join);
 
         List<Item> resultList = Select.from(Item.class)
@@ -142,4 +145,32 @@ public class JoinITest extends IntegrationTestBase {
         assertFalse(resultList.isEmpty());
     }
 
+    @Test
+    public void shouldFollowInner() {
+        List<Item> resultList = Select.from(Item.class)
+                .join(of(inner(Item_.sellOrder).andThen(followInner(SellOrder_.creator))))
+                .getResultList(em);
+
+        assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldFollowLeft() {
+        List<Item> resultList = Select.from(Item.class)
+                .join(of(inner(Item_.sellOrder).andThen(followInner(SellOrder_.creator))))
+                .getResultList(em);
+
+        assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldFollowMixed() {
+        List<Item> resultList = Select.from(Item.class)
+                .join(of(
+                        inner(Item_.sellOrder).andThen(followInner(SellOrder_.creator)),
+                        inner(Item_.sellOrder).andThen(followLeft(SellOrder_.supervisor))))
+                .getResultList(em);
+
+        assertFalse(resultList.isEmpty());
+    }
 }
