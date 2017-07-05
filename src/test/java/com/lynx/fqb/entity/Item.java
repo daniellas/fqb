@@ -32,5 +32,8 @@ public class Item extends EntityBase {
     private BigDecimal price;
     
     private Integer quantity;
+    
+    @ManyToOne
+    private Product product;
 
 }

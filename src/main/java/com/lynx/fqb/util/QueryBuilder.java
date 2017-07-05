@@ -17,7 +17,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,7 +55,7 @@ public class QueryBuilder {
         return ctx -> Context.of(ctx.getCb(), ctx.getCq().distinct(distinct), ctx.getRoot());
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<BiFunction<CriteriaBuilder, From<R, R>, Join<R, ?>[]>> joins) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<BiFunction<CriteriaBuilder, From<R, R>, Join<?, ?>[]>> joins) {
         return ctx -> {
             joins.ifPresent(j -> {
                 j.apply(ctx.getCb(), ctx.getRoot());

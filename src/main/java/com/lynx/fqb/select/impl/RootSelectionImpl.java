@@ -1,6 +1,6 @@
 package com.lynx.fqb.select.impl;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.RootSelection;
 
 import lombok.Getter;

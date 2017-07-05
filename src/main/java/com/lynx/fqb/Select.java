@@ -2,7 +2,7 @@ package com.lynx.fqb;
 
 import javax.persistence.Tuple;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.EntitySelection;
 import com.lynx.fqb.select.RootSelection;
 import com.lynx.fqb.select.impl.EntitySelectionImpl;

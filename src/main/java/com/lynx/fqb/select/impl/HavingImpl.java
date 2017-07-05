@@ -10,7 +10,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.Having;
 
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class HavingImpl<S, R> implements Having<S, R> {
     private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<R, ?>[]>> joins;
+    private final Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
 
     @Getter
     private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> restrictions;

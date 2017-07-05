@@ -12,6 +12,7 @@ import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.path.Paths;
 
 public class PredicateInterceptorsTest extends MockTestBase<SellOrder, SellOrder> {
