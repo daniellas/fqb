@@ -24,7 +24,7 @@ public class FindITest extends IntegrationTestBase {
 
     @Test
     public void shouldReturnEmpty() {
-        Optional<SellOrder> entity = Find.entity(SellOrder.class).byId(-11l).apply(em);
+        Optional<SellOrder> entity = Find.entity(SellOrder.class).byId(-1l).apply(em);
 
         Assert.assertFalse(entity.isPresent());
     }

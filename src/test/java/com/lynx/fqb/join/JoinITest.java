@@ -32,6 +32,7 @@ import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.Item_;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
+import com.lynx.fqb.entity.User_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates;
 import com.lynx.fqb.selection.Selections;
@@ -148,7 +149,9 @@ public class JoinITest extends IntegrationTestBase {
     @Test
     public void shouldFollowInner() {
         List<Item> resultList = Select.from(Item.class)
-                .join(of(inner(Item_.sellOrder).andThen(followInner(SellOrder_.creator))))
+                .join(of(inner(Item_.sellOrder)
+                        .andThen(followInner(SellOrder_.creator))
+                        .andThen(followInner(User_.country))))
                 .getResultList(em);
 
         assertFalse(resultList.isEmpty());
@@ -157,7 +160,9 @@ public class JoinITest extends IntegrationTestBase {
     @Test
     public void shouldFollowLeft() {
         List<Item> resultList = Select.from(Item.class)
-                .join(of(inner(Item_.sellOrder).andThen(followInner(SellOrder_.creator))))
+                .join(of(left(Item_.sellOrder)
+                        .andThen(followLeft(SellOrder_.creator))
+                        .andThen(followLeft(User_.country))))
                 .getResultList(em);
 
         assertFalse(resultList.isEmpty());
