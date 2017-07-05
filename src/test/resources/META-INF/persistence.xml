@@ -4,8 +4,9 @@
 
     <persistence-unit name="test">
 
-        <class>com.lynx.fqb.entity.Parent</class>
-        <class>com.lynx.fqb.entity.Child</class>
+        <class>com.lynx.fqb.entity.SellOrder</class>
+        <class>com.lynx.fqb.entity.Item</class>
+        <class>com.lynx.fqb.entity.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}" />
@@ -18,7 +19,6 @@
             <property name="hibernate.show_sql" value="${show.sql}" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
-        
     </persistence-unit>
 
 </persistence>

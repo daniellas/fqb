@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Select;
-import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.entity.SellOrder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,7 @@ public class PerformanceIPTest extends IntegrationTestBase {
     public void simpleSelectSerialPerformanceTest() {
         TimePrinter.run(() -> {
             IntStream.range(0, COUNT).forEach(i -> {
-                Select.from(Parent.class).getResultList(em);
+                Select.from(SellOrder.class).getResultList(em);
             });
         }, "Simple select serial");
     }
@@ -28,7 +28,7 @@ public class PerformanceIPTest extends IntegrationTestBase {
     public void simpleSelectParallelPerformanceTest() {
         TimePrinter.run(() -> {
             IntStream.range(0, COUNT).parallel().forEach(i -> {
-                Select.from(Parent.class).getResultList(emf.createEntityManager());
+                Select.from(SellOrder.class).getResultList(emf.createEntityManager());
             });
         }, "Simple select parallel");
     }

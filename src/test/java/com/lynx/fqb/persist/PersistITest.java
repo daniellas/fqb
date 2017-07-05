@@ -7,15 +7,15 @@ import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Persist;
-import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.transaction.TransactionalExecutor;
 
 public class PersistITest extends IntegrationTestBase {
 
     @Test
     public void shouldPersist() {
-        Parent entity = TransactionalExecutor.using(em).get(() -> {
-            return Persist.entity(new Parent()).andThen(Optional::get).apply(em);
+        SellOrder entity = TransactionalExecutor.using(em).get(() -> {
+            return Persist.entity(new SellOrder()).andThen(Optional::get).apply(em);
         });
 
         Assert.assertNotNull(entity.getId());

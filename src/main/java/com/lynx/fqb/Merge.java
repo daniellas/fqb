@@ -1,15 +1,13 @@
 package com.lynx.fqb;
 
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.persistence.EntityManager;
-
 import com.lynx.fqb.intercept.EntityInterceptor;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import javax.persistence.EntityManager;
+import java.util.Optional;
+import java.util.function.Function;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Merge {

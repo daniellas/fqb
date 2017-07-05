@@ -10,62 +10,62 @@ import org.junit.Test;
 import com.lynx.fqb.Find;
 import com.lynx.fqb.Find.InterceptingFind;
 import com.lynx.fqb.IntegrationTestBase;
-import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.intercept.EntityInterceptor;
 
 public class FindITest extends IntegrationTestBase {
 
     @Test
     public void shouldGetById() {
-        Optional<Parent> entity = Find.entity(Parent.class).byId(1l).apply(em);
+        Optional<SellOrder> entity = Find.entity(SellOrder.class).byId(ORDER_ONE_ID).apply(em);
 
-        Assert.assertEquals(new Long(1), entity.get().getId());
+        Assert.assertEquals(ORDER_ONE_ID, entity.get().getId());
     }
 
     @Test
     public void shouldReturnEmpty() {
-        Optional<Parent> entity = Find.entity(Parent.class).byId(-11l).apply(em);
+        Optional<SellOrder> entity = Find.entity(SellOrder.class).byId(-11l).apply(em);
 
         Assert.assertFalse(entity.isPresent());
     }
 
     @Test
     public void shouldInterceptAndReturnEntity() {
-        Optional<Parent> result = new InterceptingFind<>(new OnlyFirstFindInterceptor()).entity(Parent.class).byId(1l).apply(em);
+        Optional<SellOrder> result = new InterceptingFind<>(new OnlyFirstFindInterceptor()).entity(SellOrder.class).byId(ORDER_ONE_ID).apply(em);
 
         Assert.assertTrue(result.isPresent());
     }
 
     @Test
     public void shouldInterceptAndReturnEmpty() {
-        Long id = 3l;
+        Long id = ORDER_TWO_ID;
 
-        Assert.assertTrue(Find.entity(Parent.class).byId(id).apply(em).isPresent());
+        Assert.assertTrue(Find.entity(SellOrder.class).byId(id).apply(em).isPresent());
 
-        Optional<Parent> result = new InterceptingFind<>(new OnlyFirstFindInterceptor()).entity(Parent.class).byId(id).apply(em);
+        Optional<SellOrder> result = new InterceptingFind<>(new OnlyFirstFindInterceptor()).entity(SellOrder.class).byId(id).apply(em);
 
         Assert.assertFalse(result.isPresent());
     }
 
     @Test
     public void shouldIdentityInterceptOnExistingResult() {
-        Optional<Parent> result = new InterceptingFind<Parent>(EntityInterceptor.noOp()).entity(Parent.class).byId(1l).apply(em);
+        Optional<SellOrder> result = new InterceptingFind<SellOrder>(EntityInterceptor.noOp()).entity(SellOrder.class).byId(ORDER_ONE_ID).apply(em);
 
         Assert.assertTrue(result.isPresent());
     }
 
     @Test
     public void shouldIdentityInterceptOnEmptyResult() {
-        Optional<Parent> result = new InterceptingFind<Parent>(EntityInterceptor.noOp()).entity(Parent.class).byId(-1l).apply(em);
+        Optional<SellOrder> result = new InterceptingFind<SellOrder>(EntityInterceptor.noOp()).entity(SellOrder.class).byId(-1l).apply(em);
 
         Assert.assertFalse(result.isPresent());
     }
 
-    private static class OnlyFirstFindInterceptor implements EntityInterceptor<Parent> {
+    private static class OnlyFirstFindInterceptor implements EntityInterceptor<SellOrder> {
 
         @Override
-        public Optional<Parent> apply(EntityManager em, Parent entity) {
-            if (entity.getId().equals(1l)) {
+        public Optional<SellOrder> apply(EntityManager em, SellOrder entity) {
+            if (entity.getId().equals(ORDER_ONE_ID)) {
                 return Optional.of(entity);
             }
 

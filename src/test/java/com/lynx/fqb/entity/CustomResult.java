@@ -1,5 +1,7 @@
 package com.lynx.fqb.entity;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomResult {
-    private Long id;
+    private BigDecimal number;
     private String name;
 }

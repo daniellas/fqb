@@ -17,7 +17,7 @@ public interface Orders {
 
     @SafeVarargs
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order[]> of(BiFunction<CriteriaBuilder, Path<? extends T>, Order>... orders) {
-        return Combinators.fromBiFunctionList(orders, Order[]::new);
+        return Combinators.fromBiFunctionArray(orders, Order[]::new);
     }
 
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(Function<Path<? extends T>, ? extends Expression<?>> path) {
@@ -26,19 +26,15 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(SingularAttribute<? super T, ?> attr) {
-        return asc(Paths.get(attr));
+    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(SingularAttribute<T, ?> attr) {
+        return (cb, root) -> {
+            return cb.asc(root.get(attr));
+        };
     }
 
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(BiFunction<CriteriaBuilder, Path<? extends T>, Context<T, ?>> expr) {
         return (cb, root) -> {
             return cb.asc(expr.apply(cb, root).getExpression());
-        };
-    }
-
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> ascExpr(BiFunction<CriteriaBuilder, Path<? extends T>, Expression<?>> expr) {
-        return (cb, root) -> {
-            return cb.asc(expr.apply(cb, root));
         };
     }
 
@@ -48,19 +44,13 @@ public interface Orders {
         };
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(SingularAttribute<? super T, ?> attr) {
+    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(SingularAttribute<T, ?> attr) {
         return desc(Paths.get(attr));
     }
 
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(BiFunction<CriteriaBuilder, Path<? extends T>, Context<T, ?>> expr) {
         return (cb, root) -> {
             return cb.desc(expr.apply(cb, root).getExpression());
-        };
-    }
-
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> descExpr(BiFunction<CriteriaBuilder, Path<? extends T>, Expression<?>> expr) {
-        return (cb, root) -> {
-            return cb.desc(expr.apply(cb, root));
         };
     }
 

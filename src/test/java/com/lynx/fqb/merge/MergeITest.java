@@ -7,18 +7,18 @@ import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
 import com.lynx.fqb.Merge;
-import com.lynx.fqb.entity.Parent;
+import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.transaction.TransactionalExecutor;
 
 public class MergeITest extends IntegrationTestBase {
 
     @Test
     public void shouldMerge() {
-        Parent entity = TransactionalExecutor.using(em).get(() -> {
-            return Merge.entity(new Parent(null, "Tom", null, null)).andThen(Optional::get).apply(em);
+        SellOrder entity = TransactionalExecutor.using(em).get(() -> {
+            return Merge.entity(new SellOrder(null, "1", null, null, null, null, null)).andThen(Optional::get).apply(em);
         });
 
-        Assert.assertEquals("Tom", entity.getName());
+        Assert.assertEquals("1", entity.getNumber());
     }
 
 }

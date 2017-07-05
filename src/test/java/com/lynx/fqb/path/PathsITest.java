@@ -1,52 +1,36 @@
 package com.lynx.fqb.path;
 
 import static com.lynx.fqb.path.Paths.*;
-import static com.lynx.fqb.util.QueryBuilder.*;
-
-import javax.persistence.criteria.Root;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
-import com.lynx.fqb.entity.Child;
-import com.lynx.fqb.entity.Child_;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.Item;
+import com.lynx.fqb.entity.Item_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 
 public class PathsITest extends IntegrationTestBase {
 
     @Test
     public void shouldGetSinglePath() {
-        Assert.assertNotNull(get(Parent_.id).apply(root(Parent.class)));
+        Assert.assertNotNull(get(SellOrder_.id).apply(root(SellOrder.class)));
     }
 
     @Test
     public void shouldGetNestedPath() {
-        Assert.assertNotNull(get(Child_.parent).andThen(get(Parent_.name)).apply(root(Child.class)));
-    }
-
-    @Test
-    public void shouldGetNestedPathByGet() {
-        Assert.assertNotNull(get(Child_.parent).get(Parent_.name).apply(root(Child.class)));
-    }
-
-    @Test
-    public void shouldGetListAttribute() {
-        Assert.assertNotNull(Paths.getList(Parent_.children).apply(root(Parent.class)));
+        Assert.assertNotNull(get(Item_.sellOrder).andThen(get(SellOrder_.number)).apply(root(Item.class)));
     }
 
     @Test
     public void shouldGetInheritedAttribute() {
-        Assert.assertNotNull(Paths.get(Parent_.dateCreate).apply(root(Parent.class)));
+        Assert.assertNotNull(get(SellOrder_.dateCreate).apply(root(SellOrder.class)));
     }
 
-    private <T> Root<T> root(Class<T> cls) {
-        return getCriteriaBuilder()
-                .andThen(createCriteriaQuery(cls, cls))
-                .andThen(applyRoot(cls))
-                .apply(em)
-                .getRoot();
+    @Test
+    public void shouldGetInheritedNestedAttribute() {
+        Assert.assertNotNull(get(Item_.sellOrder).andThen(get(SellOrder_.dateCreate)).apply(root(Item.class)));
     }
 
 }

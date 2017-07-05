@@ -10,18 +10,18 @@ import org.mockito.Mock;
 
 import com.lynx.fqb.MockTestBase;
 import com.lynx.fqb.Select;
-import com.lynx.fqb.entity.Parent;
-import com.lynx.fqb.entity.Parent_;
+import com.lynx.fqb.entity.SellOrder;
+import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.path.Paths;
 
-public class PredicateInterceptorsTest extends MockTestBase<Parent, Parent> {
+public class PredicateInterceptorsTest extends MockTestBase<SellOrder, SellOrder> {
 
     public PredicateInterceptorsTest() {
-        super(Parent.class, Parent.class);
+        super(SellOrder.class, SellOrder.class);
     }
 
     @Mock
-    private PredicatesInterceptor<Parent> interceptor;
+    private PredicatesInterceptor<SellOrder> interceptor;
 
     @Test
     public void shouldInterceptPredicates() {
@@ -31,8 +31,8 @@ public class PredicateInterceptorsTest extends MockTestBase<Parent, Parent> {
         when(interceptor.apply(any(), any(), any())).thenReturn(predicates);
 
         new Select.InterceptingSelect<>(interceptor)
-                .from(Parent.class)
-                .where(Predicates.of(Predicates.equal(Paths.get(Parent_.id), 1l)))
+                .from(SellOrder.class)
+                .where(Predicates.of(Predicates.equal(Paths.get(SellOrder_.id), 1l)))
                 .getResultList(em);
 
         verify(interceptor).apply(any(), any(), any());
@@ -46,7 +46,7 @@ public class PredicateInterceptorsTest extends MockTestBase<Parent, Parent> {
         when(interceptor.apply(any(), any(), any())).thenReturn(predicates);
 
         new Select.InterceptingSelect<>(interceptor)
-                .from(Parent.class)
+                .from(SellOrder.class)
                 .getResultList(em);
 
         verify(interceptor).apply(any(), any(), any());
@@ -60,7 +60,7 @@ public class PredicateInterceptorsTest extends MockTestBase<Parent, Parent> {
         when(interceptor.apply(any(), any(), any())).thenReturn(predicates);
 
         new Select.InterceptingSelect<>(interceptor)
-                .from(Parent.class)
+                .from(SellOrder.class)
                 .getSingleResult(em);
 
         verify(interceptor).apply(any(), any(), any());
