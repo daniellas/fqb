@@ -35,7 +35,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
         return Optional.empty();
     }
 
-    default Optional<BiFunction<CriteriaBuilder, From<R, R>, Join<R, ?>[]>> getJoins() {
+    default Optional<BiFunction<CriteriaBuilder, From<R, R>, Join<?, ?>[]>> getJoins() {
         return Optional.empty();
     }
 

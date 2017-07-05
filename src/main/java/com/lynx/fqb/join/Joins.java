@@ -1,6 +1,5 @@
 package com.lynx.fqb.join;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -14,12 +13,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
+import com.lynx.fqb.util.Combinators;
+
 public interface Joins {
 
-    @SuppressWarnings("unchecked")
     @SafeVarargs
-    public static <A> BiFunction<CriteriaBuilder, From<A, A>, Join<A, ?>[]> of(BiFunction<CriteriaBuilder, From<A, A>, ? extends Join<?, ?>>... joins) {
-        return (cb, from) -> Arrays.stream(joins).map(j -> j.apply(cb, from)).toArray(Join[]::new);
+    public static <A> BiFunction<CriteriaBuilder, From<A, A>, Join<?, ?>[]> of(BiFunction<CriteriaBuilder, From<A, A>, ? extends Join<?, ?>>... joins) {
+        return Combinators.fromBiFunctionArray(joins, Join<?,?>[]::new);
     }
 
     public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, Join<A, B>> join(SingularAttribute<A, B> attr, JoinType type,
