@@ -11,7 +11,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.OrderBy;
 
 import lombok.Getter;

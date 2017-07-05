@@ -7,6 +7,8 @@
         <class>com.lynx.fqb.entity.SellOrder</class>
         <class>com.lynx.fqb.entity.Item</class>
         <class>com.lynx.fqb.entity.User</class>
+        <class>com.lynx.fqb.entity.Product</class>
+        <class>com.lynx.fqb.entity.Country</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}" />

@@ -19,7 +19,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 
 public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
 

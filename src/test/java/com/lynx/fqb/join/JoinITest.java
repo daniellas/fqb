@@ -1,11 +1,8 @@
 package com.lynx.fqb.join;
 
-import static com.lynx.fqb.join.Joins.*;
-import static com.lynx.fqb.join.Joins.of;
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.predicate.Predicates.*;
 import static com.lynx.fqb.predicate.Predicates.contains;
-import static com.lynx.fqb.predicate.Predicates.of;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -15,13 +12,11 @@ import java.util.function.BiFunction;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.junit.Test;
 
@@ -32,25 +27,11 @@ import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.Item_;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
-import com.lynx.fqb.entity.User_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates;
 import com.lynx.fqb.selection.Selections;
 
 public class JoinITest extends IntegrationTestBase {
-
-    @Test
-    public void shouldPerformRawJoin() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Item> cq = cb.createQuery(Item.class);
-        Root<Item> from = cq.from(Item.class);
-        Join<Item, SellOrder> join = from.join(Item_.sellOrder);
-        Path<Long> path = join.get(SellOrder_.id);
-
-        join.on(path.in(1l));
-
-        em.createQuery(cq).getResultList();
-    }
 
     @Test
     public void shouldJoinOnEntitySelection() {
@@ -129,53 +110,12 @@ public class JoinITest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldJoinInnerOnList() {
-        List<SellOrder> resultList = Select.from(SellOrder.class)
-                .join(Joins.of(Joins.join(SellOrder_.items, JoinType.INNER)))
-                .getResultList(em);
-
-        assertFalse(resultList.isEmpty());
-    }
-
-    @Test
-    public void shouldJoinLeftOnList() {
-        List<SellOrder> resultList = Select.from(SellOrder.class)
-                .join(Joins.of(Joins.join(SellOrder_.items, JoinType.LEFT)))
-                .getResultList(em);
-
-        assertFalse(resultList.isEmpty());
-    }
-
-    @Test
-    public void shouldFollowInner() {
+    public void shouldJoinLeftWithSinglePredicate() {
         List<Item> resultList = Select.from(Item.class)
-                .join(of(inner(Item_.sellOrder)
-                        .andThen(followInner(SellOrder_.creator))
-                        .andThen(followInner(User_.country))))
+                .join(Joins.of(Joins.left(Item_.sellOrder, of(equal(get(SellOrder_.id), ORDER_ONE_ID)))))
                 .getResultList(em);
 
-        assertFalse(resultList.isEmpty());
+        assertEquals(3, resultList.size());
     }
 
-    @Test
-    public void shouldFollowLeft() {
-        List<Item> resultList = Select.from(Item.class)
-                .join(of(left(Item_.sellOrder)
-                        .andThen(followLeft(SellOrder_.creator))
-                        .andThen(followLeft(User_.country))))
-                .getResultList(em);
-
-        assertFalse(resultList.isEmpty());
-    }
-
-    @Test
-    public void shouldFollowMixed() {
-        List<Item> resultList = Select.from(Item.class)
-                .join(of(
-                        inner(Item_.sellOrder).andThen(followInner(SellOrder_.creator)),
-                        inner(Item_.sellOrder).andThen(followLeft(SellOrder_.supervisor))))
-                .getResultList(em);
-
-        assertFalse(resultList.isEmpty());
-    }
 }

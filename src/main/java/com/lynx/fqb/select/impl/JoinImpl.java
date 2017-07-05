@@ -8,7 +8,7 @@ import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.Join;
 
 import lombok.Getter;

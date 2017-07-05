@@ -10,7 +10,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.predicate.PredicatesInterceptor;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.GroupBy;
 
 import lombok.Getter;
