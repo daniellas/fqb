@@ -28,7 +28,7 @@ public class WhereImpl<S, R> implements Where<S, R> {
     private final Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections;
 
     @Getter
-    private final Optional<BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.Join<?, ?>[]>> joins;
+    private final Optional<BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]>> joins;
 
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions;
 

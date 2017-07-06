@@ -8,15 +8,9 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
 
 import org.junit.Test;
 
@@ -25,7 +19,6 @@ import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.Item_;
-import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates;
@@ -35,12 +28,8 @@ public class JoinITest extends IntegrationTestBase {
 
     @Test
     public void shouldJoinOnEntitySelection() {
-        BiFunction<CriteriaBuilder, Path<? extends SellOrder>, Predicate[]> predicates = Predicates.of(Predicates.in(Paths.get(SellOrder_.id), ORDER_ONE_ID));
-        BiFunction<CriteriaBuilder, From<Item, Item>, Join<Item, SellOrder>> join = Joins.join(Item_.sellOrder, JoinType.INNER, Optional.of(predicates));
-        BiFunction<CriteriaBuilder, From<Item, Item>, Join<?, ?>[]> of = Joins.of(join);
-
         List<Item> resultList = Select.from(Item.class)
-                .join(of)
+                .join(Joins.of(Joins.join(Item_.sellOrder, JoinType.INNER, Optional.of(Predicates.of(Predicates.in(Paths.get(SellOrder_.id), ORDER_ONE_ID))))))
                 .getResultList(em);
 
         assertFalse(resultList.isEmpty());

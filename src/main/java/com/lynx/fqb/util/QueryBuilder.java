@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.FetchParent;
 import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -55,11 +55,10 @@ public class QueryBuilder {
         return ctx -> Context.of(ctx.getCb(), ctx.getCq().distinct(distinct), ctx.getRoot());
     }
 
-    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<BiFunction<CriteriaBuilder, From<R, R>, Join<?, ?>[]>> joins) {
+    public static <S, R> Function<Context<S, R>, Context<S, R>> applyJoin(Optional<BiFunction<CriteriaBuilder, From<R, R>, FetchParent<?, ?>[]>> joins) {
         return ctx -> {
-            joins.ifPresent(j -> {
-                j.apply(ctx.getCb(), ctx.getRoot());
-            });
+            joins.ifPresent(j -> j.apply(ctx.getCb(), ctx.getRoot()));
+
             return ctx;
         };
     }
