@@ -29,11 +29,9 @@ public interface Joins {
         return (cb, from) -> {
             Join<A, B> join = from.join(attr, type);
 
-            if (predicates.isPresent()) {
-                return join.on(predicates.get().apply(cb, join));
-            }
-
-            return join;
+            return predicates
+                    .map(p -> join.on(predicates.get().apply(cb, join)))
+                    .orElse(join);
         };
     }
 
