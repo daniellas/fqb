@@ -17,11 +17,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(of = { "id", "number" }, callSuper = false)
+@ToString(of = { "id", "number" })
 @Entity
 public class SellOrder extends EntityBase {
 
@@ -35,7 +37,7 @@ public class SellOrder extends EntityBase {
     private List<Item> items = new ArrayList<>();
 
     private Date dueDate;
-    
+
     private BigDecimal total;
 
     @ManyToOne

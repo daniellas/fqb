@@ -1,5 +1,6 @@
 package com.lynx.fqb.persist;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -15,7 +16,15 @@ public class PersistITest extends IntegrationTestBase {
     @Test
     public void shouldPersist() {
         SellOrder entity = TransactionalExecutor.using(em).get(() -> {
-            return Persist.entity(new SellOrder()).andThen(Optional::get).apply(em);
+            return Persist.entity(new SellOrder(
+                    null,
+                    "New number",
+                    null,
+                    new Date(),
+                    null,
+                    null,
+                    null))
+                    .andThen(Optional::get).apply(em);
         });
 
         Assert.assertNotNull(entity.getId());
