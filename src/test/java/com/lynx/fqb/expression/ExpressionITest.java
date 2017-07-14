@@ -17,7 +17,6 @@ import com.lynx.fqb.entity.CustomNumberResult;
 import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
-import com.lynx.fqb.predicate.Predicates;
 import com.lynx.fqb.select.SingleResult;
 
 public class ExpressionITest extends IntegrationTestBase {
@@ -107,44 +106,11 @@ public class ExpressionITest extends IntegrationTestBase {
     @Test
     public void shouldSelectCount() {
         SingleResult<Tuple> singleResult = Select.tupleFrom(SellOrder.class)
-                .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.count()))))
+                .with(of(expr(ofAttr(SellOrder_.id).andThen(count()))))
                 .getSingleResult(em);
 
         assertTrue(singleResult.isPresent());
         assertEquals(2l, singleResult.getResult().get(0));
-    }
-
-    @Test
-    public void shouldSelectStringLength() {
-        Tuple result = Select.tupleFrom(SellOrder.class)
-                .with(of(expr(ofAttr(SellOrder_.number).andThen(length()))))
-                .where(Predicates.of(Predicates.equal(SellOrder_.number, ORDER_ONE_NUMBER)))
-                .getSingleResult(em)
-                .getResult();
-
-        assertEquals(ORDER_ONE_NUMBER.length(), result.get(0, Integer.class).intValue());
-    }
-
-    @Test
-    public void shouldSellectUpperString() {
-        Tuple result = Select.tupleFrom(SellOrder.class)
-                .with(of(expr(ofAttr(SellOrder_.number).andThen(concat("a")).andThen(upper()))))
-                .where(Predicates.of(Predicates.equal(SellOrder_.number, ORDER_ONE_NUMBER)))
-                .getSingleResult(em)
-                .getResult();
-
-        assertEquals(ORDER_ONE_NUMBER + "A", result.get(0, String.class));
-    }
-
-    @Test
-    public void shouldSellectLowerString() {
-        Tuple result = Select.tupleFrom(SellOrder.class)
-                .with(of(expr(ofAttr(SellOrder_.number).andThen(concat("A")).andThen(lower()))))
-                .where(Predicates.of(Predicates.equal(SellOrder_.number, ORDER_ONE_NUMBER)))
-                .getSingleResult(em)
-                .getResult();
-
-        assertEquals(ORDER_ONE_NUMBER + "a", result.get(0, String.class));
     }
 
     private BigDecimal sumId(List<CustomResult> resultList) {

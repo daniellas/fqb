@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.selection;
 
 import static com.lynx.fqb.path.Paths.*;
 import static com.lynx.fqb.selection.Selections.*;
@@ -65,7 +65,17 @@ public class SelectionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectAttrFromSuperType() {
         List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
-                .with(Selections.of((cb, root) -> root.get(SellOrder_.dateCreate))).getResultList(em);
+                .with(Selections.of((cb, root) -> root.get(SellOrder_.dateCreate)))
+                .getResultList(em);
+
+        Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldSelectAlias() {
+        List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
+                .with(Selections.of(Selections.attr(SellOrder_.number).andThen(Selections.alias("nr"))))
+                .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
     }

@@ -24,21 +24,23 @@ public class Selections {
         return Combinators.fromBiFunctionArray(selections, Selection<?>[]::new);
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> path(Function<Path<? extends R>, Path<T>> path) {
-        return (cb, root) -> {
-            return path.apply(root);
-        };
+    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> path(
+            Function<Path<? extends R>, Path<T>> path) {
+        return (cb, root) -> path.apply(root);
     }
 
-    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> attr(SingularAttribute<R, T> attr) {
+    public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> attr(
+            SingularAttribute<R, T> attr) {
         return path(Paths.get(attr));
     }
 
     public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> expr(
             BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
-        return (cb, root) -> {
-            return expression.apply(cb, root).getExpression();
-        };
+        return (cb, root) -> expression.apply(cb, root).getExpression();
+    }
+
+    public static Function<Selection<?>, Selection<?>> alias(String name) {
+        return selection -> selection.alias(name);
     }
 
 }

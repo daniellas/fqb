@@ -16,22 +16,38 @@ public class CountITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectEntityCount() {
-        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(count(SellOrder.class)))).getSingleResult(em));
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(count(SellOrder.class))))
+                .getSingleResult(em));
     }
 
     @Test
     public void shouldSelectEntityDistinctCount() {
-        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(countDistinct(SellOrder.class)))).getSingleResult(em));
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+                .with(of(expr(countDistinct(SellOrder.class)))).getSingleResult(em));
     }
 
     @Test
     public void shouldSelectPathCount() {
-        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(count(get(SellOrder_.number))))).getSingleResult(em));
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+                .with(of(expr(count(get(SellOrder_.number))))).getSingleResult(em));
+    }
+
+    @Test
+    public void shouldSelectAttributeCount() {
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+                .with(of(expr(count(SellOrder_.number)))).getSingleResult(em));
     }
 
     @Test
     public void shouldSelectPathDistinctCount() {
-        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(countDistinct(get(SellOrder_.number))))).getSingleResult(em));
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+                .with(of(expr(countDistinct(get(SellOrder_.number))))).getSingleResult(em));
+    }
+
+    @Test
+    public void shouldSelectAttributeDistinctCount() {
+        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+                .with(of(expr(countDistinct(SellOrder_.number)))).getSingleResult(em));
     }
 
 }
