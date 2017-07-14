@@ -10,8 +10,20 @@ import com.lynx.fqb.select.impl.WhereImpl;
 
 public interface Join<S, R> extends Where<S, R> {
 
+    /**
+     * Apply given restrictions on query
+     * 
+     * @param restrictions
+     *            to apply
+     * @return {@link Where} with allowed query methods
+     * @param <S>
+     *            selection result type
+     * @param <R>
+     *            selection root type
+     */
     default Where<S, R> where(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions) {
-        return WhereImpl.of(getSelectionCls(), getRootCls(), getSelections(), getJoins(), restrictions, getPredicatesInterceptor());
+        return WhereImpl.of(getSelectionCls(), getRootCls(), getSelections(), getJoins(), restrictions,
+                getPredicatesInterceptor());
     }
 
 }

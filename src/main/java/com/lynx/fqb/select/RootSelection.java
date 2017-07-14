@@ -17,6 +17,17 @@ public interface RootSelection<S, R> {
 
     PredicatesInterceptor<R> getPredicatesInterceptor();
 
+    /**
+     * Choose selections to be returned by custom result query
+     * 
+     * @param selections
+     *            to apply
+     * @return {@link CustomSelection} with allowed query methods
+     * @param <S>
+     *            selection result type
+     * @param <R>
+     *            selection root type
+     */
     default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections) {
         return CustomSelectionImpl.of(getSelectionCls(), getRootCls(), selections, getPredicatesInterceptor());
     }

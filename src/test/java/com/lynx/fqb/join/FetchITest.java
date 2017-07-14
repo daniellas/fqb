@@ -7,6 +7,7 @@ import com.lynx.fqb.Select;
 import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.Item_;
 import com.lynx.fqb.entity.SellOrder_;
+import com.lynx.fqb.entity.User_;
 
 public class FetchITest extends IntegrationTestBase {
 
@@ -37,6 +38,16 @@ public class FetchITest extends IntegrationTestBase {
         Select.from(Item.class)
                 .join(Joins.of(
                         Joins.fetchInner(Item_.sellOrder).andThen(Joins.cascadeFetchLeft(SellOrder_.creator))))
+                .getResultList(em);
+    }
+
+    @Test
+    public void shouldCascadeFetchInnerThenLeft() {
+        Select.from(Item.class)
+                .join(Joins.of(
+                        Joins.fetchInner(Item_.sellOrder)
+                                .andThen(Joins.cascadeFetchInner(SellOrder_.creator))
+                                .andThen(Joins.cascadeFetchLeft(User_.country))))
                 .getResultList(em);
     }
 

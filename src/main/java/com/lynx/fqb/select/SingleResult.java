@@ -10,35 +10,129 @@ import javax.persistence.NonUniqueResultException;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Represents single result
+ * 
+ * @author dalas0
+ *
+ * @param <T>
+ *            type of result
+ */
 public abstract class SingleResult<T> {
 
+    /**
+     * Construct result of successful query
+     * 
+     * @param result
+     *            value
+     * @return wrapped result
+     * @param <T>
+     *            result type
+     */
     public static <T> SingleResult<T> ofResult(T result) {
         return new Result<>(result);
     }
 
+    /**
+     * Construct result of failed query
+     * 
+     * @param exception
+     *            thrown during query execution
+     * @return wrapped exception
+     */
     public static <T> SingleResult<T> ofError(Exception exception) {
         Objects.requireNonNull(exception);
         return new Error<>(exception);
     }
 
+    /**
+     * Get wrapped result
+     * 
+     * @return wrapped result value or null
+     */
     public abstract T getResult();
 
+    /**
+     * Get wrapped exception
+     * 
+     * @return wrapped exception or null
+     */
     public abstract Exception getException();
 
+    /**
+     * Check if result is present
+     * 
+     * @return if result is present
+     */
     public abstract boolean isPresent();
 
+    /**
+     * Check if exception is present
+     * 
+     * @return if exception is present
+     */
     public abstract boolean isError();
 
+    /**
+     * Check if exception was caused by non unique result
+     * 
+     * @return if exception was caused due to {@link NonUniqueResultException}
+     */
     public abstract boolean isNonUnique();
 
+    /**
+     * Apply consumer action on success
+     * 
+     * @param consumer
+     *            with action to apply
+     * @param <T>
+     *            result type
+     */
     public abstract void ifPresent(Consumer<? super T> consumer);
 
+    /**
+     * Map result using given mapper {@link Function}
+     * 
+     * @param mapper
+     *            to apply
+     * @return transformed value
+     * @param <R>
+     *            input type
+     * @param output
+     *            type
+     */
     public abstract <R> R map(Function<? super T, R> mapper);
 
+    /**
+     * Return given other value in case of error
+     * 
+     * @param other
+     *            value
+     * @return other value
+     * @param <T>
+     *            other type
+     */
     public abstract T orElse(T other);
 
+    /**
+     * Return given other value from {@link Supplier} in case of error
+     * 
+     * @param other
+     *            value
+     * @return other value
+     * @param <T>
+     *            other type
+     */
     public abstract T orElseGet(Supplier<T> other);
 
+    /**
+     * Successful query result
+     * 
+     * @author dalas0
+     *
+     * @param <T>
+     *            result type
+     */
     @RequiredArgsConstructor
     public static final class Result<T> extends SingleResult<T> {
 

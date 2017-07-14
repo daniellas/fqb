@@ -9,7 +9,19 @@ import com.lynx.fqb.select.impl.JoinImpl;
 
 public interface CustomSelection<S, R> extends Join<S, R> {
 
-    default Join<S, R> join(BiFunction<CriteriaBuilder,From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]> joins) {
+    /**
+     * Add given joins to query
+     * 
+     * @param joins
+     *            to apply
+     * @return {@link Join} with allowed query methods
+     * @param <S>
+     *            selection result type
+     * @param <R>
+     *            selection root type
+     */
+    default Join<S, R> join(
+            BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]> joins) {
         return JoinImpl.of(getSelectionCls(), getRootCls(), getSelections(), joins, getPredicatesInterceptor());
     }
 
