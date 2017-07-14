@@ -24,7 +24,8 @@ public interface Joins {
         return Combinators.fromBiFunctionArray(joins, FetchParent<?, ?>[]::new);
     }
 
-    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, From<A, B>> join(SingularAttribute<A, B> attr, JoinType type,
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, From<A, B>> join(SingularAttribute<A, B> attr,
+            JoinType type,
             Optional<BiFunction<CriteriaBuilder, Path<? extends B>, Predicate[]>> predicates) {
         return (cb, from) -> {
             Join<A, B> join = from.join(attr, type);
@@ -35,7 +36,8 @@ public interface Joins {
         };
     }
 
-    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, From<A, B>> join(ListAttribute<A, B> attr, JoinType type) {
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, From<A, B>> join(ListAttribute<A, B> attr,
+            JoinType type) {
         return (cb, from) -> from.join(attr, type);
     }
 
@@ -77,12 +79,34 @@ public interface Joins {
         return cascade(attr, JoinType.LEFT);
     }
 
-    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, FetchParent<A, B>> fetch(SingularAttribute<A, B> attr, JoinType type) {
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, FetchParent<A, B>> fetch(SingularAttribute<A, B> attr,
+            JoinType type) {
         return (cb, from) -> from.fetch(attr, type);
     }
 
-    public static <A, B, C> Function<FetchParent<A, B>, FetchParent<B, C>> cascadeFetch(SingularAttribute<B, C> attr, JoinType type) {
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, FetchParent<A, B>> fetchInner(
+            SingularAttribute<A, B> attr) {
+        return fetch(attr, JoinType.INNER);
+    }
+
+    public static <A, B> BiFunction<CriteriaBuilder, From<A, A>, FetchParent<A, B>> fetchLeft(
+            SingularAttribute<A, B> attr) {
+        return fetch(attr, JoinType.LEFT);
+    }
+
+    public static <A, B, C> Function<FetchParent<A, B>, FetchParent<B, C>> cascadeFetch(SingularAttribute<B, C> attr,
+            JoinType type) {
         return join -> join.fetch(attr, type);
+    }
+
+    public static <A, B, C> Function<FetchParent<A, B>, FetchParent<B, C>> cascadeFetchInner(
+            SingularAttribute<B, C> attr) {
+        return cascadeFetch(attr, JoinType.INNER);
+    }
+
+    public static <A, B, C> Function<FetchParent<A, B>, FetchParent<B, C>> cascadeFetchLeft(
+            SingularAttribute<B, C> attr) {
+        return cascadeFetch(attr, JoinType.LEFT);
     }
 
 }

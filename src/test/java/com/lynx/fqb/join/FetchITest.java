@@ -1,7 +1,5 @@
 package com.lynx.fqb.join;
 
-import javax.persistence.criteria.JoinType;
-
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
@@ -15,14 +13,14 @@ public class FetchITest extends IntegrationTestBase {
     @Test
     public void shouldFetchInner() {
         Select.from(Item.class)
-                .join(Joins.of(Joins.fetch(Item_.sellOrder, JoinType.INNER)))
+                .join(Joins.of(Joins.fetchInner(Item_.sellOrder)))
                 .getResultList(em);
     }
 
     @Test
     public void shouldFetchLeft() {
         Select.from(Item.class)
-                .join(Joins.of(Joins.fetch(Item_.sellOrder, JoinType.LEFT)))
+                .join(Joins.of(Joins.fetchLeft(Item_.sellOrder)))
                 .getResultList(em);
     }
 
@@ -30,8 +28,15 @@ public class FetchITest extends IntegrationTestBase {
     public void shouldCascadeFetchInner() {
         Select.from(Item.class)
                 .join(Joins.of(
-                        Joins.fetch(Item_.sellOrder, JoinType.INNER)
-                                .andThen(Joins.cascadeFetch(SellOrder_.creator, JoinType.INNER))))
+                        Joins.fetchInner(Item_.sellOrder).andThen(Joins.cascadeFetchInner(SellOrder_.creator))))
+                .getResultList(em);
+    }
+
+    @Test
+    public void shouldCascadeFetchLeft() {
+        Select.from(Item.class)
+                .join(Joins.of(
+                        Joins.fetchInner(Item_.sellOrder).andThen(Joins.cascadeFetchLeft(SellOrder_.creator))))
                 .getResultList(em);
     }
 
