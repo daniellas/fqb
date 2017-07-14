@@ -16,7 +16,11 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import com.lynx.fqb.util.Combinators;
 
-public interface Joins {
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class Joins {
 
     @SafeVarargs
     public static <A> BiFunction<CriteriaBuilder, From<A, A>, FetchParent<?, ?>[]> of(

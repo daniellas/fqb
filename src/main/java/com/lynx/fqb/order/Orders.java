@@ -13,7 +13,11 @@ import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.util.Combinators;
 
-public interface Orders {
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class Orders {
 
     @SafeVarargs
     public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order[]> of(BiFunction<CriteriaBuilder, Path<? extends T>, Order>... orders) {

@@ -2,13 +2,13 @@ package com.lynx.fqb.expression;
 
 import static com.lynx.fqb.expression.Expressions.*;
 import static com.lynx.fqb.selection.Selections.*;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Tuple;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
@@ -17,30 +17,33 @@ import com.lynx.fqb.entity.CustomNumberResult;
 import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
+import com.lynx.fqb.predicate.Predicates;
 import com.lynx.fqb.select.SingleResult;
 
 public class ExpressionITest extends IntegrationTestBase {
 
     @Test
     public void shouldCombineExpressions() {
-        SingleResult<CustomNumberResult> result = Select.customFrom(CustomNumberResult.class, SellOrder.class).with(of(expr(
-                Expressions.ofAttr(SellOrder_.dueDate)
-                        .andThen(year())
-                        .andThen(sum())
-                        .andThen(sum(20)))))
+        SingleResult<CustomNumberResult> result = Select.customFrom(CustomNumberResult.class, SellOrder.class)
+                .with(of(expr(
+                        Expressions.ofAttr(SellOrder_.dueDate)
+                                .andThen(year())
+                                .andThen(sum())
+                                .andThen(sum(20)))))
                 .getSingleResult(em);
 
-        Assert.assertTrue(result.isPresent());
+        assertTrue(result.isPresent());
     }
 
     @Test
     public void shouldSelectEntityCountAndThenSum() {
-        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class).with(of(expr(count(SellOrder.class).andThen(sum(1l))))).getSingleResult(em));
+        assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+                .with(of(expr(count(SellOrder.class).andThen(sum(1l))))).getSingleResult(em));
     }
 
     @Test
     public void shouldSelectEntityCountAndThenSumDiff() {
-        Assert.assertNotNull(Select.customFrom(Long.class, SellOrder.class)
+        assertNotNull(Select.customFrom(Long.class, SellOrder.class)
                 .with(of(expr(
                         count(SellOrder.class)
                                 .andThen(sum(1l))
@@ -56,7 +59,7 @@ public class ExpressionITest extends IntegrationTestBase {
                         attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(resultList.size(), sumId(resultList).intValue());
+        assertEquals(resultList.size(), sumId(resultList).intValue());
     }
 
     @Test
@@ -67,7 +70,7 @@ public class ExpressionITest extends IntegrationTestBase {
                         attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(11l, sumId(resultList).longValue());
+        assertEquals(11l, sumId(resultList).longValue());
     }
 
     @Test
@@ -78,7 +81,7 @@ public class ExpressionITest extends IntegrationTestBase {
                         attr(SellOrder_.number)))
                 .getResultList(em);
 
-        Assert.assertEquals(101l, sumId(resultList).longValue());
+        assertEquals(101l, sumId(resultList).longValue());
     }
 
     @Test
@@ -87,8 +90,8 @@ public class ExpressionITest extends IntegrationTestBase {
                 .with(of(expr(ofAttr(SellOrder_.total).andThen(Expressions.avg()))))
                 .getSingleResult(em);
 
-        Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(5.5, singleResult.getResult().get(0));
+        assertTrue(singleResult.isPresent());
+        assertEquals(5.5, singleResult.getResult().get(0));
     }
 
     @Test
@@ -97,8 +100,8 @@ public class ExpressionITest extends IntegrationTestBase {
                 .with(of(expr(ofAttr(SellOrder_.total).andThen(Expressions.min()))))
                 .getSingleResult(em);
 
-        Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(1l, singleResult.getResult().get(0, BigDecimal.class).longValue());
+        assertTrue(singleResult.isPresent());
+        assertEquals(1l, singleResult.getResult().get(0, BigDecimal.class).longValue());
     }
 
     @Test
@@ -107,8 +110,41 @@ public class ExpressionITest extends IntegrationTestBase {
                 .with(of(expr(ofAttr(SellOrder_.id).andThen(Expressions.count()))))
                 .getSingleResult(em);
 
-        Assert.assertTrue(singleResult.isPresent());
-        Assert.assertEquals(2l, singleResult.getResult().get(0));
+        assertTrue(singleResult.isPresent());
+        assertEquals(2l, singleResult.getResult().get(0));
+    }
+
+    @Test
+    public void shouldSelectStringLength() {
+        Tuple result = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(ofAttr(SellOrder_.number).andThen(length()))))
+                .where(Predicates.of(Predicates.equal(SellOrder_.number, ORDER_ONE_NUMBER)))
+                .getSingleResult(em)
+                .getResult();
+
+        assertEquals(ORDER_ONE_NUMBER.length(), result.get(0, Integer.class).intValue());
+    }
+
+    @Test
+    public void shouldSellectUpperString() {
+        Tuple result = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(ofAttr(SellOrder_.number).andThen(concat("a")).andThen(upper()))))
+                .where(Predicates.of(Predicates.equal(SellOrder_.number, ORDER_ONE_NUMBER)))
+                .getSingleResult(em)
+                .getResult();
+
+        assertEquals(ORDER_ONE_NUMBER + "A", result.get(0, String.class));
+    }
+
+    @Test
+    public void shouldSellectLowerString() {
+        Tuple result = Select.tupleFrom(SellOrder.class)
+                .with(of(expr(ofAttr(SellOrder_.number).andThen(concat("A")).andThen(lower()))))
+                .where(Predicates.of(Predicates.equal(SellOrder_.number, ORDER_ONE_NUMBER)))
+                .getSingleResult(em)
+                .getResult();
+
+        assertEquals(ORDER_ONE_NUMBER + "a", result.get(0, String.class));
     }
 
     private BigDecimal sumId(List<CustomResult> resultList) {

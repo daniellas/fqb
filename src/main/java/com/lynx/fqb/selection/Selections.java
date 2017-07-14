@@ -12,7 +12,11 @@ import com.lynx.fqb.expression.Expressions.Context;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.util.Combinators;
 
-public interface Selections {
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class Selections {
 
     @SafeVarargs
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> of(

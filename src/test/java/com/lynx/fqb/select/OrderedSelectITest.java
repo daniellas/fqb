@@ -1,14 +1,11 @@
 package com.lynx.fqb.select;
 
-import static org.hamcrest.Matchers.*;
-
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.lynx.fqb.IntegrationTestBase;
@@ -28,7 +25,7 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .orderBy(Orders.of(Orders.asc(SellOrder_.id)))
                 .getResultList(em);
 
-        assertOrder(resultList, Comparator.comparing(SellOrder::getId));
+        assertOrder(resultList, Comparator.comparing(SellOrder::getId), SellOrder[]::new);
     }
 
     @Test
@@ -38,7 +35,7 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .orderBy(Orders.of(Orders.desc(SellOrder_.id)))
                 .getResultList(em);
 
-        assertOrder(resultList, Comparator.comparing(SellOrder::getId).reversed());
+        assertOrder(resultList, Comparator.comparing(SellOrder::getId).reversed(), SellOrder[]::new);
     }
 
     @Test
@@ -48,7 +45,7 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .orderBy(Orders.of(Orders.asc(Paths.get(SellOrder_.id))))
                 .getResultList(em);
 
-        assertOrder(resultList, Comparator.comparing(SellOrder::getId));
+        assertOrder(resultList, Comparator.comparing(SellOrder::getId), SellOrder[]::new);
     }
 
     @Test
@@ -58,7 +55,7 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .orderBy(Orders.of(Orders.desc(Paths.get(SellOrder_.id))))
                 .getResultList(em);
 
-        assertOrder(resultList, Comparator.comparing(SellOrder::getId).reversed());
+        assertOrder(resultList, Comparator.comparing(SellOrder::getId).reversed(), SellOrder[]::new);
     }
 
     @Test
@@ -68,7 +65,7 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .orderBy(Orders.of(Orders.asc(Expressions.ofAttr(SellOrder_.dueDate).andThen(Expressions.year()))))
                 .getResultList(em);
 
-        assertOrder(resultList, Comparator.comparing(o -> getYear(o.getDueDate())));
+        assertOrder(resultList, Comparator.comparing((SellOrder o) -> getYear(o.getDueDate())), SellOrder[]::new);
     }
 
     @Test
@@ -78,7 +75,8 @@ public class OrderedSelectITest extends IntegrationTestBase {
                 .orderBy(Orders.of(Orders.desc(Expressions.ofAttr(SellOrder_.dueDate).andThen(Expressions.year()))))
                 .getResultList(em);
 
-        assertOrder(resultList, Comparator.comparing((SellOrder o) -> getYear(o.getDueDate())).reversed());
+        assertOrder(resultList, Comparator.comparing((SellOrder o) -> getYear(o.getDueDate())).reversed(),
+                SellOrder[]::new);
     }
 
     @Test
@@ -94,11 +92,8 @@ public class OrderedSelectITest extends IntegrationTestBase {
 
         assertOrder(
                 resultList,
-                Comparator.comparing(SellOrder::getId).thenComparing(Comparator.comparing(SellOrder::getDateCreate)));
-    }
-
-    private void assertOrder(List<SellOrder> resultList, Comparator<SellOrder> comparator) {
-        Assert.assertThat(resultList, contains(resultList.stream().sorted(comparator).toArray(SellOrder[]::new)));
+                Comparator.comparing(SellOrder::getId).thenComparing(Comparator.comparing(SellOrder::getDateCreate)),
+                SellOrder[]::new);
     }
 
     private int getYear(Date date) {
