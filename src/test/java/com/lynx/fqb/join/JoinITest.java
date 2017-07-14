@@ -29,7 +29,8 @@ public class JoinITest extends IntegrationTestBase {
     @Test
     public void shouldJoinOnEntitySelection() {
         List<Item> resultList = Select.from(Item.class)
-                .join(Joins.of(Joins.join(Item_.sellOrder, JoinType.INNER, Optional.of(Predicates.of(Predicates.in(Paths.get(SellOrder_.id), ORDER_ONE_ID))))))
+                .join(Joins.of(Joins.join(Item_.sellOrder, JoinType.INNER,
+                        Optional.of(Predicates.of(Predicates.in(Paths.get(SellOrder_.id), ORDER_ONE_ID))))))
                 .getResultList(em);
 
         assertFalse(resultList.isEmpty());
@@ -69,7 +70,8 @@ public class JoinITest extends IntegrationTestBase {
                         Selections.attr(Item_.id),
                         Selections.attr(Item_.name)))
                 .join(Joins.of(
-                        Joins.inner(Item_.sellOrder, of(contains(get(SellOrder_.number), IntegrationTestBase.ORDER_ONE_NUMBER)))))
+                        Joins.inner(Item_.sellOrder,
+                                of(contains(get(SellOrder_.number), IntegrationTestBase.ORDER_ONE_NUMBER)))))
                 .where(of(and(isNotNull(get(Item_.id)),
                         isNotNull(get(Item_.name)))))
                 .getResultList(em);
