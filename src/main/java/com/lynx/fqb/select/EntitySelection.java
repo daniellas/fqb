@@ -4,9 +4,11 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.FetchParent;
 import javax.persistence.criteria.From;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
+import com.lynx.fqb.join.Joins;
 
 public class EntitySelection<R> extends Join<R, R> {
 
@@ -47,6 +49,11 @@ public class EntitySelection<R> extends Join<R, R> {
                 Optional.empty(),
                 joins,
                 getPredicatesInterceptor());
+    }
+
+    @SafeVarargs
+    public final Join<R, R> join(BiFunction<CriteriaBuilder, From<R, R>, ? extends FetchParent<?, ?>>... joins) {
+        return join(Joins.of(joins));
     }
 
 }

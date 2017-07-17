@@ -4,11 +4,13 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.FetchParent;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
+import com.lynx.fqb.join.Joins;
 
 public class CustomSelection<S, R> extends Join<S, R> {
 
@@ -19,16 +21,15 @@ public class CustomSelection<S, R> extends Join<S, R> {
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections;
 
     protected CustomSelection(
-            boolean distinct,
             Class<S> selectionCls,
             Class<R> rootCls,
             BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections,
             PredicatesInterceptor<R> predicatesInterceptor) {
         super(
-                distinct,
+                false,
                 selectionCls,
                 rootCls,
-                Optional.ofNullable(selections),
+                Optional.of(selections),
                 null,
                 predicatesInterceptor);
         this.selectionCls = selectionCls;
@@ -56,6 +57,11 @@ public class CustomSelection<S, R> extends Join<S, R> {
                 Optional.of(selections),
                 joins,
                 getPredicatesInterceptor());
+    }
+
+    @SafeVarargs
+    public final Join<S, R> join(BiFunction<CriteriaBuilder, From<R, R>, ? extends FetchParent<?, ?>>... joins) {
+        return join(Joins.of(joins));
     }
 
 }

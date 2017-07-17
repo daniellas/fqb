@@ -37,6 +37,13 @@ public class RestrictedSelectITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldSelectEntitiesRestrictedByVarAgrs() {
+        assertListResultNotEmpty().accept(Select
+                .from(SellOrder.class)
+                .where(equal(get(SellOrder_.id), ORDER_ONE_ID)));
+    }
+
+    @Test
     public void shouldSelectSingleResult() {
         SingleResult<SellOrder> singleResult = Select
                 .from(SellOrder.class)
@@ -141,9 +148,11 @@ public class RestrictedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectRestrictedByObject() {
-        SellOrder parent = Select.from(SellOrder.class).where(Predicates.of(Predicates.equal(SellOrder_.id, ORDER_ONE_ID))).getSingleResult(em).getResult();
+        SellOrder parent = Select.from(SellOrder.class)
+                .where(Predicates.of(Predicates.equal(SellOrder_.id, ORDER_ONE_ID))).getSingleResult(em).getResult();
 
-        List<Item> resultList = Select.from(Item.class).where(Predicates.of(Predicates.equal(Item_.sellOrder, parent))).getResultList(em);
+        List<Item> resultList = Select.from(Item.class).where(Predicates.of(Predicates.equal(Item_.sellOrder, parent)))
+                .getResultList(em);
         Assert.assertFalse(resultList.isEmpty());
     }
 

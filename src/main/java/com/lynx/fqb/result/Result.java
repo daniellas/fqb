@@ -52,33 +52,19 @@ public abstract class Result<S, R> implements Function<EntityManager, TypedQuery
      * 
      * @return true if distinct, false otherwise
      */
-    protected boolean isDistinct() {
-        return false;
-    }
+    protected abstract boolean isDistinct();
 
-    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
-        return Optional.empty();
-    }
+    protected abstract Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections();
 
-    protected Optional<BiFunction<CriteriaBuilder, From<R, R>, FetchParent<?, ?>[]>> getJoins() {
-        return Optional.empty();
-    }
+    protected abstract Optional<BiFunction<CriteriaBuilder, From<R, R>, FetchParent<?, ?>[]>> getJoins();
 
-    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getRestrictions() {
-        return Optional.empty();
-    };
+    protected abstract Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getRestrictions();
 
-    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
-        return Optional.empty();
-    };
+    protected abstract Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders();
 
-    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> getGroupings() {
-        return Optional.empty();
-    };
+    protected abstract Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> getGroupings();
 
-    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings() {
-        return Optional.empty();
-    }
+    protected abstract Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings();
 
     protected abstract PredicatesInterceptor<R> getPredicatesInterceptor();
 

@@ -128,7 +128,7 @@ public final class Select {
          *            selection root type
          */
         public <S> RootSelection<S, R> customFrom(Class<S> selectionCls, Class<R> rootCls) {
-            return new RootSelection<>(false, selectionCls, rootCls, predicatesInterceptor);
+            return new RootSelection<>(selectionCls, rootCls, predicatesInterceptor);
         }
 
         /**

@@ -80,4 +80,12 @@ public class SelectionsITest extends IntegrationTestBase {
         Assert.assertFalse(resultList.isEmpty());
     }
 
+    @Test
+    public void shouldSelectCustomWithVarArgsSelection() {
+        assertListResultNotEmpty().accept(Select.tupleFrom(SellOrder.class)
+                .with(
+                        Selections.attr(SellOrder_.id),
+                        Selections.attr(SellOrder_.number)));
+    }
+
 }

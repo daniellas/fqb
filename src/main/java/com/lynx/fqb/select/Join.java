@@ -10,6 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
+import com.lynx.fqb.predicate.Predicates;
 
 public class Join<S, R> extends Where<S, R> {
 
@@ -53,6 +54,11 @@ public class Join<S, R> extends Where<S, R> {
                 Optional.ofNullable(joins),
                 restrictions,
                 getPredicatesInterceptor());
+    }
+
+    @SafeVarargs
+    public final Where<S, R> where(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... restrictions) {
+        return where(Predicates.of(restrictions));
     }
 
 }

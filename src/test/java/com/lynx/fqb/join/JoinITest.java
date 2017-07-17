@@ -37,6 +37,21 @@ public class JoinITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldJoinOnEntitySelectionByVarArgs() {
+        assertListResultNotEmpty().accept(Select.from(Item.class)
+                .join(Joins.inner(Item_.sellOrder)));
+    }
+
+    @Test
+    public void shouldJoinOnCustomSelectionByVarArgs() {
+        assertListResultNotEmpty().accept(Select.customFrom(CustomResult.class, Item.class)
+                .with(Selections.of(
+                        Selections.attr(Item_.price),
+                        Selections.attr(Item_.name)))
+                .join(Joins.inner(Item_.sellOrder)));
+    }
+
+    @Test
     public void shouldJoinOnCustomSelection() {
         List<CustomResult> resultList = Select.customFrom(CustomResult.class, Item.class)
                 .with(Selections.of(
@@ -107,6 +122,13 @@ public class JoinITest extends IntegrationTestBase {
                 .getResultList(em);
 
         assertEquals(3, resultList.size());
+    }
+
+    @Test
+    public void shouldJoinOnEntitySelectionByVarAgrs() {
+        assertListResultNotEmpty()
+                .accept(Select.from(Item.class)
+                        .join(Joins.inner(Item_.sellOrder)));
     }
 
 }

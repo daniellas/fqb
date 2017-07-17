@@ -12,6 +12,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
+import com.lynx.fqb.order.Orders;
 
 public class Having<S, R> extends OrderBy<S, R> {
 
@@ -69,6 +70,11 @@ public class Having<S, R> extends OrderBy<S, R> {
                 Optional.ofNullable(havings),
                 orders,
                 getPredicatesInterceptor());
+    }
+
+    @SafeVarargs
+    public final OrderBy<S, R> orderBy(BiFunction<CriteriaBuilder, Path<? extends R>, Order>... orders) {
+        return orderBy(Orders.of(orders));
     }
 
 }

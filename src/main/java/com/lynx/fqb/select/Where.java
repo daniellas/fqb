@@ -10,6 +10,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
+import com.lynx.fqb.group.Groupings;
 import com.lynx.fqb.intercept.PredicatesInterceptor;
 
 public class Where<S, R> extends GroupBy<S, R> {
@@ -58,4 +59,10 @@ public class Where<S, R> extends GroupBy<S, R> {
                 groupings,
                 getPredicatesInterceptor());
     }
+
+    @SafeVarargs
+    public final GroupBy<S, R> groupBy(BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>>... groupings) {
+        return groupBy(Groupings.of(groupings));
+    }
+
 }

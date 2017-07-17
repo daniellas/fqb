@@ -11,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
+import com.lynx.fqb.predicate.Predicates;
 
 public class GroupBy<S, R> extends Having<S, R> {
 
@@ -41,7 +42,7 @@ public class GroupBy<S, R> extends Having<S, R> {
     /**
      * Add given having clauses to query
      * 
-     * @param havings
+     * @param predicates
      *            to apply
      * @return {@link Having} with allowed query methods
      * @param <S>
@@ -49,7 +50,7 @@ public class GroupBy<S, R> extends Having<S, R> {
      * @param <R>
      *            selection root type
      */
-    public Having<S, R> having(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> havings) {
+    public Having<S, R> having(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> predicates) {
         return new Having<>(
                 isDistinct(),
                 getSelectionCls(),
@@ -58,8 +59,13 @@ public class GroupBy<S, R> extends Having<S, R> {
                 getJoins(),
                 getRestrictions(),
                 Optional.ofNullable(groupings),
-                havings,
+                predicates,
                 getPredicatesInterceptor());
+    }
+
+    @SafeVarargs
+    public final Having<S, R> having(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate>... predicates) {
+        return having(Predicates.of(predicates));
     }
 
 }

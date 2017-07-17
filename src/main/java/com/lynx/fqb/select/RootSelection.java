@@ -7,13 +7,12 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
+import com.lynx.fqb.selection.Selections;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RootSelection<S, R> {
-
-    private final boolean distinct;
 
     private final Class<S> selectionCls;
 
@@ -34,11 +33,16 @@ public class RootSelection<S, R> {
      */
     public CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections) {
         return new CustomSelection<>(
-                distinct,
                 selectionCls,
                 rootCls,
                 selections,
                 predicatesInterceptor);
+    }
+    
+    @SafeVarargs
+    public final CustomSelection<S, R> with(
+            BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
+        return with(Selections.of(selections));
     }
 
 }
