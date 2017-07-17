@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RootSelection<S, R> {
 
+    private final boolean distinct;
+
     private final Class<S> selectionCls;
 
     private final Class<R> rootCls;
@@ -32,8 +34,10 @@ public class RootSelection<S, R> {
      */
     public CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections) {
         return new CustomSelection<>(
-                selectionCls, 
-                rootCls, 
+                distinct,
+                selectionCls,
+                rootCls,
+                selections,
                 predicatesInterceptor);
     }
 

@@ -18,6 +18,7 @@ public class Having<S, R> extends OrderBy<S, R> {
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> havings;
 
     protected Having(
+            boolean distinct,
             Class<S> selectionCls,
             Class<R> rootCls,
             Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections,
@@ -26,13 +27,15 @@ public class Having<S, R> extends OrderBy<S, R> {
             Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> groupings,
             BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> havings,
             PredicatesInterceptor<R> predicatesInterceptor) {
-        super(selectionCls,
+        super(
+                distinct,
+                selectionCls,
                 rootCls,
                 selections,
                 joins,
                 restrictions,
                 groupings,
-                null,
+                Optional.ofNullable(havings),
                 null,
                 predicatesInterceptor);
         this.havings = havings;
@@ -40,7 +43,7 @@ public class Having<S, R> extends OrderBy<S, R> {
 
     @Override
     protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings() {
-        return Optional.of(havings);
+        return Optional.ofNullable(havings);
     };
 
     /**
@@ -56,6 +59,7 @@ public class Having<S, R> extends OrderBy<S, R> {
      */
     public OrderBy<S, R> orderBy(BiFunction<CriteriaBuilder, Path<? extends R>, Order[]> orders) {
         return new OrderBy<>(
+                isDistinct(),
                 getSelectionCls(),
                 getRootCls(),
                 getSelections(),

@@ -19,6 +19,7 @@ public class EntitySelection<R> extends Join<R, R> {
             Class<R> rootCls,
             PredicatesInterceptor<R> predicatesInterceptor) {
         super(
+                distinct,
                 rootCls,
                 rootCls,
                 Optional.empty(),
@@ -40,6 +41,7 @@ public class EntitySelection<R> extends Join<R, R> {
     public Join<R, R> join(
             BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]> joins) {
         return new Join<>(
+                distinct,
                 rootCls,
                 rootCls,
                 Optional.empty(),

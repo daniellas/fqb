@@ -16,19 +16,23 @@ public class Where<S, R> extends GroupBy<S, R> {
 
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions;
 
-    protected Where(Class<S> selectionCls,
+    protected Where(
+            boolean distinct,
+            Class<S> selectionCls,
             Class<R> rootCls,
             Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections,
             Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]>> joins,
             BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions,
             PredicatesInterceptor<R> predicatesInterceptor) {
-        super(selectionCls,
+        super(
+                distinct,
+                selectionCls,
                 rootCls,
                 selections,
                 joins,
+                Optional.ofNullable(restrictions),
                 null,
-                null,
-                null);
+                predicatesInterceptor);
         this.restrictions = restrictions;
     }
 
@@ -45,6 +49,7 @@ public class Where<S, R> extends GroupBy<S, R> {
      */
     public GroupBy<S, R> groupBy(BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> groupings) {
         return new GroupBy<>(
+                isDistinct(),
                 getSelectionCls(),
                 getRootCls(),
                 getSelections(),

@@ -16,15 +16,18 @@ public class Join<S, R> extends Where<S, R> {
     private final BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]> joins;
 
     protected Join(
+            boolean distinct,
             Class<S> selectionCls,
             Class<R> rootCls,
             Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections,
             BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]> joins,
             PredicatesInterceptor<R> predicatesInterceptor) {
-        super(selectionCls,
+        super(
+                distinct,
+                selectionCls,
                 rootCls,
                 selections,
-                Optional.empty(),
+                Optional.ofNullable(joins),
                 null,
                 predicatesInterceptor);
         this.joins = joins;
@@ -43,6 +46,7 @@ public class Join<S, R> extends Where<S, R> {
      */
     public Where<S, R> where(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions) {
         return new Where<>(
+                isDistinct(),
                 getSelectionCls(),
                 getRootCls(),
                 getSelections(),

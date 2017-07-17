@@ -17,6 +17,7 @@ public class GroupBy<S, R> extends Having<S, R> {
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> groupings;
 
     protected GroupBy(
+            boolean distinct,
             Class<S> selectionCls,
             Class<R> rootCls,
             Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections,
@@ -24,12 +25,14 @@ public class GroupBy<S, R> extends Having<S, R> {
             Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> restrictions,
             BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> groupings,
             PredicatesInterceptor<R> predicatesInterceptor) {
-        super(selectionCls,
+        super(
+                distinct,
+                selectionCls,
                 rootCls,
                 selections,
                 joins,
                 restrictions,
-                null,
+                Optional.ofNullable(groupings),
                 null,
                 predicatesInterceptor);
         this.groupings = groupings;
@@ -48,6 +51,7 @@ public class GroupBy<S, R> extends Having<S, R> {
      */
     public Having<S, R> having(BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> havings) {
         return new Having<>(
+                isDistinct(),
                 getSelectionCls(),
                 getRootCls(),
                 getSelections(),

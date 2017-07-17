@@ -22,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 public class OrderBy<S, R> extends Result<S, R> {
 
     @Getter(AccessLevel.PROTECTED)
+    private final boolean distinct;
+    
+    @Getter(AccessLevel.PROTECTED)
     private final Class<S> selectionCls;
 
     @Getter(AccessLevel.PROTECTED)
