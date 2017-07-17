@@ -17,7 +17,7 @@ import com.lynx.fqb.entity.CustomNumberResult;
 import com.lynx.fqb.entity.CustomResult;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
-import com.lynx.fqb.select.SingleResult;
+import com.lynx.fqb.result.SingleResult;
 
 public class ExpressionITest extends IntegrationTestBase {
 

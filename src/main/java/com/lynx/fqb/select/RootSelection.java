@@ -7,15 +7,17 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
 import com.lynx.fqb.intercept.PredicatesInterceptor;
-import com.lynx.fqb.select.impl.CustomSelectionImpl;
 
-public interface RootSelection<S, R> {
+import lombok.RequiredArgsConstructor;
 
-    Class<S> getSelectionCls();
+@RequiredArgsConstructor
+public class RootSelection<S, R> {
 
-    Class<R> getRootCls();
+    private final Class<S> selectionCls;
 
-    PredicatesInterceptor<R> getPredicatesInterceptor();
+    private final Class<R> rootCls;
+
+    private final PredicatesInterceptor<R> predicatesInterceptor;
 
     /**
      * Choose selections to be returned by custom result query
@@ -28,8 +30,11 @@ public interface RootSelection<S, R> {
      * @param <R>
      *            selection root type
      */
-    default CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections) {
-        return CustomSelectionImpl.of(getSelectionCls(), getRootCls(), selections, getPredicatesInterceptor());
+    public CustomSelection<S, R> with(BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections) {
+        return new CustomSelection<>(
+                selectionCls, 
+                rootCls, 
+                predicatesInterceptor);
     }
 
 }

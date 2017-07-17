@@ -22,6 +22,7 @@ import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates;
+import com.lynx.fqb.result.SingleResult;
 
 public class RestrictedSelectITest extends IntegrationTestBase {
 

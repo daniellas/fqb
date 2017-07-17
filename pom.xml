@@ -149,7 +149,9 @@
               com.lynx.fqb.path,
               com.lynx.fqb.predicate,
               com.lynx.fqb.select,
-              com.lynx.fqb.select.impl
+              com.lynx.fqb.select.impl,
+              com.lynx.fqb.selection,
+              com.lynx.fqb.result
             </Export-Package>
           </instructions>
         </configuration>

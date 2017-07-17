@@ -5,8 +5,6 @@ import javax.persistence.Tuple;
 import com.lynx.fqb.intercept.PredicatesInterceptor;
 import com.lynx.fqb.select.EntitySelection;
 import com.lynx.fqb.select.RootSelection;
-import com.lynx.fqb.select.impl.EntitySelectionImpl;
-import com.lynx.fqb.select.impl.RootSelectionImpl;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -100,7 +98,7 @@ public final class Select {
          *            selection root type
          */
         public EntitySelection<R> from(Class<R> rootCls) {
-            return EntitySelectionImpl.of(false, rootCls, predicatesInterceptor);
+            return new EntitySelection<>(false, rootCls, predicatesInterceptor);
         }
 
         /**
@@ -113,7 +111,7 @@ public final class Select {
          *            selection root type
          */
         public EntitySelection<R> distinct(Class<R> rootCls) {
-            return EntitySelectionImpl.of(true, rootCls, predicatesInterceptor);
+            return new EntitySelection<>(true, rootCls, predicatesInterceptor);
         }
 
         /**
@@ -130,7 +128,7 @@ public final class Select {
          *            selection root type
          */
         public <S> RootSelection<S, R> customFrom(Class<S> selectionCls, Class<R> rootCls) {
-            return RootSelectionImpl.of(selectionCls, rootCls, predicatesInterceptor);
+            return new RootSelection<>(selectionCls, rootCls, predicatesInterceptor);
         }
 
         /**

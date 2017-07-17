@@ -1,14 +1,36 @@
 package com.lynx.fqb.select;
 
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Selection;
 
-import com.lynx.fqb.select.impl.GroupByImpl;
+import com.lynx.fqb.intercept.PredicatesInterceptor;
 
-public interface Where<S, R> extends GroupBy<S, R> {
+public class Where<S, R> extends GroupBy<S, R> {
+
+    private final BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions;
+
+    protected Where(Class<S> selectionCls,
+            Class<R> rootCls,
+            Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> selections,
+            Optional<BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]>> joins,
+            BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]> restrictions,
+            PredicatesInterceptor<R> predicatesInterceptor) {
+        super(selectionCls,
+                rootCls,
+                selections,
+                joins,
+                null,
+                null,
+                null);
+        this.restrictions = restrictions;
+    }
 
     /**
      * Apply given groupings to query
@@ -21,8 +43,14 @@ public interface Where<S, R> extends GroupBy<S, R> {
      * @param <R>
      *            selection root type
      */
-    default GroupBy<S, R> groupBy(BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> groupings) {
-        return GroupByImpl.of(getSelectionCls(), getRootCls(), getSelections(), getJoins(), getRestrictions(),
-                groupings, getPredicatesInterceptor());
+    public GroupBy<S, R> groupBy(BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]> groupings) {
+        return new GroupBy<>(
+                getSelectionCls(),
+                getRootCls(),
+                getSelections(),
+                getJoins(),
+                Optional.ofNullable(restrictions),
+                groupings,
+                getPredicatesInterceptor());
     }
 }

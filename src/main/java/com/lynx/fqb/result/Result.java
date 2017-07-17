@@ -1,4 +1,4 @@
-package com.lynx.fqb.select;
+package com.lynx.fqb.result;
 
 import static com.lynx.fqb.util.QueryBuilder.*;
 
@@ -31,56 +31,56 @@ import com.lynx.fqb.intercept.PredicatesInterceptor;
  * @param <R>
  *            root type
  */
-public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
+public abstract class Result<S, R> implements Function<EntityManager, TypedQuery<S>> {
 
     /**
      * Get selection class
      * 
      * @return selection class
      */
-    Class<S> getSelectionCls();
+    protected abstract Class<S> getSelectionCls();
 
     /**
      * Get root class
      * 
      * @return root class
      */
-    Class<R> getRootCls();
+    protected abstract Class<R> getRootCls();
 
     /**
      * Check if select is distinct
      * 
      * @return true if distinct, false otherwise
      */
-    default boolean isDistinct() {
+    protected boolean isDistinct() {
         return false;
     }
 
-    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
+    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]>> getSelections() {
         return Optional.empty();
     }
 
-    default Optional<BiFunction<CriteriaBuilder, From<R, R>, FetchParent<?, ?>[]>> getJoins() {
+    protected Optional<BiFunction<CriteriaBuilder, From<R, R>, FetchParent<?, ?>[]>> getJoins() {
         return Optional.empty();
     }
 
-    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getRestrictions() {
+    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getRestrictions() {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
+    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Order[]>> getOrders() {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> getGroupings() {
+    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>[]>> getGroupings() {
         return Optional.empty();
     };
 
-    default Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings() {
+    protected Optional<BiFunction<CriteriaBuilder, Path<? extends R>, Predicate[]>> getHavings() {
         return Optional.empty();
     }
 
-    PredicatesInterceptor<R> getPredicatesInterceptor();
+    protected abstract PredicatesInterceptor<R> getPredicatesInterceptor();
 
     /**
      * Get all query results
@@ -91,7 +91,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
      * @param <S>
      *            selection result type
      */
-    default List<S> getResultList(EntityManager em) {
+    public List<S> getResultList(EntityManager em) {
         return apply(em).getResultList();
     }
 
@@ -110,7 +110,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
      *            selection result type
      * 
      */
-    default List<S> getResultList(EntityManager em, int offset, int limit) {
+    public List<S> getResultList(EntityManager em, int offset, int limit) {
         TypedQuery<S> q = apply(em);
 
         q.setFirstResult(offset);
@@ -123,7 +123,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
      * Get single selection result, either success or error.
      * <p>
      * In case of {@link NoResultException} thrown,
-     * {@link com.lynx.fqb.select.SingleResult.Result} is returned with null as
+     * {@link com.lynx.fqb.result.SingleResult.Result} is returned with null as
      * result value.
      * 
      * @param em
@@ -132,7 +132,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
      * @param <S>
      *            selection result type
      */
-    default SingleResult<S> getSingleResult(EntityManager em) {
+    public SingleResult<S> getSingleResult(EntityManager em) {
         try {
             return SingleResult.ofResult(apply(em).getSingleResult());
         } catch (NoResultException e) {
@@ -143,7 +143,7 @@ public interface Result<S, R> extends Function<EntityManager, TypedQuery<S>> {
     }
 
     @Override
-    default TypedQuery<S> apply(EntityManager em) {
+    public TypedQuery<S> apply(EntityManager em) {
         return getCriteriaBuilder()
                 .andThen(createCriteriaQuery(getSelectionCls(), getRootCls()))
                 .andThen(applyRoot(getRootCls()))
