@@ -10,7 +10,7 @@
   <name>Functional Query Builder</name>
 
   <url>https://github.com/daniellas/fqb</url>
-  
+
   <licenses>
     <license>
       <name>Apache License</name>
@@ -149,7 +149,8 @@
               com.lynx.fqb.path,
               com.lynx.fqb.predicate,
               com.lynx.fqb.select,
-              com.lynx.fqb.select.impl
+              com.lynx.fqb.select.impl,
+              com.lynx.fqb.selection
             </Export-Package>
           </instructions>
         </configuration>
