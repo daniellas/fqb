@@ -25,7 +25,7 @@ import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.Product;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.User;
-import com.lynx.fqb.select.Result;
+import com.lynx.fqb.result.Result;
 import com.lynx.fqb.transaction.TransactionalExecutor;
 
 public class IntegrationTestBase {

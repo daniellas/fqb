@@ -31,6 +31,13 @@ public class GroupedSelectITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldGroupByAttributeVarArgs() {
+        assertListResultNotEmpty().accept(Select.tupleFrom(SellOrder.class)
+                .with(of(expr(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()))))
+                .groupBy(Groupings.byAttr(SellOrder_.number)));
+    }
+
+    @Test
     public void shouldGroupByPath() {
         List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
                 .with(of(path(Paths.get(SellOrder_.number))))
@@ -44,7 +51,8 @@ public class GroupedSelectITest extends IntegrationTestBase {
     public void shouldGroupByExpression() {
         List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
                 .with(of(expr(Expressions.ofAttr(SellOrder_.id).andThen(sum()))))
-                .groupBy(Groupings.of(Groupings.byExpr(Expressions.ofAttr(SellOrder_.dueDate).andThen(Expressions.month()))))
+                .groupBy(Groupings
+                        .of(Groupings.byExpr(Expressions.ofAttr(SellOrder_.dueDate).andThen(Expressions.month()))))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

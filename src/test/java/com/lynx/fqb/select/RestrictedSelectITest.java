@@ -22,6 +22,7 @@ import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
 import com.lynx.fqb.path.Paths;
 import com.lynx.fqb.predicate.Predicates;
+import com.lynx.fqb.result.SingleResult;
 
 public class RestrictedSelectITest extends IntegrationTestBase {
 
@@ -33,6 +34,13 @@ public class RestrictedSelectITest extends IntegrationTestBase {
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldSelectEntitiesRestrictedByVarAgrs() {
+        assertListResultNotEmpty().accept(Select
+                .from(SellOrder.class)
+                .where(equal(get(SellOrder_.id), ORDER_ONE_ID)));
     }
 
     @Test
@@ -140,9 +148,11 @@ public class RestrictedSelectITest extends IntegrationTestBase {
 
     @Test
     public void shouldSelectRestrictedByObject() {
-        SellOrder parent = Select.from(SellOrder.class).where(Predicates.of(Predicates.equal(SellOrder_.id, ORDER_ONE_ID))).getSingleResult(em).getResult();
+        SellOrder parent = Select.from(SellOrder.class)
+                .where(Predicates.of(Predicates.equal(SellOrder_.id, ORDER_ONE_ID))).getSingleResult(em).getResult();
 
-        List<Item> resultList = Select.from(Item.class).where(Predicates.of(Predicates.equal(Item_.sellOrder, parent))).getResultList(em);
+        List<Item> resultList = Select.from(Item.class).where(Predicates.of(Predicates.equal(Item_.sellOrder, parent)))
+                .getResultList(em);
         Assert.assertFalse(resultList.isEmpty());
     }
 

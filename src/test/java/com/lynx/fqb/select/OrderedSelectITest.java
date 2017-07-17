@@ -29,6 +29,13 @@ public class OrderedSelectITest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldSelectEntitiesSortedByVarArg() {
+        assertListResultNotEmpty().accept(Select
+                .from(SellOrder.class)
+                .orderBy(Orders.asc(SellOrder_.id)));
+    }
+
+    @Test
     public void shouldSelectEntitiesSortedByAttributeDesc() {
         List<SellOrder> resultList = Select
                 .from(SellOrder.class)

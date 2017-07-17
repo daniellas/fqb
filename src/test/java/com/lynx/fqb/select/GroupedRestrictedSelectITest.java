@@ -25,10 +25,19 @@ public class GroupedRestrictedSelectITest extends IntegrationTestBase {
         List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
                 .with(of(expr(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()))))
                 .groupBy(Groupings.of(Groupings.byAttr(SellOrder_.number)))
-                .having(Predicates.of(Predicates.gt(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()), 0)))
+                .having(Predicates
+                        .of(Predicates.gt(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()), 0)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());
+    }
+
+    @Test
+    public void shouldGroupRestrictByAttributeVarArags() {
+        assertListResultNotEmpty().accept(Select.tupleFrom(SellOrder.class)
+                .with(of(expr(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()))))
+                .groupBy(Groupings.of(Groupings.byAttr(SellOrder_.number)))
+                .having(Predicates.gt(Expressions.ofAttr(SellOrder_.dueDate).andThen(year()).andThen(max()), 0)));
     }
 
 }

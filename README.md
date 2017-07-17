@@ -4,30 +4,30 @@ FQB provides functional fluent interface for criteria queries building along wit
 
 ## Why?
 
-There are a few JPA query construction supporting libraries available:
+I't common situation when some relational database is used in project. In Java it's SQL via JDBC or JPQL/CriteriaAPI via JPA the right tool to work with relational databases. There are higher level libraries and frameworks simplifying database queries, like **Spring DATA JPA**. I'm quite familiar with Spring DATA project. It's very nice and easy to use, but there often were some project specific requirements that made things complicated. If you need to perform simple queries, existing tools work just fine, but when you need to implement more sophisticated queries, you end up with:
 
-* Spring Data JPA - [TBC]
-* QueryDSL - [TBC]
-* other not mentioned here I'm not aware of
+- complicated JPQL queries
+- manual JPQL queries construction
+- direct JPA Criteria API
 
-FQB presents some other approach to this matter. Here below you can find reasons why I have created this library.
+I wanted to have the tool allowing me to:
 
-1. It was fun and good exercise
-2. FQB is type safe, most of errors are detected during compile time
-3. No JDK proxies or other magic under the hood
-4. Minimal required runtime dependencies, only JPA 2.1 API 
+- compose sophisticated queries with ready to use building blocks
+- create shared higher level building blocks by myself
+- ensure type safety on compile time
+- enable queries intercepting mechanism not coupling my project to some particular JPA provider
 
-There is one important thing to mention. FQB aims to give you ability of easy JPA queries construction whose structure can be defined during runtime depending on variables or method parameters values. 
+**FQB** was created with above requirements in mind.
+
+## How to use it?
+
+Please see project tests to see usage examples.
 
 ## Work in progress
 
 *Please note that this project is in early development stage so it's API can change without notice until release.*
 
 Consecutive releases will follow [Semantic Versioning](http://semver.org/) principles. 
-
-## How to use it?
-
-Please see project tests to see usage examples.
 
 ## Requirements
 
