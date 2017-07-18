@@ -30,7 +30,7 @@ public class Selections {
     }
 
     public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>> attr(
-            SingularAttribute<R, T> attr) {
+            SingularAttribute<? super R, T> attr) {
         return path(Paths.get(attr));
     }
 
@@ -42,5 +42,4 @@ public class Selections {
     public static Function<Selection<?>, Selection<?>> alias(String name) {
         return selection -> selection.alias(name);
     }
-
 }

@@ -26,21 +26,17 @@ public class Groupings {
 
     public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> byPath(
             Function<Path<? extends R>, Path<T>> path) {
-        return (cb, root) -> {
-            return path.apply(root);
-        };
+        return (cb, root) -> path.apply(root);
     }
 
     public static <R, T> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> byAttr(
-            SingularAttribute<R, T> attr) {
+            SingularAttribute<? super R, T> attr) {
         return byPath(Paths.get(attr));
     }
 
     public static <R, E> BiFunction<CriteriaBuilder, Path<? extends R>, Expression<?>> byExpr(
             BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, E>> expression) {
-        return (cb, root) -> {
-            return expression.apply(cb, root).getExpression();
-        };
+        return (cb, root) -> expression.apply(cb, root).getExpression();
     }
 
 }

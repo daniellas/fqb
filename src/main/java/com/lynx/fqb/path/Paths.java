@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Paths {
 
-    public static <A, B> Function<Path<? extends A>, Path<B>> get(SingularAttribute<A, B> attr) {
+    public static <A, B> Function<Path<? extends A>, Path<B>> get(SingularAttribute<? super A,B> attr) {
         return path -> path.get(attr);
     }
 

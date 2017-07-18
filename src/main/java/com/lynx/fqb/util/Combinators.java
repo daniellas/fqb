@@ -22,9 +22,7 @@ public class Combinators {
      * @return {@link BiFunction}
      */
     public static <B, R, I> BiFunction<B, R, I[]> fromBiFunctionArray(BiFunction<B, R, ? extends I>[] funcs, IntFunction<I[]> generator) {
-        return (cb, root) -> {
-            return Arrays.stream(funcs).map(i -> i.apply(cb, root)).toArray(generator);
-        };
+        return (cb, root) -> Arrays.stream(funcs).map(i -> i.apply(cb, root)).toArray(generator);
     }
 
 }

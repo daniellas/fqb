@@ -50,7 +50,7 @@ public class Expressions {
      * @return expression context {@link BiFunction}
      */
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, V>> ofAttr(
-            SingularAttribute<R, V> attr) {
+            SingularAttribute<? super R, V> attr) {
         return ofPath(Paths.get(attr));
     }
 
@@ -60,7 +60,7 @@ public class Expressions {
     }
 
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> count(
-            SingularAttribute<R, V> attr) {
+            SingularAttribute<? super R, V> attr) {
         return count(Paths.get(attr));
     }
 
@@ -74,7 +74,7 @@ public class Expressions {
     }
 
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, Long>> countDistinct(
-            SingularAttribute<R, V> attr) {
+            SingularAttribute<? super R, V> attr) {
         return countDistinct(Paths.get(attr));
     }
 
@@ -115,7 +115,7 @@ public class Expressions {
                 ctx.getCb().sum(ctx.getExpression(), path.apply(ctx.getRoot())));
     }
 
-    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> sum(SingularAttribute<R, V> attr) {
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> sum(SingularAttribute<? super R, V> attr) {
         return sum(Paths.get(attr));
     }
 
@@ -137,7 +137,7 @@ public class Expressions {
                 ctx.getCb().prod(ctx.getExpression(), path.apply(ctx.getRoot())));
     }
 
-    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(SingularAttribute<R, V> attr) {
+    public static <R, V extends Number> Function<Context<R, V>, Context<R, V>> prod(SingularAttribute<? super R, V> attr) {
         return prod(Paths.get(attr));
     }
 

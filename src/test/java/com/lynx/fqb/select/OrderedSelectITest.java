@@ -90,16 +90,25 @@ public class OrderedSelectITest extends IntegrationTestBase {
     public void shouldSelectEntitiesSortedByParentPathAsc() {
         List<SellOrder> resultList = Select
                 .from(SellOrder.class)
-                .orderBy(Orders.of(
-                        Orders.asc(Paths.get(SellOrder_.id)),
-                        (cb, root) -> {
-                            return cb.asc(root.get(SellOrder_.dateCreate));
-                        }))
+                .orderBy(Orders.of(Orders.asc(Paths.get(SellOrder_.dateCreate))))
                 .getResultList(em);
 
         assertOrder(
                 resultList,
-                Comparator.comparing(SellOrder::getId).thenComparing(Comparator.comparing(SellOrder::getDateCreate)),
+                Comparator.comparing(SellOrder::getDateCreate),
+                SellOrder[]::new);
+    }
+
+    @Test
+    public void shouldSelectEntitiesSortedByParentAttributeAsc() {
+        List<SellOrder> resultList = Select
+                .from(SellOrder.class)
+                .orderBy(Orders.of(Orders.asc(SellOrder_.dateCreate)))
+                .getResultList(em);
+
+        assertOrder(
+                resultList,
+                Comparator.comparing(SellOrder::getDateCreate),
                 SellOrder[]::new);
     }
 

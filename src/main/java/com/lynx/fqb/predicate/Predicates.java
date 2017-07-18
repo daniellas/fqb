@@ -49,8 +49,8 @@ public class Predicates {
         return equal(Expressions.ofPath(path), value);
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> equal(SingularAttribute<R, V> attr,
-            V value) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> equal(
+            SingularAttribute<? super R, V> attr, V value) {
         return equal(Expressions.ofAttr(attr), value);
     }
 
@@ -66,7 +66,7 @@ public class Predicates {
     }
 
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notEqual(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return notEqual(Expressions.ofAttr(attr), value);
     }
 
@@ -91,19 +91,18 @@ public class Predicates {
     }
 
     @SafeVarargs
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(SingularAttribute<R, V> attr,
-            V... values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(
+            SingularAttribute<? super R, V> attr, V... values) {
         return in(Expressions.ofAttr(attr), values);
     }
 
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(
-            Function<Path<? extends R>, ? extends Expression<V>> path,
-            Collection<V> values) {
+            Function<Path<? extends R>, ? extends Expression<V>> path, Collection<V> values) {
         return in(Expressions.ofPath(path), values);
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(SingularAttribute<R, V> attr,
-            Collection<V> values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> in(
+            SingularAttribute<? super R, V> attr, Collection<V> values) {
         return in(Expressions.ofAttr(attr), values);
     }
 
@@ -129,8 +128,8 @@ public class Predicates {
     }
 
     @SafeVarargs
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(SingularAttribute<R, V> attr,
-            V... values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(
+            SingularAttribute<? super R, V> attr, V... values) {
         return notIn(Expressions.ofAttr(attr), values);
     }
 
@@ -140,8 +139,8 @@ public class Predicates {
         return notIn(Expressions.ofPath(path), values);
     }
 
-    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(SingularAttribute<R, V> attr,
-            Collection<V> values) {
+    public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> notIn(
+            SingularAttribute<? super R, V> attr, Collection<V> values) {
         return notIn(Expressions.ofAttr(attr), values);
     }
 
@@ -157,7 +156,7 @@ public class Predicates {
     }
 
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNotNull(
-            SingularAttribute<R, V> attr) {
+            SingularAttribute<? super R, V> attr) {
         return isNotNull(Expressions.ofAttr(attr));
     }
 
@@ -173,7 +172,7 @@ public class Predicates {
     }
 
     public static <R, V> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> isNull(
-            SingularAttribute<R, V> attr) {
+            SingularAttribute<? super R, V> attr) {
         return isNull(Expressions.ofAttr(attr));
     }
 
@@ -188,7 +187,8 @@ public class Predicates {
         return like(Expressions.ofPath(path), pattern);
     }
 
-    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> like(SingularAttribute<R, String> attr,
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> like(
+            SingularAttribute<? super R, String> attr,
             String pattern) {
         return like(Expressions.ofAttr(attr), pattern);
     }
@@ -207,7 +207,7 @@ public class Predicates {
     }
 
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> contains(
-            SingularAttribute<R, String> attr, String pattern) {
+            SingularAttribute<? super R, String> attr, String pattern) {
         return contains(Expressions.ofAttr(attr), pattern);
     }
 
@@ -225,7 +225,7 @@ public class Predicates {
     }
 
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> startsWith(
-            SingularAttribute<R, String> attr, String pattern) {
+            SingularAttribute<? super R, String> attr, String pattern) {
         return startsWith(Expressions.ofAttr(attr), pattern);
     }
 
@@ -242,7 +242,7 @@ public class Predicates {
     }
 
     public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> endsWith(
-            SingularAttribute<R, String> attr, String pattern) {
+            SingularAttribute<? super R, String> attr, String pattern) {
         return endsWith(Expressions.ofAttr(attr), pattern);
     }
 
@@ -253,7 +253,7 @@ public class Predicates {
     }
 
     public static <R, V extends Number> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> gt(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return gt(Expressions.ofAttr(attr), value);
     }
 
@@ -269,7 +269,7 @@ public class Predicates {
     }
 
     public static <R, V extends Number> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> lt(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return lt(Expressions.ofAttr(attr), value);
     }
 
@@ -285,7 +285,7 @@ public class Predicates {
     }
 
     public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> greaterThan(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return greaterThan(Expressions.ofAttr(attr), value);
     }
 
@@ -301,7 +301,7 @@ public class Predicates {
     }
 
     public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> greaterThanOrEqualTo(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return greaterThanOrEqualTo(Expressions.ofAttr(attr), value);
     }
 
@@ -317,7 +317,7 @@ public class Predicates {
     }
 
     public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> lessThan(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return lessThan(Expressions.ofAttr(attr), value);
     }
 
@@ -333,7 +333,7 @@ public class Predicates {
     }
 
     public static <R, V extends Comparable<V>> BiFunction<CriteriaBuilder, Path<? extends R>, Predicate> lessThanOrEqualTo(
-            SingularAttribute<R, V> attr, V value) {
+            SingularAttribute<? super R, V> attr, V value) {
         return lessThanOrEqualTo(Expressions.ofAttr(attr), value);
     }
 

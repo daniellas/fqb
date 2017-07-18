@@ -52,7 +52,7 @@ public class RootSelection<S, R> {
      *            selection root type
      */
     public final CustomSelection<S, R> with(
-            BiFunction<CriteriaBuilder, Path<? extends R>, ? extends Selection<?>>... selections) {
+            BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>>... selections) {
         return with(Selections.of(selections));
     }
 

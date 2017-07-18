@@ -17,7 +17,6 @@ import com.lynx.fqb.entity.Item;
 import com.lynx.fqb.entity.Item_;
 import com.lynx.fqb.entity.SellOrder;
 import com.lynx.fqb.entity.SellOrder_;
-import com.lynx.fqb.selection.Selections;
 
 public class SelectionsITest extends IntegrationTestBase {
 
@@ -65,7 +64,7 @@ public class SelectionsITest extends IntegrationTestBase {
     @Test
     public void shouldSelectAttrFromSuperType() {
         List<Tuple> resultList = Select.tupleFrom(SellOrder.class)
-                .with(Selections.of((cb, root) -> root.get(SellOrder_.dateCreate)))
+                .with(Selections.of(Selections.attr(SellOrder_.dateCreate)))
                 .getResultList(em);
 
         Assert.assertFalse(resultList.isEmpty());

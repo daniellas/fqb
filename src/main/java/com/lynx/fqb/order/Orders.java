@@ -20,42 +20,37 @@ import lombok.AllArgsConstructor;
 public class Orders {
 
     @SafeVarargs
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order[]> of(BiFunction<CriteriaBuilder, Path<? extends T>, Order>... orders) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order[]> of(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Order>... orders) {
         return Combinators.fromBiFunctionArray(orders, Order[]::new);
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(Function<Path<? extends T>, ? extends Expression<?>> path) {
-        return (cb, root) -> {
-            return cb.asc(path.apply(root));
-        };
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order> asc(
+            Function<Path<? extends R>, ? extends Expression<?>> path) {
+        return (cb, root) -> cb.asc(path.apply(root));
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(SingularAttribute<T, ?> attr) {
-        return (cb, root) -> {
-            return cb.asc(root.get(attr));
-        };
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order> asc(SingularAttribute<? super R, ?> attr) {
+        return (cb, root) -> cb.asc(root.get(attr));
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> asc(BiFunction<CriteriaBuilder, Path<? extends T>, Context<T, ?>> expr) {
-        return (cb, root) -> {
-            return cb.asc(expr.apply(cb, root).getExpression());
-        };
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order> asc(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, ?>> expr) {
+        return (cb, root) -> cb.asc(expr.apply(cb, root).getExpression());
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(Function<Path<? extends T>, ? extends Expression<?>> path) {
-        return (cb, root) -> {
-            return cb.desc(path.apply(root));
-        };
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order> desc(
+            Function<Path<? extends R>, ? extends Expression<?>> path) {
+        return (cb, root) -> cb.desc(path.apply(root));
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(SingularAttribute<T, ?> attr) {
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order> desc(SingularAttribute<? super R, ?> attr) {
         return desc(Paths.get(attr));
     }
 
-    public static <T> BiFunction<CriteriaBuilder, Path<? extends T>, Order> desc(BiFunction<CriteriaBuilder, Path<? extends T>, Context<T, ?>> expr) {
-        return (cb, root) -> {
-            return cb.desc(expr.apply(cb, root).getExpression());
-        };
+    public static <R> BiFunction<CriteriaBuilder, Path<? extends R>, Order> desc(
+            BiFunction<CriteriaBuilder, Path<? extends R>, Context<R, ?>> expr) {
+        return (cb, root) -> cb.desc(expr.apply(cb, root).getExpression());
     }
 
 }
