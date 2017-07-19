@@ -62,6 +62,10 @@ public final class Select {
         return new InterceptingSelect<R>(PredicatesInterceptor.identity()).customFrom(selectionCls, rootCls);
     }
 
+    public static <S, R> RootSelection<S, R> distinctCustomFrom(Class<S> selectionCls, Class<R> rootCls) {
+        return new InterceptingSelect<R>(PredicatesInterceptor.identity()).distinctCustomFrom(selectionCls, rootCls);
+    }
+
     /**
      * Select {@link Tuple} from given root class
      * 
@@ -73,6 +77,10 @@ public final class Select {
      */
     public static <R> RootSelection<Tuple, R> tupleFrom(Class<R> rootCls) {
         return new InterceptingSelect<R>(PredicatesInterceptor.identity()).tupleFrom(rootCls);
+    }
+
+    public static <R> RootSelection<Tuple, R> distinctTupleFrom(Class<R> rootCls) {
+        return new InterceptingSelect<R>(PredicatesInterceptor.identity()).distinctTupleFrom(rootCls);
     }
 
     /**
@@ -128,7 +136,11 @@ public final class Select {
          *            selection root type
          */
         public <S> RootSelection<S, R> customFrom(Class<S> selectionCls, Class<R> rootCls) {
-            return new RootSelection<>(selectionCls, rootCls, predicatesInterceptor);
+            return new RootSelection<>(false, selectionCls, rootCls, predicatesInterceptor);
+        }
+
+        public <S> RootSelection<S, R> distinctCustomFrom(Class<S> selectionCls, Class<R> rootCls) {
+            return new RootSelection<>(true, selectionCls, rootCls, predicatesInterceptor);
         }
 
         /**
@@ -142,6 +154,10 @@ public final class Select {
          */
         public RootSelection<Tuple, R> tupleFrom(Class<R> rootCls) {
             return customFrom(Tuple.class, rootCls);
+        }
+
+        public RootSelection<Tuple, R> distinctTupleFrom(Class<R> rootCls) {
+            return distinctCustomFrom(Tuple.class, rootCls);
         }
 
     }

@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.From;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -84,7 +84,7 @@ public class IntegrationTestBase {
         em.close();
     }
 
-    protected <T> Path<T> root(Class<T> cls) {
+    protected <T> From<T, T> root(Class<T> cls) {
         return cb.createQuery(cls).from(cls);
     }
 

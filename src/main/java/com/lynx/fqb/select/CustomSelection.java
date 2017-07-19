@@ -14,6 +14,8 @@ import com.lynx.fqb.join.Joins;
 
 public class CustomSelection<S, R> extends Join<S, R> {
 
+    private final boolean distinct;
+
     private final Class<S> selectionCls;
 
     private final Class<R> rootCls;
@@ -21,17 +23,19 @@ public class CustomSelection<S, R> extends Join<S, R> {
     private final BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections;
 
     protected CustomSelection(
+            boolean distinct,
             Class<S> selectionCls,
             Class<R> rootCls,
             BiFunction<CriteriaBuilder, Path<? extends R>, Selection<?>[]> selections,
             PredicatesInterceptor<R> predicatesInterceptor) {
         super(
-                false,
+                distinct,
                 selectionCls,
                 rootCls,
                 Optional.of(selections),
                 null,
                 predicatesInterceptor);
+        this.distinct = distinct;
         this.selectionCls = selectionCls;
         this.rootCls = rootCls;
         this.selections = selections;
@@ -51,7 +55,7 @@ public class CustomSelection<S, R> extends Join<S, R> {
     public Join<S, R> join(
             BiFunction<CriteriaBuilder, From<R, R>, javax.persistence.criteria.FetchParent<?, ?>[]> joins) {
         return new Join<>(
-                isDistinct(),
+                distinct,
                 selectionCls,
                 rootCls,
                 Optional.of(selections),
