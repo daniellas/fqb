@@ -4,7 +4,7 @@ FQB provides functional fluent interface for criteria queries building along wit
 
 ## Why?
 
-I't common situation when some relational database is used in project. In Java it's SQL via JDBC or JPQL/CriteriaAPI via JPA the right tool to work with relational databases. There are higher level libraries and frameworks simplifying database queries, like **Spring DATA JPA**. I'm quite familiar with Spring DATA project. It's very nice and easy to use, but there often were some project specific requirements that made things complicated. If you need to perform simple queries, existing tools work just fine, but when you need to implement more sophisticated queries, you end up with:
+It's common situation when some relational database is used in project. In Java it's SQL via JDBC or JPQL/CriteriaAPI via JPA the right tool to work with relational databases. There are higher level libraries and frameworks simplifying database queries, like **Spring DATA JPA**. I'm quite familiar with Spring DATA project. It's very nice and easy to use, but there often were some project specific requirements that made things complicated. If you need to perform simple queries, existing tools work just fine, but when you need to implement more sophisticated queries, you end up with:
 
 - complicated JPQL queries
 - manual JPQL queries construction
@@ -21,7 +21,7 @@ I wanted to have the tool allowing me to:
 
 ## How to use it?
 
-Please see project tests to see usage examples.
+Please see project tests to see full usage examples.
 
 ## Work in progress
 
