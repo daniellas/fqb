@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lynx.fqb</groupId>
@@ -390,5 +390,22 @@
         <jdbc.user>sa</jdbc.user>
         <jdbc.password></jdbc.password>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>smartup</id>
+            <url>https://smartup.net.pl/nexus/repository/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>smartup</id>
+            <url>https://smartup.net.pl/nexus/repository/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <scm>
+        <connection>scm:git:ssh://git@github.com:daniellas/fqb.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:daniellas/fqb.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
 </project>
