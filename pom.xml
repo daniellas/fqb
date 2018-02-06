@@ -410,8 +410,8 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com:daniellas/fqb.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:daniellas/fqb.git</developerConnection>
+        <connection>scm:git:git@github.com:daniellas/fqb.git</connection>
+        <developerConnection>scm:git:git@github.com:daniellas/fqb.git</developerConnection>
         <tag>fqb-0.1.0</tag>
     </scm>
 
