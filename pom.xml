@@ -413,7 +413,7 @@
     <scm>
         <connection>scm:git:ssh://git@github.com:daniellas/fqb.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:daniellas/fqb.git</developerConnection>
-        <tag>version/0.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
